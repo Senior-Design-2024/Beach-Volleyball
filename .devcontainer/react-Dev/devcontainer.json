@@ -1,0 +1,15 @@
+{
+    "name": "DUMMY",
+    "dockerFile": "../../flask-server/Dockerfile",
+    "appPort": [5000],
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "terminal.integrated.shell.linux": "/bin/bash"
+        },
+        "extensions": [
+          "ms-python.python"
+        ]
+      }
+    }
+  }
