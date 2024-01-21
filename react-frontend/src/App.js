@@ -17,11 +17,11 @@ function App() {
   return (
     <div>
       
-      {typeof data.message === 'undefined'} ? (
+      {(typeof data.message === 'undefined') ? (
         <p>Loading...</p>
       ) : (
           <p>{data.message}</p>
-      )
+      )}
 
     </div>
   )
