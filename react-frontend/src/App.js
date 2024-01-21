@@ -14,19 +14,17 @@ function App() {
     )
   }, [])
 
-  return (
+  /*return (
     <div>
       
       {typeof data.message === 'undefined'} ? (
         <p>Loading...</p>
       ) : (
-        (
-          <p>{message}</p>
-        )
+          <p>{data.message}</p>
       )
 
     </div>
-  )
+  )*/
 }
 
 export default App
