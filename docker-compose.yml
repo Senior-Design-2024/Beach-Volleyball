@@ -1,0 +1,30 @@
+version: '3'
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.0.0/16"
+          gateway: "172.20.0.1"
+
+services:
+  flask-server:
+    build:
+      context: ./flask-server
+    networks:
+      my_network:
+        ipv4_address: "172.20.0.2"
+    ports:
+      - "5000:5000"
+
+  react-frontend:
+    build:
+      context: ./react-frontend
+    networks:
+      my_network:
+    ports:
+      - "3000:3000"
+    depends_on:
+      - flask-server
