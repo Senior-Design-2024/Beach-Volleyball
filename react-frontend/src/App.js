@@ -14,7 +14,7 @@ function App() {
     )
   }, [])
 
-  /*return (
+  return (
     <div>
       
       {typeof data.message === 'undefined'} ? (
@@ -24,7 +24,7 @@ function App() {
       )
 
     </div>
-  )*/
+  )
 }
 
 export default App
