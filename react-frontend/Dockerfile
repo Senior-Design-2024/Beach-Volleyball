@@ -2,15 +2,11 @@ FROM node:14
 
 WORKDIR /app
 
-RUN chown -R node:node /app
-
-USER node
-
 COPY ./package*.json .
 
 RUN npm cache clean --force
 
-RUN npm install
+RUN npm install -g --unsafe-perm=true --allow-root
 
 COPY . .
 
