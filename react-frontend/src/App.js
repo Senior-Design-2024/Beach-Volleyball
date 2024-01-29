@@ -1,6 +1,23 @@
 import React, {useState, useEffect} from 'react'
 
-function App() {
+
+function MyButton() {
+  function handleClick() {
+    alert('You clicked me!');
+  }
+
+  return (
+    <button onClick={handleClick}>
+      Click me
+    </button>
+  );
+} 
+
+
+
+
+//////////////////
+export default function App() {
   const [data, setData] = useState([{}])
 
   useEffect(() => {
@@ -20,11 +37,11 @@ function App() {
       {(typeof data.message === 'undefined') ? (
         <p>Loading...</p>
       ) : (
-          <p>{data.message}</p>
-      )}
+
+          <MyButton />
+      )
+      }
 
     </div>
-  )
+  );
 }
-
-export default App
