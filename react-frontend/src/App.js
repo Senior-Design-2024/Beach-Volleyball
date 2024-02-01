@@ -1,17 +1,19 @@
 import React, {useState, useEffect} from 'react'
+import "./App.css"
 
-
+/*
 function MyButton() {
   function handleClick() {
     alert('You clicked me!');
   }
 
   return (
-    <button onClick={handleClick}>
-      Click me
+    <button style={CSS_Button} onClick={handleClick}>
+      test
     </button>
   );
 } 
+*/
 
 
 
@@ -20,6 +22,8 @@ function MyButton() {
 export default function App() {
   const [data, setData] = useState([{}])
 
+
+  /* need a comment on what this is doing */
   useEffect(() => {
     fetch("/test").then(
       res => res.json()
@@ -31,13 +35,14 @@ export default function App() {
     )
   }, [])
 
+  /* need a comment on what this is doing */
   return (
-    <div>
+    <div className="testStyle">
       
       {(typeof data.message === 'undefined') ? (
         <p>Loading...</p>
       ) : (
-          <MyButton />
+        <p>test</p>
       )
       }
 
