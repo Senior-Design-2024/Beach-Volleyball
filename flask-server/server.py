@@ -4,12 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 import secrets
 
-#conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
+conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
 
 app = Flask(__name__)
-#app.config['SECRET_KEY']='key'
-#app.config['SQLALCHEMY_DATABASE_URI'] = conn
-#db = SQLAlchemy(app)
+app.config['SECRET_KEY']='key'
+app.config['SQLALCHEMY_DATABASE_URI'] = conn
+db = SQLAlchemy(app)
 
 CORS(app)
 
@@ -22,9 +22,6 @@ def test():
 @app.route('/adduser', methods=['GET', 'POST'])
 def useradd():
   data = request.json
-  return jsonify({'username':data.get('name'),
-                  'email':data.get('email'),
-                  'userid':''}), 200
+  return {'username':data.get('username'), 'email':data.get('email'), 'userid':''}, 200
 
-if __name__ == '__main__':
-  app.run(debug=True)
+app.run(host="0.0.0.0", port=5000)
