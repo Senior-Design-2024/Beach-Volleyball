@@ -1,15 +1,22 @@
 FROM node:14
 
+# Set the working directory
 WORKDIR /app
 
-COPY ./package*.json .
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-RUN npm cache clean --force
+# Install dependencies
+RUN npm install
 
-RUN npm install -g --unsafe-perm=true --allow-root
-
+# Copy the rest of the application code
 COPY . .
 
+# Ensure that the directory permissions are set correctly
+RUN chmod -R 777 /app
+
+# Expose port 3000
 EXPOSE 3000
 
+# Run the application
 CMD ["npm", "start"]
