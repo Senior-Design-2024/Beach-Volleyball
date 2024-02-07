@@ -1,22 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import "./App.css"
-
-/*
-function MyButton() {
-  function handleClick() {
-    alert('You clicked me!');
-  }
-
-  return (
-    <button style={CSS_Button} onClick={handleClick}>
-      test
-    </button>
-  );
-} 
-*/
-
-
-
+import { BasicButton } from './components/basic_components'
 
 //////////////////
 export default function App() {
@@ -35,17 +19,22 @@ export default function App() {
     )
   }, [])
 
+  const handleClick = () => console.log("clicked")
+
   /* need a comment on what this is doing */
   return (
     <div className="testStyle">
-      
+      <BasicButton onClick={handleClick} buttonText={"ugh"}></BasicButton>
+
+
+      {/* this changes the message based on whether we are connected to flask 
       {(typeof data.message === 'undefined') ? (
-        <p>Loading...</p>
+        <Test1 />
       ) : (
         <p>test</p>
       )
       }
-
+      */}
     </div>
   );
 }
