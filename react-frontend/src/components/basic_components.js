@@ -1,10 +1,10 @@
 import React from 'react'
-import { Component } from 'react'
+import '../App.css'
 
 export function BasicButton({onClick, buttonText="BASIC BUTTON"}){
     return(
     <div>
-        <button onClick={onClick}>{buttonText}</button>
+        <button className="button" onClick={onClick}>{buttonText}</button>
     </div>
     )
 }
