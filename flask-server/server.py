@@ -2,9 +2,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
-import secrets
+import dbcreds
 
-conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
+conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbcreds.dbuser, dbcreds.dbpass, dbcreds.dbhost, dbcreds.dbname)
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='key'
@@ -24,4 +24,5 @@ def useradd():
   data = request.json
   return {'username':data.get('username'), 'email':data.get('email'), 'userid':''}, 200
 
+app.debug = True
 app.run(host="0.0.0.0", port=5000)
