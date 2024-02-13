@@ -1,11 +1,10 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
 import '../App.css'
 
 //////////////////
 export default function Home() {
-/*
   const [data, setData] = useState([{}])
 
 
@@ -20,25 +19,24 @@ export default function Home() {
       }
     )
   }, [])
-  */
 
   //const handleClick = () => console.log("clicked")
   const navigate = useNavigate();
-  const handleClick = () => navigate('/test');
+  const navigateLogin = () => navigate('/Login');
+
   /* need a comment on what this is doing */
   return (
     <div>
-      <BasicButton onClick={handleClick} buttonText={"ugh"}></BasicButton>
-
-
-      {/* this changes the message based on whether we are connected to flask 
+      {/* this changes the message based on whether we are connected to flask*/}
       {(typeof data.message === 'undefined') ? (
-        <Test1 />
+        <>
+          <p>Home page</p>
+          <BasicButton onClick={navigateLogin} buttonText='Go to login'></BasicButton>
+        </>
       ) : (
-        <p>test</p>
+        <p>connected to flask</p>
       )
       }
-      */}
     </div>
   );
 }
