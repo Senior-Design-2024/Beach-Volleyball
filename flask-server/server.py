@@ -42,7 +42,7 @@ def teamadd():
 
 #USE: json containing email of user, team name, and player name is sent, confirmation sent back
 @app.route('/addplayer', methods=['POST'])
-def useradd():
+def playeradd():
   data = request.json
 
   team_id = 'null'
@@ -57,12 +57,13 @@ def useradd():
 
 #USE: json containing two player ids, user email, as well as all setup data, is sent, confirmation returned
 @app.route('/addgame', methods=['POST'])
-def useradd():
+def gameadd():
   data = request.json
 
   game_id = 'null'
   user_id = 'null'
   team_id = 'null'
+  setup_data = 'null'
   game_name = 'null'
 
 
@@ -71,6 +72,14 @@ def useradd():
 
   return {'user_id':user_id, 'game_name':game_name}, 200
 
+@app.route('/addset', methods=['POST'])
+def setadd():
+  data = request.json
+
+  game_id = 'null'
+  set_id = 'null'
+
+  return{'game_id':game_id, 'set_id':set_id}, 200
 
 app.debug = True
 app.run(host="0.0.0.0", port=5000)
