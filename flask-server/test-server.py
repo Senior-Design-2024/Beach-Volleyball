@@ -25,6 +25,7 @@ class User(db.Model):
 class Team(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     user = db.relationship('User', backref=db.backref('teams', lazy=True))
 
 class Player(db.Model):
@@ -69,7 +70,7 @@ def team_add():
 
     user = User.query.filter_by(email=email).first()
     if user:
-        team = Team(user=user)
+        team = Team(user=user, name=team_name)
         db.session.add(team)
         db.session.commit()
         return jsonify({'message': 'Team added successfully'}), 200
