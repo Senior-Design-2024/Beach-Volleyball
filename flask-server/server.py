@@ -27,8 +27,6 @@ def useradd():
 
   return {'username':data.get('username'), 'email':data.get('email'), 'userid':''}, 200
 
-<<<<<<< HEAD
-=======
 #USE: json containing email of user, as well as a team name, confirmation sent back
 @app.route('/addteam', methods=['POST'])
 def teamadd():
@@ -83,6 +81,5 @@ def setadd():
 
   return{'game_id':game_id, 'set_id':set_id}, 200
 
->>>>>>> origin/database
 app.debug = True
 app.run(host="0.0.0.0", port=5000)
