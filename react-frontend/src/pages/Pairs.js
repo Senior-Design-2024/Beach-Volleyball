@@ -6,6 +6,7 @@ export default function Pairs() {
   const navigate = useNavigate();
   const navigatePlayers = () => navigate('/Players');
   const navigateNewPair = () => navigate('/NewPair');
+  const navigateMatches = () => navigate('/Matches');
 
   /* need a comment on what this is doing */
   return (
@@ -13,6 +14,7 @@ export default function Pairs() {
         <p>Pairs page</p>
         <BasicButton onClick={navigatePlayers} buttonText='back to players'></BasicButton>
         <BasicButton onClick={navigateNewPair} buttonText='new pair'></BasicButton>
+        <BasicButton onClick={navigateMatches} buttonText='matches'></BasicButton>
     </div>
   );
 }
