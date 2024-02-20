@@ -33,11 +33,39 @@ export default function NewMatch() {
               <tr><label className='label' for='tournament'>Tournament:</label><input type='text' id='tournament' name='tournament'></input></tr><br/>
               <tr><label className='label' for='courtNumber'>Court Number:</label><input type='text' id='courtNumber' name='courtNumber'></input></tr><br/>
               <tr><label className='label' for='flightNumber'>Flight Number:</label><input type='text' id='flightNumber' name='flightNumber'></input></tr><br/>
-              <tr><label className='label' for='conference'>Conference:</label><input type='text' id='conference' name='conference'></input></tr><br/>
-              <tr><label className='label' for='location'>Location:</label><input type='text' id='location' name='location'></input></tr><br/>
+              <tr>
+                <label className='label' for='conference'>Conference:</label>
+                <input type="radio" name="conferenceList" id="conference" value="conference"/>
+                <label for="conference">Conference</label>
+
+                <input type="radio" name="conferenceList" id="non-conference" value="non-conference"/>
+                <label for="non-conference">Non-Conference</label>
+              </tr><br/>
+              <tr>
+                <label className='label' for='location'>Location:</label>
+                <input type="radio" name="locationList" id="home" value="home"/>
+                <label for="home">Home</label>
+
+                <input type="radio" name="locationList" id="away" value="away"/>
+                <label for="away">Away</label>
+
+                <input type="radio" name="locationList" id="neutral" value="neutral"/>
+                <label for="neutral">Neutral</label>
+              </tr><br/>
               <tr><label className='label' for='date'>Match Date:</label><input type='text' id='date' name='date'></input></tr><br/>
               <tr><label className='label' for='scheduledStartTime'>Scheduled Start Time:</label><input type='text' id='scheduleStartTime' name='scheduledStartTime'></input></tr><br/>
-              <tr><label className='label' for='strategy'>Strategy</label><input type='text' id='strategy' name='strategy'></input></tr><br/>
+              <tr>
+                <label className='label' for='strategy'>Strategy:</label>
+                <input className='inputRadio' type="radio" name="strategyList" id="blocker/defender" value="blocker/defender"/>
+                <label for="blocker/defender">Blocker/Defender</label>
+
+                <input className='inputRadio' type="radio" name="strategyList" id="split" value="split"/>
+                <label for="split">Split</label>
+
+                <input className='inputRadio' type="radio" name="strategyList" id="unknown" value="unknown"/>
+                <label for="unknown">Unknown</label>
+              </tr><br/>
+              <input type="submit"></input>
           </form>
         </div>
     </div>
