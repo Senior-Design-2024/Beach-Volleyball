@@ -30,7 +30,7 @@ export default function Home() {
       {/* this changes the message based on whether we are connected to flask*/}
       {(typeof data.message === 'undefined') ? (
         <>
-          <p>Home page</p>
+          <h1>Beach Volleyball Stats App</h1>
           <BasicButton onClick={navigateLogin} buttonText='Go to login'></BasicButton>
         </>
       ) : (
