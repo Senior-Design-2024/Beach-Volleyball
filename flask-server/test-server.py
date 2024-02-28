@@ -98,7 +98,20 @@ def match_add():
     team_id = data.get('team_id')
     player1 = data.get('player1')
     player2 = data.get('player2')
-    setup_data = data.get('setup_data')
+
+    setup_data = data.get('setup_data') #REMOVE THIS TO MAKE ROOM FOR FOLLOWING DATA TYPES
+
+    opponent1 = data.get('opponent1') #Can be empty ''
+    opponent2 = data.get('opponent2') #Can be empty ''
+    venue = data.get('venue') #Can be empty ''
+    tournament = data.get('tournament') #Can be empty ''
+    court_number = data.get('court_number') #Can be empty ''
+    fight_number = data.get('fight_number') #Can be empty ''
+    conference = data.get('conference') #Can be 0, 1, or 2
+    location = data.get('location') #Can be 0, 1, 2, or 3
+    match_date = data.get('match_date') #Must be date format, can be 2000-01-01 for undated
+    start_time = data.get('start_time') #Must be time format, can be midnight for undated
+    strategy = data.get('strategy') #Can be 0, 1, 2, or 3
 
     team = Team.query.get(team_id)
     if team:
