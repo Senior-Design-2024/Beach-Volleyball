@@ -13,7 +13,9 @@ export default function Pairs() {
     <div>
         <p>Pairs page</p>
         <BasicButton onClick={navigatePlayers} buttonText='back to players'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateNewPair} buttonText='new pair'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateMatches} buttonText='matches'></BasicButton>
     </div>
   );

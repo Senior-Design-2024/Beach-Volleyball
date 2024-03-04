@@ -12,6 +12,7 @@ export default function MatchStats() {
     <div>
         <p>Match stats page</p>
         <BasicButton onClick={navigateMatches} buttonText='back to matches'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateEditMatch} buttonText='edit match'></BasicButton>
     </div>
   );

@@ -13,7 +13,9 @@ export default function SetOverview() {
     <div>
         <p>Set overview page</p>
         <BasicButton onClick={navigateNewMatch} buttonText='back to new match'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateServing} buttonText='serving'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateReceiving} buttonText='receiving'></BasicButton>
     </div>
   );

@@ -42,6 +42,7 @@ export default function NewMatch() {
     <div>
         <p>New match page</p>
         <BasicButton onClick={navigateMatches} buttonText='back to matches'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateSetOverview} buttonText='set overview'></BasicButton>
 
         <div>

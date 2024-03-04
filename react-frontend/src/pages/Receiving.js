@@ -12,6 +12,7 @@ export default function Receiving() {
     <div>
         <p>Receiving page</p>
         <BasicButton onClick={navigateSetOverview} buttonText='back to set overview'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateRally} buttonText='rally'></BasicButton>
     </div>
   );

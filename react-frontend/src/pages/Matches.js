@@ -151,8 +151,11 @@ export default function Matches() {
     <div>
         <p>Matches page</p>
         <BasicButton onClick={navigatePairs} buttonText='back to pairs'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateEditPair} buttonText='edit pair'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateMatchStats} buttonText='match stats'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateNewMatch} buttonText='new match'></BasicButton>
 
         <br/>

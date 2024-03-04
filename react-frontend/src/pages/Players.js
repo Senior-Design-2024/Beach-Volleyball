@@ -15,9 +15,13 @@ export default function Players() {
     <div>
         <p>Players page</p>
         <BasicButton onClick={navigateTeams} buttonText='back to teams'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateEditTeam} buttonText='edit team'></BasicButton>
+        <br/>
         <BasicButton onClick={navigatePlayerOverview} buttonText='player overview'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateCreatePlayer} buttonText='create player'></BasicButton>
+        <br/>
         <BasicButton onClick={navigatePairs} buttonText='pairs'></BasicButton>
     </div>
   );

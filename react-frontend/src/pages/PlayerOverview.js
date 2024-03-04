@@ -12,6 +12,7 @@ export default function PlayerOverview() {
     <div>
         <p>Player overview page</p>
         <BasicButton onClick={navigatePlayers} buttonText='back to players'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateEditPlayer} buttonText='edit player'></BasicButton>
     </div>
   );

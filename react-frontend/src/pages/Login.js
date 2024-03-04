@@ -12,6 +12,7 @@ export default function Login() {
     <div>
         <p>Login page</p>
         <BasicButton onClick={navigateHome} buttonText='Back to app home'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateTeams} buttonText='Go to teams'></BasicButton>
     </div>
   );

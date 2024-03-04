@@ -19,7 +19,9 @@ export default function Rally() {
     <div>
         <p>Rally page</p>
         <BasicButton onClick={navigateSetOverview} buttonText='back to set overview'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateRallyDetails} buttonText='Rally details'></BasicButton>
+        <br/>
         <p>player options</p>
         <BasicButton onClick={swing} buttonText='swing'></BasicButton>
         <BasicButton onClick={roll} buttonText='roll'></BasicButton>   

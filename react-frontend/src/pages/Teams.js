@@ -13,7 +13,9 @@ export default function Teams() {
     <div>
         <p>Teams page</p>
         <BasicButton onClick={navigateLogin} buttonText='Back to login'></BasicButton>
+        <br/>
         <BasicButton onClick={navigateEditTeam} buttonText='create team'></BasicButton>
+        <br/>
         <BasicButton onClick={navigatePlayers} buttonText='select team (to players)'></BasicButton>
     </div>
   );
