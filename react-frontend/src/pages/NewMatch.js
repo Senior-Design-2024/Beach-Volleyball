@@ -1,17 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
-import { useState } from 'react';
 import NewMatchForm from '../components/NewMatchForm';
 import '../App.css'
 
 //////////////////
 export default function NewMatch() {
-  //function for testing display changes with a button
-  const [opponentTeam, setOpponentTeam] = useState('no opponent given');
-  const handleClick = () => {
-    setOpponentTeam('changed!');
-  }
-
   //navigations to other pages
   const navigate = useNavigate();
   const navigateMatches = () => navigate('/Matches');
@@ -52,9 +45,6 @@ export default function NewMatch() {
         <BasicButton onClick={navigateSetOverview} buttonText='set overview'></BasicButton>
 
         <div>
-          <p>opponent team: {opponentTeam}</p>
-          <BasicButton onClick={handleClick} buttonText='set opponent team'></BasicButton>
-
           <NewMatchForm onSubmit={handleFormSubmit} />
         </div>
     </div>

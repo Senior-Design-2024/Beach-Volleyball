@@ -2,19 +2,24 @@ import React, { useState } from 'react';
 
 export default function NewMatchForm({onSubmit}) { 
     const [formData, setFormData] = useState({
-        opponentOneName: '',
-        opponentTwoName: '',
-        opponentOneNumber: '',
-        opponentTwoNumber: '',
+      //THESE ARE DUMMY VARIABLES NOT ACTUALLY IN THE FORM, THIS SHOULD BE CHANGED LATER
+        team_id: 1,
+        player1: 1,
+        player2: 2,
+      ///////////////
+        opponent1_name: '',
+        opponent2_name: '',
+        opponent1_number: 0,
+        opponent2_number: 0,
         venue: '',
         tournament: '',
-        courtNumber: '',
-        flightNumber: '',
-        conference: '0',
-        location: '0',
-        matchDate: '',
-        scheduledStartDate: '',
-        strategy: '0',
+        court_number: 0,
+        flight_number: 0,
+        conference: 'unset',
+        location: 'unset',
+        match_date: '',
+        sched_start_time: '',
+        strategy: 'unset',
     });
 
     //handles submitting the form
@@ -46,22 +51,22 @@ export default function NewMatchForm({onSubmit}) {
                 <tbody>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='opponentOneName'>Opponent 1 Name:</label><input type='text' id='opponentOneName' name='opponentOneName' onChange={handleChange}></input>
+                      <label className='label' htmlFor='opponent1_name'>Opponent 1 Name:</label><input type='text' id='opponent1_name' name='opponent1_name' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='opponentTwoName'>Opponent 2 Name:</label><input type='text' id='opponentTwoName' name='opponentTwoName' onChange={handleChange}></input>
+                      <label className='label' htmlFor='opponent2_name'>Opponent 2 Name:</label><input type='text' id='opponent2_name' name='opponent2_name' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='opponentOneNumber'>Opponent 1 #:</label><input type='text' id='opponentOneNumber' name='opponentOneNumber' onChange={handleChange}></input>
+                      <label className='label' htmlFor='opponent1_number'>Opponent 1 #:</label><input type='number' id='opponent1_number' name='opponent1_number' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='opponentTwoNumber'>Opponent 2 #:</label><input type='text' id='opponentTwoNumber' name='opponentTwoNumber' onChange={handleChange}></input>
+                      <label className='label' htmlFor='opponent2_number'>Opponent 2 #:</label><input type='number' id='opponent2_number' name='opponent2_number' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
@@ -76,22 +81,22 @@ export default function NewMatchForm({onSubmit}) {
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='courtNumber'>Court Number:</label><input type='text' id='courtNumber' name='courtNumber' onChange={handleChange}></input>
+                      <label className='label' htmlFor='court_number'>Court #:</label><input type='number' id='court_number' name='court_number' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='flightNumber'>Flight Number:</label><input type='text' id='flightNumber' name='flightNumber' onChange={handleChange}></input>
+                      <label className='label' htmlFor='flight_number'>Flight #:</label><input type='number' id='flight_number' name='flight_number' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <label className='label' htmlFor='conference'>Conference:</label>
 
-                      <input type="radio" name="conferenceList" id="conference" value="1" onChange={handleChange}/>
+                      <input type="radio" name="conferenceList" id="conference" value="conference" onChange={handleChange}/>
                       <label htmlFor="conference">Conference</label>
 
-                      <input type="radio" name="conferenceList" id="non-conference" value="2" onChange={handleChange}/>
+                      <input type="radio" name="conferenceList" id="non-conference" value="non-conference" onChange={handleChange}/>
                       <label htmlFor="non-conference">Non-Conference</label>
                     </td>
                   </tr>
@@ -99,37 +104,37 @@ export default function NewMatchForm({onSubmit}) {
                     <td>
                       <label className='label' htmlFor='location'>Location:</label>
 
-                      <input type="radio" name="locationList" id="home" value="1" onChange={handleChange}/>
+                      <input type="radio" name="locationList" id="home" value="home" onChange={handleChange}/>
                       <label htmlFor="home">Home</label>
 
-                      <input type="radio" name="locationList" id="away" value="2" onChange={handleChange}/>
+                      <input type="radio" name="locationList" id="away" value="away" onChange={handleChange}/>
                       <label htmlFor="away">Away</label>
 
-                      <input type="radio" name="locationList" id="neutral" value="3" onChange={handleChange}/>
+                      <input type="radio" name="locationList" id="neutral" value="neutral" onChange={handleChange}/>
                       <label htmlFor="neutral">Neutral</label>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='date'>Match Date:</label><input type='date' id='date' name='date' onChange={handleChange}></input>
+                      <label className='label' htmlFor='match_date'>Match Date:</label><input type='date' id='match_date' name='match_date' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label className='label' htmlFor='scheduledStartTime'>Scheduled Start Time:</label><input type='time' id='scheduleStartTime' name='scheduledStartTime' onChange={handleChange}></input>
+                      <label className='label' htmlFor='sched_start_time'>Scheduled Start Time:</label><input type='time' id='sched_start_time' name='sched_start_time' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <label className='label' htmlFor='strategy'>Strategy:</label>
 
-                      <input className='inputRadio' type="radio" name="strategyList" id="blocker/defender" value="1" onChange={handleChange}/>
+                      <input className='inputRadio' type="radio" name="strategyList" id="blocker/defender" value="blocker/defender" onChange={handleChange}/>
                       <label htmlFor="blocker/defender">Blocker/Defender</label>
 
-                      <input className='inputRadio' type="radio" name="strategyList" id="split" value="2" onChange={handleChange}/>
+                      <input className='inputRadio' type="radio" name="strategyList" id="split" value="split" onChange={handleChange}/>
                       <label htmlFor="split">Split</label>
 
-                      <input className='inputRadio' type="radio" name="strategyList" id="unknown" value="3" onChange={handleChange}/>
+                      <input className='inputRadio' type="radio" name="strategyList" id="unknown" value="unknown" onChange={handleChange}/>
                       <label htmlFor="unknown">Unknown</label>
                     </td>
                   </tr>
