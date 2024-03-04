@@ -1,0 +1,39 @@
+ADD USER
+{"username" : "test_user",
+"email" : "test@gmail.com"}
+
+ADD TEAM
+{"team_name" : "test_team",
+"email" : "test@gmail.com"}
+
+ADD PLAYER
+{"player_name" : "test_player1",
+"team_id" : 1,
+"description" : "test description"}
+
+ADD PLAYER
+{"player_name" : "test_player2",
+"team_id" : 1,
+"description" : "test description"}
+
+ADD MATCH
+{"team_id" : 1,
+"player1" : 1,
+"player2" : 2,
+"opponent1_name" : "ligma",
+"opponent2_name" : "ligma2",
+"opponent1_number" : 1,
+"opponent2_number" : 5,
+"venue" : "venue",
+"tournament" : "tournament",
+"court_number" : "court_number",
+"flight_number" : "flight_number",
+"conference" : 0,
+"location" : 0,
+"match_date" : "",
+"sched_start_time" : "",
+"strategy" : 0}
+
+ADD MATCH_SET
+{"match_id" : 1,
+"match_set_data" : {"bleh":"garbage"}}
