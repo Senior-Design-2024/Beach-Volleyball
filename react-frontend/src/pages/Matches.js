@@ -28,15 +28,13 @@ export default function Matches() {
   })
 
   const handleAddUser = async () => {
-    const addUserDataJson = JSON.stringify(addUserData);
-    console.log(addUserDataJson);
     try {
       const response = await fetch('/adduser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addUserData: addUserDataJson }),
+        body: JSON.stringify({ addUserData: addUserData }),
       });
   
       if (!response.ok) {
@@ -56,15 +54,13 @@ export default function Matches() {
   };
 
   const handleAddTeam = async () => {
-    const addTeamDataJson = JSON.stringify(addTeamData);
-    console.log(addTeamDataJson);
     try {
       const response = await fetch('/addteam', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addUserData: addTeamDataJson }),
+        body: JSON.stringify({ addUserData: addTeamData }),
       });
   
       if (!response.ok) {
@@ -84,15 +80,13 @@ export default function Matches() {
   };
 
   const handleAddPlayer1 = async () => {
-    const addPlayer1DataJson = JSON.stringify(addPlayer1Data);
-    console.log(addPlayer1DataJson);
     try {
       const response = await fetch('/addplayer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addUserData: addPlayer1DataJson }),
+        body: JSON.stringify({ addUserData: addPlayer1Data }),
       });
   
       if (!response.ok) {
@@ -112,15 +106,13 @@ export default function Matches() {
   };
 
   const handleAddPlayer2 = async () => {
-    const addPlayer2DataJson = JSON.stringify(addPlayer2Data);
-    console.log(addPlayer2DataJson);
     try {
       const response = await fetch('/addplayer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addUserData: addPlayer2DataJson }),
+        body: JSON.stringify({ addUserData: addPlayer2Data }),
       });
   
       if (!response.ok) {
