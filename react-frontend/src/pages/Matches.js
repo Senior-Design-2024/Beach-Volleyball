@@ -34,7 +34,7 @@ export default function Matches() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addUserData }),
+        body: JSON.stringify(addUserData),
       });
   
       if (!response.ok) {
@@ -60,7 +60,7 @@ export default function Matches() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addTeamData }),
+        body: JSON.stringify(addTeamData),
       });
   
       if (!response.ok) {
@@ -86,7 +86,7 @@ export default function Matches() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addPlayer1Data }),
+        body: JSON.stringify(addPlayer1Data),
       });
   
       if (!response.ok) {
@@ -112,7 +112,7 @@ export default function Matches() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addPlayer2Data }),
+        body: JSON.stringify(addPlayer2Data),
       });
   
       if (!response.ok) {
