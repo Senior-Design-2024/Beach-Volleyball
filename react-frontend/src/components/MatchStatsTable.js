@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 export default function MatchStatsTable() { 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({
+        action: [],
+        player_1_average: [],
+        player_2_average: [],
+    });
 
     useEffect(() => {
         fetchData();
@@ -22,19 +26,19 @@ export default function MatchStatsTable() {
         <div>
             {data ? (
                 <div>
-                    Data: {JSON.stringify(data)}
-
                     <table>
                         <tr>
-                            <td>Action</td>
-                            <td>Player 1</td>
-                            <td>Player 2</td>
+                            <td style={{width: '100px'}}>Action</td>
+                            <td style={{width: '100px'}}>Player 1 Avg</td>
+                            <td style={{width: '100px'}}>Player 2 Avg</td>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        {data.action.map((item, index) => (
+                            <tr>
+                                <td>{data.action[index]}</td>
+                                <td>{data.player_1_average[index]}</td>
+                                <td>{data.player_2_average[index]}</td>
+                            </tr>
+                        ))}
                     </table>
                 </div>
             ) : (
