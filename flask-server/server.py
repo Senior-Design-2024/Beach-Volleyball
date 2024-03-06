@@ -1,8 +1,11 @@
 from flask import Flask, jsonify, request
 #from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select, column, inspect
+import sys
 import pymysql
 import dbcreds
+import random
 
 # Define SQLAlchemy database connection URI
 conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbcreds.dbuser, dbcreds.dbpass, dbcreds.dbhost, dbcreds.dbname)
@@ -13,7 +16,6 @@ app.config['SECRET_KEY'] = 'key'
 app.config['SQLALCHEMY_DATABASE_URI'] = conn
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable tracking modifications for better performance
 db = SQLAlchemy(app)
-#CORS(app)
 
 # Define SQLAlchemy models
 
@@ -97,7 +99,7 @@ def add_player():
     team_id = data.get('team_id')  # Assuming you get team_id from the request data
     description = data.get('description')
 
-    team = Team.query.get(team_id)
+    team = db.session.get(Team, team_id)
     if team:
         player = Player(name=player_name, team_id=team_id, description=description)
         db.session.add(player)
@@ -133,9 +135,9 @@ def match_add():
     if sched_start_time == '':
         sched_start_time = None
 
-    team = Team.query.get(team_id)
-    player1 = Player.query.get(player1_id)
-    player2 = Player.query.get(player2_id)
+    team = db.session.get(Team, team_id)
+    player1 = db.session.get(Player, player1_id)
+    player2 = db.session.get(Player, player2_id)
     if team:
     
         match = Match(team=team,
@@ -169,7 +171,7 @@ def set_add():
     match_id = data.get('match_id')
     match_set_data = data.get('match_set_data')
 
-    match = Match.query.get(match_id)
+    match = db.session.get(Match, match_id)
     if match:
         match_set = MatchSet(match=match, match_set_data=match_set_data)
         db.session.add(match_set)
@@ -177,6 +179,93 @@ def set_add():
         return jsonify({'message': 'Match set added successfully'}), 200
     else:
         return jsonify({'error': 'Match not found'}), 404
+    
+@app.route('/matchquery', methods=['GET'])
+def match_data():
+
+    def generate_random_numbers():
+        random_numbers = [round(random.uniform(1, 3), 2) for _ in range(20)]
+        return random_numbers
+
+    output = {
+        'action' : [
+        "attack_swing",
+        "attack_roll",
+        "attack_poke",
+        "attack_bump",
+        "attack_set",
+        "option_swing",
+        "option_roll",
+        "option_poke",
+        "option_bump",
+        "option_set",
+        "dig_swing",
+        "dig_roll",
+        "dig_poke",
+        "dig_bump",
+        "dig_set",
+        "set_platform",
+        "set_error",
+        "block_overpass",
+        "block_term",
+        "block_control"],
+
+        'player_1_average' : generate_random_numbers(),
+        'player_2_average' : generate_random_numbers()
+    }
+
+    return jsonify(output)
+
+@app.route('/find', methods=['GET'])
+def find_db():
+
+    def to_dict(instance):
+        """
+        Convert the SQLAlchemy object to a dictionary.
+        """
+        return {c.name: getattr(instance, c.name) for c in instance.__table__.columns}
+
+    data = request.json
+
+    table_name = data.get('table')
+
+    # Create filter data
+    filters = {}
+
+    # Fill filters with potential filter criteria from JSON
+    for key, value in data.items():
+        if key != 'table':
+            filters[key] = value
+
+
+    match table_name:
+        case "user":
+            query = db.session.query(User)
+        
+        case "team":
+            query = db.session.query(Team)
+        
+        case "player":
+            query = db.session.query(Player)
+        
+        case "match":
+            query = db.session.query(Match)
+
+        case "match_set":
+            query = db.session.query(MatchSet)
+    
+    # Apply filters to the query
+    for key, value in filters.items():
+        column = getattr(query.column_descriptions[0]['type'], key, None)
+        if column:
+            query = query.filter(column == value)
+
+    # Execute the query and get the results
+    results = query.all()
+
+    output = [to_dict(result) for result in results]
+
+    return jsonify(output), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
