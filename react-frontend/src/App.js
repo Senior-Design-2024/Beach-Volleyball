@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import NewUser from './pages/NewUser';
 import Login from './pages/Login';
 import Teams from './pages/Teams';
 import CreateTeam from './pages/CreateTeam';
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         {/*defines the paths for the website*/}
         <Route path="/" element={<Home />} />
+        <Route path="/NewUser" element={<NewUser />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Teams" element={<Teams />} />
         <Route path="/CreateTeam" element={<CreateTeam/>} />
