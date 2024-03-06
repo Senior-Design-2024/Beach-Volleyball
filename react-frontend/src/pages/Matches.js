@@ -5,11 +5,6 @@ import { useState } from 'react';
 //////////////////
 export default function Matches() {
   //TESTING WORK FOR FLASK BACKEND, THIS WILL BE USELESS LATER//
-  const [addUserData, setAddUser] = useState({
-    username : "test_user",
-    email: "test@gmail.com",
-  });
-
   const [addTeamData, setAddTeam] = useState({
     team_name: "test_team",
     email: "test@gmail.com",
@@ -26,32 +21,6 @@ export default function Matches() {
     team_id: 1,
     description: "test description",
   })
-
-  const handleAddUser = async () => {
-    try {
-      const response = await fetch('/adduser', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(addUserData),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const responseData = await response.json();
-  
-      // Handle the response data if needed
-      console.log('Server response:', responseData);
-  
-      // ... rest of your logic
-    } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error submitting form data:', error.message);
-    }
-  };
 
   const handleAddTeam = async () => {
     try {
@@ -151,7 +120,6 @@ export default function Matches() {
         <BasicButton onClick={navigateNewMatch} buttonText='new match'></BasicButton>
 
         <br/>
-        <button onClick={handleAddUser}>adduser</button><br/>
         <button onClick={handleAddTeam}>addteam</button><br/>
         <button onClick={handleAddPlayer1}>addplayer1</button><br/>
         <button onClick={handleAddPlayer2}>addplayer2</button><br/>
