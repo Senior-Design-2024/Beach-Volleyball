@@ -28,5 +28,15 @@ services:
       - "80:3000"
     depends_on:
       - flask-server
+    command: bash -c "npm install && npm start"
     volumes:
-      - ../react-frontend:/workspace
+      - react-data:/app
+    privileged: true
+
+volumes:
+  react-data:
+    driver: local
+    driver_opts:
+        type: none
+        device: ../react-frontend
+        o: bind
