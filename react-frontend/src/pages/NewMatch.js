@@ -20,7 +20,7 @@ export default function NewMatch() {
         },
         body: JSON.stringify(formDataJson),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -29,8 +29,6 @@ export default function NewMatch() {
   
       // Handle the response data if needed
       console.log('Server response:', responseData);
-  
-      // ... rest of your logic
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error submitting form data:', error.message);
@@ -44,7 +42,8 @@ export default function NewMatch() {
         <BasicButton onClick={navigateMatches} buttonText='back to matches'></BasicButton>
         <br/>
         <BasicButton onClick={navigateSetOverview} buttonText='set overview'></BasicButton>
-
+        <br/>
+        
         <div>
           <NewMatchForm onSubmit={handleFormSubmit} />
         </div>
