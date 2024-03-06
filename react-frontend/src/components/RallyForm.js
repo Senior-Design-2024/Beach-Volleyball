@@ -13,7 +13,7 @@ export default function RallyForm({onSubmit}) {
 
     //handles submitting the form
     const handleSubmit = (event) => {
-        event.preventDefault();
+        //event.preventDefault();
 
         const formDataJson = JSON.stringify(formData);
         

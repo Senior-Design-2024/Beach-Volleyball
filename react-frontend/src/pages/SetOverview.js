@@ -8,6 +8,7 @@ export default function SetOverview() {
   const navigateNewMatch = () => navigate('/NewMatch');
   const navigateServing = () => navigate('/Serving');
   const navigateReceiving = () => navigate('/Receiving');
+  const navigateMatchStats = () => navigate('/MatchStats');
 
   //takes the JSON from the form and sends it to the server
   const handleFormSubmit = async (formDataJson) => {
@@ -39,6 +40,8 @@ export default function SetOverview() {
     <div>
         <p>Set overview page</p>
         <BasicButton onClick={navigateNewMatch} buttonText='back to new match'></BasicButton>
+        <br/>
+        <BasicButton onClick={navigateMatchStats} buttonText='Match stats' />
         <br/>
         <BasicButton onClick={navigateServing} buttonText='serving'></BasicButton>
         <br/>
