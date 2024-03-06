@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function NewMatchForm({onSubmit}) { 
+export default function MatchStatsTable() { 
     const [data, setData] = useState(null);
 
     useEffect(() => {
@@ -21,7 +21,22 @@ export default function NewMatchForm({onSubmit}) {
     return(
         <div>
             {data ? (
-                <p>Data: {JSON.stringify(data)}</p>
+                <div>
+                    Data: {JSON.stringify(data)}
+
+                    <table>
+                        <tr>
+                            <td>Action</td>
+                            <td>Player 1</td>
+                            <td>Player 2</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
             ) : (
                 <p>Loading...</p>
             )}
