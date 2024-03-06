@@ -1,0 +1,8 @@
+{
+    "name": "Development Environment",
+    "dockerComposeFile": "./docker-compose-dev.yml",
+    "service": "react-frontend",
+    "workspaceFolder": "/workspace",
+    "forwardPorts": [80],
+    "remoteUser": "root"
+  }

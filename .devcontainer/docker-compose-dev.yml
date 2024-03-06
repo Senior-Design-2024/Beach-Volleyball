@@ -12,7 +12,7 @@ networks:
 services:
   flask-server:
     build:
-      context: ./flask-server
+      context: ../flask-server
     networks:
       my_network:
         ipv4_address: "172.20.0.2"
@@ -21,10 +21,12 @@ services:
 
   react-frontend:
     build:
-      context: ./react-frontend
+      context: ../react-frontend
     networks:
       my_network:
     ports:
       - "80:3000"
     depends_on:
       - flask-server
+    volumes:
+      - ../react-frontend:/workspace

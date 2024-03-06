@@ -18,7 +18,7 @@ export default function NewMatch() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formDataJson),
+        body: formDataJson,
       });
 
       if (!response.ok) {
