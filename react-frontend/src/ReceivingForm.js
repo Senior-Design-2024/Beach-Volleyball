@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-export default function ServingForm({onSubmit}) { 
+export default function ReceivingForm({onSubmit}) { 
     const [formData, setFormData] = useState({
         serve_location: '',
         serve_type: '',
-        serve_rating: '',
+        pass_rating: '',
         receive_location: '',
+        receiving_player: '',
     });
 
     //handles submitting the form
@@ -80,22 +81,22 @@ export default function ServingForm({onSubmit}) {
                   </tr>
                   <tr>
                     <td>
-                      <label htmlFor='serve_rating'>Serve Rating:</label>
+                      <label htmlFor='pass_rating'>Serve Rating:</label>
 
-                      <input type="radio" name="serve_rating" id="error" value="error" onChange={handleChange}/>
-                      <label htmlFor="error">Error</label>
+                      <input type="radio" name="pass_rating" id="passError" value="passError" onChange={handleChange}/>
+                      <label htmlFor="passError">Pass Error</label>
 
-                      <input type="radio" name="serve_rating" id="sRating1" value="1" onChange={handleChange}/>
-                      <label htmlFor="sRating1">1</label>
+                      <input type="radio" name="pass_rating" id="pRating1" value="1" onChange={handleChange}/>
+                      <label htmlFor="pRating1">1</label>
 
-                      <input type="radio" name="serve_rating" id="sRating2" value="2" onChange={handleChange}/>
-                      <label htmlFor="sRating2">2</label>
+                      <input type="radio" name="pass_rating" id="pRating2" value="2" onChange={handleChange}/>
+                      <label htmlFor="pRating2">2</label>
 
-                      <input type="radio" name="serve_rating" id="sRating3" value="3" onChange={handleChange}/>
-                      <label htmlFor="sRating3">3</label>
+                      <input type="radio" name="pass_rating" id="pRating3" value="3" onChange={handleChange}/>
+                      <label htmlFor="pRating3">3</label>
 
-                      <input type="radio" name="serve_rating" id="ace" value="ace" onChange={handleChange}/>
-                      <label htmlFor="ace">ACE</label>
+                      <input type="radio" name="pass_rating" id="serveError" value="serveError" onChange={handleChange}/>
+                      <label htmlFor="serveError">Serve Error</label>
                     </td>
                   </tr>
                   <tr>
@@ -141,17 +142,11 @@ export default function ServingForm({onSubmit}) {
                   </tr>
                   <tr>
                     <td>
-                    <input type="radio" name="receive_location" id="net" value="net" onChange={handleChange}/>
-                      <label htmlFor="net">net</label>
+                      <input type="radio" name="receiving_player" id="player1" value="player1" onChange={handleChange}/>
+                      <label htmlFor="player1">Player 1</label>
 
-                      <input type="radio" name="receive_location" id="wideRight" value="wideRight" onChange={handleChange}/>
-                      <label htmlFor="wideRight">Wide Right</label>
-
-                      <input type="radio" name="receive_location" id="wideLeft" value="wideLeft" onChange={handleChange}/>
-                      <label htmlFor="wideLeft">Wide Left</label>
-
-                      <input type="radio" name="receive_location" id="long" value="changevalue" onChange={handleChange}/>
-                      <label htmlFor="long">Long</label>
+                      <input type="radio" name="receiving_player" id="player2" value="player2" onChange={handleChange}/>
+                      <label htmlFor="player2">Player 2</label>
                     </td>
                   </tr>
                   <tr>

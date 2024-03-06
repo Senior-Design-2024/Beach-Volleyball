@@ -31,7 +31,6 @@ export default function Serving() {
       // Handle any errors that occurred during the request
       console.error('Error submitting form data:', error.message);
     }
-    navigateRally();
   };
 
   /* need a comment on what this is doing */
