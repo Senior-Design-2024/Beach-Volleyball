@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export default function ServeOrderForm({onSubmit}) { 
     const [formData, setFormData] = useState({
+        set_number: '',
         serve_first: 0,
         serve_second: 0,
         serve_third: 0,
@@ -35,6 +36,20 @@ export default function ServeOrderForm({onSubmit}) {
             <form id='newUserForm' onSubmit={handleSubmit}>
               <table>
                 <tbody>
+                  <tr>
+                    <td>
+                      <label htmlFor='set_number'>Set #:</label>
+
+                      <input type="radio" name="set_number" id="set1" value="set1" onChange={handleChange}/>
+                      <label htmlFor="set1">1</label>
+
+                      <input type="radio" name="set_number" id="set2" value="set2" onChange={handleChange}/>
+                      <label htmlFor="set2">2</label>
+
+                      <input type="radio" name="set_number" id="set3" value="set3" onChange={handleChange}/>
+                      <label htmlFor="set3">3</label>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       <input type='number' id='serve_first' name='serve_first' onChange={handleChange}></input>
