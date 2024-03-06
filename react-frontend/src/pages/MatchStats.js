@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
+import MatchStatsTable from '../components/MatchStatsTable';
 
 //////////////////
 export default function MatchStats() {
@@ -14,6 +15,8 @@ export default function MatchStats() {
         <BasicButton onClick={navigateMatches} buttonText='back to matches'></BasicButton>
         <br/>
         <BasicButton onClick={navigateEditMatch} buttonText='edit match'></BasicButton>
+        <br/>
+        <MatchStatsTable />
     </div>
   );
 }
