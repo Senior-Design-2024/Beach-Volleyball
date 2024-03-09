@@ -7,20 +7,6 @@ import '../App.css'
 export default function Home() {
   const [data, setData] = useState([{}])
 
-
-  // need a comment on what this is doing
-  useEffect(() => {
-    fetch("/test").then(
-      res => res.json()
-    ).then(
-      data => {
-        setData(data)
-        console.log(data)
-      }
-    )
-  }, [])
-
-  //const handleClick = () => console.log("clicked")
   const navigate = useNavigate();
   const navigateLogin = () => navigate('/Login');
   const navigateNewUser = () => navigate('/NewUser')
