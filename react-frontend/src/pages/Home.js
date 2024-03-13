@@ -1,45 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import { useNavigate } from 'react-router-dom';
-import { BasicButton } from '../components/basic_components'
+import React from 'react'
 import '../App.css'
+import AppHeader from '../components/AppHeader';
 
-//////////////////
 export default function Home() {
-  const [data, setData] = useState([{}])
-
-
-  // need a comment on what this is doing
-  useEffect(() => {
-    fetch("/test").then(
-      res => res.json()
-    ).then(
-      data => {
-        setData(data)
-        console.log(data)
-      }
-    )
-  }, [])
-
-  //const handleClick = () => console.log("clicked")
-  const navigate = useNavigate();
-  const navigateLogin = () => navigate('/Login');
-  const navigateNewUser = () => navigate('/NewUser')
-
-  /* need a comment on what this is doing */
+  
+  //html
   return (
-    <div>
-      {/* this changes the message based on whether we are connected to flask*/}
-      {(typeof data.message === 'undefined') ? (
-        <>
-          <h1>Beach Volleyball Stats App</h1>
-          <BasicButton onClick={navigateNewUser} buttonText='New User'></BasicButton>
-          <br/>
-          <BasicButton onClick={navigateLogin} buttonText='Go to login'></BasicButton>
-        </>
-      ) : (
-        <p>connected to flask</p>
-      )
-      }
+    <div id='page-wrapper'>
+      <AppHeader/>
+      <h1>app home page</h1>
     </div>
   );
 }

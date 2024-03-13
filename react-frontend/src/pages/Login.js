@@ -1,18 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
+import AppHeader from '../components/AppHeader';
 
 //////////////////
 export default function Login() {
+  //navigate buttons
   const navigate = useNavigate();
-  const navigateHome = () => navigate('/')
   const navigateTeams = () =>navigate('/Teams')
 
-  /* need a comment on what this is doing */
+  //html
   return (
-    <div>
-        <p>Login page</p>
-        <BasicButton onClick={navigateHome} buttonText='Back to app home'></BasicButton>
-        <br/>
+    <div id='page-wrapper'>
+      <AppHeader/>
+        <h1>login page</h1>
         <BasicButton onClick={navigateTeams} buttonText='Go to teams'></BasicButton>
     </div>
   );
