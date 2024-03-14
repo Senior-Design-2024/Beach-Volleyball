@@ -6,7 +6,7 @@ export default function Home() {
   
   //html
   return (
-    <div id='page-wrapper'>
+    <div id='page-wrapper' className='wrapper'>
       <AppHeader/>
       <h1>About us</h1>
       <p>

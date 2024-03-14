@@ -28,31 +28,31 @@ export default function LoginForm({onSubmit}) {
 
     //html
     return(
-        <div>
-          {/* form */}
-          <form id='loginForm' onSubmit={handleSubmit}>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <label htmlFor='username' className='label'>Username:</label> 
-                    <input id='username' type='text' name='username' onChange={handleChange}/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <label htmlFor='password' className='label'>Password:</label>
-                    <input id='password' type='text' name='pawword' onChange={handleChange}/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="submit"></input>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </form>
-        </div>
+      <div id='form-wrapper'>
+        {/* form */}
+        <form id='loginForm' onSubmit={handleSubmit}>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <label htmlFor='username' className='label'>Username:</label> 
+                  <input id='username' type='text' name='username' onChange={handleChange}/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor='password' className='label'>Password:</label>
+                  <input id='password' type='text' name='pawword' onChange={handleChange}/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="submit"></input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
     )
 }

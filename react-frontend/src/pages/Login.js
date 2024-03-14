@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { BasicButton } from '../components/basic_components'
 import AppHeader from '../components/AppHeader';
 import LoginForm from '../components/LoginForm';
 
@@ -15,7 +14,7 @@ export default function Login() {
 
   //html
   return (
-    <div id='page-wrapper'>
+    <div id='page-wrapper' className='wrapper'>
       <AppHeader/>
         <h1>login page</h1>
         <LoginForm onSubmit={handleFormSubmit}/>
