@@ -1,13 +1,21 @@
 import React from 'react'
 import '../App.css'
+import { useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 
 export default function Home() {
+  const navigate = useNavigate();
+  const navigateHome = () => navigate('/');
+  const navigateLogin = () => navigate('/Login');
   
   //html
   return (
     <div id='page-wrapper' className='wrapper'>
-      <AppHeader/>
+      <AppHeader masthead={'Beach Volleyball Stats App'}
+        leftButtonNames={['Home']} 
+        leftButtonFunctions={[navigateHome]}
+        rightButtonNames={['Login']}
+        rightButtonFunctions={[navigateLogin]}/>
       <h1>About us</h1>
       <p>
           Beach volleyball stats app is a senior design project being built by Bear Moran and Ryland Seagraves at the request of Buzz Patrick.
