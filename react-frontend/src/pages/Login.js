@@ -5,6 +5,8 @@ import LoginForm from '../components/LoginForm';
 export default function Login() {
   //navigate buttons
   const navigate = useNavigate();
+  const navigateHome = () => navigate('/');
+  const navigateLogin = () => navigate('/Login');
   const navigateTeams = () =>navigate('/Teams')
 
   //handles form submission
@@ -15,7 +17,11 @@ export default function Login() {
   //html
   return (
     <div id='page-wrapper' className='wrapper'>
-      <AppHeader/>
+      <AppHeader masthead={'Beach Volleyball Stats App'}
+        leftButtonNames={['Home']} 
+        leftButtonFunctions={[navigateHome]}
+        rightButtonNames={['Login']}
+        rightButtonFunctions={[navigateLogin]}/>
         <h1>login page</h1>
         <LoginForm onSubmit={handleFormSubmit}/>
         <p>
