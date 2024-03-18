@@ -1,0 +1,6 @@
+{
+    "name": "React Frontend Dev Container",
+    "dockerComposeFile": "./docker-compose-dev.yml",
+    "service": "react-frontend",
+    "workspaceFolder": "/usr/app"
+  }
