@@ -27,14 +27,6 @@ services:
       - flask-server
     working_dir: /usr/app
     volumes:
-      - react-data:/usr/app
+      - ../react-frontend/:/usr/app/
     privileged: true
     command: bash -c "npm install && npm start"
-
-volumes:
-  react-data:
-    driver: local
-    driver_opts:
-        type: none
-        device: ../react-frontend
-        o: bind
