@@ -20,18 +20,18 @@ services:
       - "5000:5000"
 
   react-frontend:
-    build:
-      context: ../react-frontend
-    networks:
-      my_network:
+    image: node:14
     ports:
       - "80:3000"
     depends_on:
       - flask-server
-    command: bash -c "npm install && npm start"
+    working_dir: /usr/app
+    tty: true
     volumes:
-      - react-data:/app
+      - react-data:/usr/app
     privileged: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   react-data:
