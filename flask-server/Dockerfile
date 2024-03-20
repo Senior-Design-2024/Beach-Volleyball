@@ -1,12 +1,14 @@
 FROM python:3.11.6
 
-WORKDIR /app
+WORKDIR /usr/app/
 
-COPY ./*.py .
-COPY requirements.txt .
+#LEGACY MATERIAL
 
-RUN pip install -r requirements.txt
+# COPY ./*.py .
+# COPY requirements.txt .
 
-EXPOSE 5000
+# RUN pip install -r requirements.txt
 
-CMD ["python", "./server.py"]
+# EXPOSE 5000
+
+# CMD ["python", "./server.py"]

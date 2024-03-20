@@ -16,7 +16,7 @@ export default function Teams() {
         leftButtonFunctions={[navigateCreateTeam]}
         rightButtonNames={['Logout']}
         rightButtonFunctions={[navigateHome]}/>
-      <BasicButton onClick={navigatePlayers} buttonText='select team (to players)'></BasicButton>
+      <BasicButton onClick={navigatePlayers} buttonText='select teams (to players)'></BasicButton>
     </div>
   );
 }
