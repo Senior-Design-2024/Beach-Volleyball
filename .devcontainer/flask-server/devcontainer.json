@@ -1,0 +1,6 @@
+{
+    "name": "Flask Server Dev Container",
+    "dockerComposeFile": "../../docker-compose.yml",
+    "service": "flask-server",
+    "workspaceFolder": "/usr/app"
+  }
