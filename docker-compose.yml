@@ -11,21 +11,27 @@ networks:
 
 services:
   flask-server:
-    build:
-      context: ./flask-server
+    image: python:3.11.6
+    working_dir: /usr/app/
+    volumes:
+      - ./flask-server/:/usr/app/
+    ports:
+      - "5000:5000"
+    command: bash -c "pip install -r ./requirements.txt && python3 ./server.py"
     networks:
       my_network:
         ipv4_address: "172.20.0.2"
-    ports:
-      - "5000:5000"
 
   react-frontend:
-    build:
-      context: ./react-frontend
-    networks:
-      my_network:
+    image: node:14
     ports:
       - "80:3000"
     depends_on:
       - flask-server
+    working_dir: /usr/app
+    volumes:
+      - ./react-frontend/:/usr/app/
     command: bash -c "npm install && npm start"
+    networks:
+      my_network:
+        ipv4_address: "172.20.0.3"
