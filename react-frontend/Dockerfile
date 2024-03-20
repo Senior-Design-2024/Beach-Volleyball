@@ -1,7 +1,11 @@
 FROM node:14
 
 # Set the working directory
-WORKDIR /usr/app
+WORKDIR /usr/app/
+
+
+
+#LEGACY MATERIAL
 
 # Copy package.json and package-lock.json
 # COPY package*.json ./

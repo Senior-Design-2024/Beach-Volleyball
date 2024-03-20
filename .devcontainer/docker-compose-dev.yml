@@ -16,8 +16,11 @@ services:
     networks:
       my_network:
         ipv4_address: "172.20.0.2"
+    volumes:
+      - ../flask-server/:/usr/app/
     ports:
       - "5000:5000"
+    command: bash -c "pip install -r ./requirements.txt && python3 ./server.py"
 
   react-frontend:
     image: node:14
