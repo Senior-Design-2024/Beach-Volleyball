@@ -5,7 +5,7 @@ import AppHeader from '../components/AppHeader';
 export default function Teams() {
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
-  const navigateCreateTeam = () => navigate('/CreateTeam');
+  const navigateAddTeam = () => navigate('/AddTeam');
   const navigatePlayers = () => navigate('/Players');
 
   //html
@@ -13,7 +13,7 @@ export default function Teams() {
     <div id='page-wrapper' className='wrapper'>
       <AppHeader masthead={'Welcome!'}
         leftButtonNames={['Create Team']} 
-        leftButtonFunctions={[navigateCreateTeam]}
+        leftButtonFunctions={[navigateAddTeam]}
         rightButtonNames={['Logout']}
         rightButtonFunctions={[navigateHome]}/>
       <BasicButton onClick={navigatePlayers} buttonText='select teams (to players)'></BasicButton>

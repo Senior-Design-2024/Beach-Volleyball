@@ -16,7 +16,7 @@ export default function Login() {
 
   //html
   return (
-    <div id='page-wrapper' className='wrapper'>
+    <div id='page-wrapper' className='page-wrapper'>
       <AppHeader masthead={'Beach Volleyball Stats App'}
         leftButtonNames={['Home']} 
         leftButtonFunctions={[navigateHome]}

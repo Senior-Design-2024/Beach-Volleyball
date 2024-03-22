@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
 
-//////////////////
-export default function CreatePlayer() {
+export default function AddPlayer() {
   const navigate = useNavigate();
   const navigatePlayers = () => navigate('/Players');
 
-  /* need a comment on what this is doing */
+  //html
   return (
     <div>
         <p>Create player page</p>

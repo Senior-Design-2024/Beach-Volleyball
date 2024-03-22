@@ -1,7 +1,7 @@
 import React from 'react'
 import '../App.css'
 
-export default function AppHeader({masthead, leftButtonNames, leftButtonFunctions, rightButtonNames, rightButtonFunctions}) {
+export default function AppHeader({masthead, leftButtonNames=[''], leftButtonFunctions=[], rightButtonNames=[''], rightButtonFunctions=[]}) {
 
     //html
     return(

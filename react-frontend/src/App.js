@@ -4,10 +4,10 @@ import Home from './pages/Home';
 import NewUser from './pages/NewUser';
 import Login from './pages/Login';
 import Teams from './pages/Teams';
-import CreateTeam from './pages/CreateTeam';
+import AddTeam from './pages/AddTeam';
 import Players from './pages/Players';
 import EditTeam from './pages/EditTeam';
-import CreatePlayer from './pages/CreatePlayer';
+import AddPlayer from './pages/AddPlayer';
 import PlayerOverview from './pages/PlayerOverview';
 import EditPlayer from './pages/EditPlayer';
 import Pairs from './pages/Pairs';
@@ -33,10 +33,10 @@ function App() {
         <Route path="/NewUser" element={<NewUser />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Teams" element={<Teams />} />
-        <Route path="/CreateTeam" element={<CreateTeam/>} />
+        <Route path="/AddTeam" element={<AddTeam/>} />
         <Route path="/Players" element={<Players />} />
         <Route path="/EditTeam" element={<EditTeam />} />
-        <Route path="/CreatePlayer" element={<CreatePlayer />} />
+        <Route path="/AddPlayer" element={<AddPlayer />} />
         <Route path="/PlayerOverview" element={<PlayerOverview />} />
         <Route path="/EditPlayer" element={<EditPlayer />} />
         <Route path="/Pairs" element={<Pairs />} />
