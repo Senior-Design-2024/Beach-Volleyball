@@ -22,8 +22,7 @@ export default function Teams() {
     display_teams = (
       <div id='dev-wrapper'>
         <p>Please add a team</p>
-        <p>*dev button to progress to next page*</p>
-        <BasicButton onClick={navigatePlayers} buttonText='select teams (to players)'></BasicButton>
+        <BasicButton onClick={navigatePlayers} buttonText="dev button to team's players"></BasicButton>
       </div>
     );
   } else {
