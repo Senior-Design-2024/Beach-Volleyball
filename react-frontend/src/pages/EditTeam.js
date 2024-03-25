@@ -9,7 +9,7 @@ export default function EditTeam() {
   /* need a comment on what this is doing */
   return (
     <div>
-        <p>Players page</p>
+        <p>Edit team page</p>
         <BasicButton onClick={navigatePlayers} buttonText='back to players'></BasicButton>
     </div>
   );
