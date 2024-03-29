@@ -1,15 +1,32 @@
 import { useNavigate } from 'react-router-dom';
-import { BasicButton } from '../components/basic_components'
+import AppHeader from '../components/AppHeader';
+import AddPlayerForm from '../components/AddPlayerForm';
 
 export default function AddPlayer() {
+  //navigation
   const navigate = useNavigate();
   const navigatePlayers = () => navigate('/Players');
 
+  //handles form submission
+  const handleFormSubmit = (formDataJson) => {
+    navigatePlayers();
+  };
+
   //html
   return (
-    <div>
-        <p>Create player page</p>
-        <BasicButton onClick={navigatePlayers} buttonText='back to players'></BasicButton>
+    <div id='page-wrapper' className='page-wrapper'>
+      <AppHeader masthead='Add Player'
+        leftButtonNames={['']}
+        leftButtonFunctions={[]}
+        rightButtonNames={['Back to players']}
+        rightButtonFunctions={[navigatePlayers]}
+      />
+      <AddPlayerForm onSubmit={handleFormSubmit}/>
+      <p>
+        *dev notes*<br/>
+        There is no functionality or security implemented for this form<br/>
+        Clicking submit will progress you
+      </p>
     </div>
   );
 }

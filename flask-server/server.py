@@ -225,7 +225,7 @@ def find_db():
         """
         return {c.name: getattr(instance, c.name) for c in instance.__table__.columns}
 
-    data = request.json
+    data = request.args
 
     table_name = data.get('table')
 

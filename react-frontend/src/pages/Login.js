@@ -10,9 +10,35 @@ export default function Login() {
   const navigateTeams = () =>navigate('/Teams')
 
   //handles form submission
-  const handleFormSubmit = (formDataJson) => {
-    navigateTeams();
+  const handleFormSubmit = async (formDataJson) => {
+    console.log(formDataJson);
+    var formData = JSON.parse(formDataJson);
+    console.log(formData);
+
+    try {
+      const queryParams = new URLSearchParams({table: 'user'});
+      queryParams.append('email', formData.username);
+
+      const response = await fetch(`/find?${queryParams}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('raw response:', response);
+      const responseJson = await response.json();
+      console.log('json reponse:', responseJson);
+
+      console.log('json[0]', responseJson[0].id);
+
+
+    } catch (error) {
+      console.error('Error with fetchUserId', error);
+    }
+    //navigateTeams();
   };
+
 
   //html
   return (

@@ -31,6 +31,8 @@ services:
     working_dir: /usr/app
     volumes:
       - ./react-frontend/:/usr/app/
+    environment:
+      - WDS_SOCKET_PORT=0
     command: bash -c "npm install && npm start"
     networks:
       my_network:
