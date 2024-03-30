@@ -1,12 +1,42 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
 import AppHeader from '../components/AppHeader';
 
 export default function Teams() {
-  const [teams, setTeams] = useState({
-    names: [],
-  });
+  //initialize
+  const location = useLocation();
+
+  const userId = location.state.userId;
+  const [teams, setTeams] = useState([]);
+
+  //GETs the teams and setTeams
+  useEffect(() => {
+    const getTeams = async () => {
+      try{
+        const queryParams = new URLSearchParams({table: 'team'});
+        queryParams.append('user_id', userId);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        //convert response to JSON
+        const responseJson = await response.json();
+
+        //check if responseJson array is not empty and contains the expected data structure
+        if (responseJson && responseJson.length > 0) {
+          setTeams(responseJson);
+        } else {
+          console.error('Invalid or empty response data');
+        }
+      } catch (error) {
+        console.error('Error with getTeams', error);
+      }
+    };
+
+    getTeams();
+  }, [userId]);
 
   //navigate functions
   const navigate = useNavigate();
@@ -18,7 +48,7 @@ export default function Teams() {
   let display_teams;
 
   //displays teams if there is at least one
-  if(teams.names.length === 0) {
+  if(teams.length === 0) {
     display_teams = (
       <div id='dev-wrapper'>
         <p>Please add a team</p>
@@ -28,10 +58,10 @@ export default function Teams() {
   } else {
     display_teams = (
       <div>
-        {teams.names.map(( (name) => (
-          <div id='button-wrapper'>
+        {teams.map(( (team) => (
+          <div key={team.id} id='button-wrapper'>
             <br/>
-            <BasicButton onClick={navigatePlayers} buttonText={name}/>
+            <BasicButton onClick={navigatePlayers} buttonText={team.name}/>
           </div>
         )))}
         <p>
@@ -50,6 +80,7 @@ export default function Teams() {
         rightButtonNames={['Logout']}
         rightButtonFunctions={[navigateHome]}
       />
+      
       {display_teams}
     </div>
   );

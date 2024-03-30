@@ -7,36 +7,38 @@ export default function Login() {
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
   const navigateLogin = () => navigate('/Login');
-  const navigateTeams = () =>navigate('/Teams')
+  const navigateTeams = (id) => navigate('/Teams', {state: { userId: id}});
 
   //handles form submission
   const handleFormSubmit = async (formDataJson) => {
-    console.log(formDataJson);
-    var formData = JSON.parse(formDataJson);
-    console.log(formData);
-
     try {
+      //construct params for GET request
+      var formData = JSON.parse(formDataJson);
+      
       const queryParams = new URLSearchParams({table: 'user'});
       queryParams.append('email', formData.username);
 
+      //GET request /find API call
       const response = await fetch(`/find?${queryParams}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
 
-      console.log('raw response:', response);
+      //convert response to JSON
       const responseJson = await response.json();
-      console.log('json reponse:', responseJson);
 
-      console.log('json[0]', responseJson[0].id);
+      //check if responseJson array is not empty and contains the expected data structure
+      if (responseJson && responseJson.length > 0 && responseJson[0].id) {
+        console.log('json[0].id', responseJson[0].id);
 
+        //navigate to Teams passing userId
+        navigateTeams(responseJson[0].id);
+      } else {
+        console.error('Invalid or empty response data');
+      }
 
     } catch (error) {
       console.error('Error with fetchUserId', error);
     }
-    //navigateTeams();
   };
 
 
@@ -48,11 +50,13 @@ export default function Login() {
         leftButtonFunctions={[navigateHome]}
         rightButtonNames={['Login']}
         rightButtonFunctions={[navigateLogin]}/>
+
         <h1>login page</h1>
         <LoginForm onSubmit={handleFormSubmit}/>
         <p>
           *dev notes*<br/>
-          There is no functionality or security implemented for this form<br/>
+          There is no security implemented for this form<br/>
+          Just enter your email into the username section<br/>
           Clicking submit will progress you to the teams page as if the user successfully logged in
         </p>
     </div>
