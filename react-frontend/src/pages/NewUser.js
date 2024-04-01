@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { BasicButton } from '../components/basic_components'
+import AppHeader from '../components/AppHeader';
 import NewUserForm from '../components/NewUserForm';
 
 //////////////////
 export default function NewUser() {
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
+  const navigateNewUser = () => navigate('/NewUser');
+  const navigateLogin = () => navigate('/Login');
 
     //takes the JSON from the form and sends it to the server
     const handleFormSubmit = async (formDataJson) => {
@@ -19,6 +21,8 @@ export default function NewUser() {
         });
     
         if (!response.ok) {
+          const responseData = await response.json();
+          console.log(responseData);
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
     
@@ -36,11 +40,13 @@ export default function NewUser() {
 
   /* need a comment on what this is doing */
   return (
-    <div>
-        <p>New user page</p>
-        <BasicButton onClick={navigateHome} buttonText='back to app home'></BasicButton>
+    <div id='page-wrapper' className='page-wrapper'>
+      <AppHeader masthead={'Beach Volleyball Stats App'}
+        leftButtonNames={['Home', 'Create Account']}
+        leftButtonFunctions={[navigateHome, navigateNewUser]}
+        rightButtonNames={['Login']}
+        rightButtonFunctions={[navigateLogin]}/>
 
-        <br/>
         <NewUserForm onSubmit={handleFormSubmit}/>
     </div>
   );

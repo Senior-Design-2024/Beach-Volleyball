@@ -50,14 +50,15 @@ export default function Teams() {
   //displays teams if there is at least one
   if(teams.length === 0) {
     display_teams = (
-      <div id='dev-wrapper'>
+      <div id='display-teams'>
         <p>Please add a team</p>
         <BasicButton onClick={navigatePlayers} buttonText="dev button to team's players"></BasicButton>
+        <BasicButton buttonText='Add Team' onClick={navigateAddTeam}/>
       </div>
     );
-  } else {
+  } else if (teams.length >= 10){
     display_teams = (
-      <div>
+      <div id='display-teams'>
         {teams.map(( (team) => (
           <div key={team.id} id='button-wrapper'>
             <br/>
@@ -70,17 +71,34 @@ export default function Teams() {
         </p>
       </div>
     );
+  } else {
+    display_teams = (
+      <div id='display-teams'>
+        {teams.map(( (team) => (
+          <div key={team.id} id='button-wrapper'>
+            <br/>
+            <BasicButton onClick={navigatePlayers} buttonText={team.name}/>
+          </div>
+        )))}
+        <br/>
+        <BasicButton buttonText='Add Team' onClick={navigateAddTeam}/>
+        <p>
+          *dev notes*<br/>
+          these buttons have no functionality other than moving to the next page
+        </p>
+      </div>
+    );
   }
 
   return (
     <div id='page-wrapper' className='page-wrapper'>
       <AppHeader masthead={'Welcome!'}
-        leftButtonNames={['Add Team']} 
-        leftButtonFunctions={[navigateAddTeam]}
+        leftButtonNames={['']} 
+        leftButtonFunctions={[]}
         rightButtonNames={['Logout']}
         rightButtonFunctions={[navigateHome]}
       />
-      
+
       {display_teams}
     </div>
   );

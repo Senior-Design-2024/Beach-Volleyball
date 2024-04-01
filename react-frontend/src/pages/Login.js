@@ -6,6 +6,7 @@ export default function Login() {
   //navigate buttons
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
+  const navigateNewUser = () => navigate('/NewUser');
   const navigateLogin = () => navigate('/Login');
   const navigateTeams = (id) => navigate('/Teams', {state: { userId: id}});
 
@@ -46,8 +47,8 @@ export default function Login() {
   return (
     <div id='page-wrapper' className='page-wrapper'>
       <AppHeader masthead={'Beach Volleyball Stats App'}
-        leftButtonNames={['Home']} 
-        leftButtonFunctions={[navigateHome]}
+        leftButtonNames={['Home', 'Create Account']}
+        leftButtonFunctions={[navigateHome, navigateNewUser]}
         rightButtonNames={['Login']}
         rightButtonFunctions={[navigateLogin]}/>
 

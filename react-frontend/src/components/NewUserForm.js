@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 export default function NewUserForm({onSubmit}) { 
     const [formData, setFormData] = useState({
-        username: 'test_user',
-        email: 'test@gmail.com',
+        username: '',
+        email: '',
+        password: '',
     });
 
     //handles submitting the form
@@ -11,8 +12,6 @@ export default function NewUserForm({onSubmit}) {
         event.preventDefault();
 
         const formDataJson = JSON.stringify(formData);
-        
-        console.log(formDataJson);
 
         onSubmit(formDataJson);
     };
@@ -41,6 +40,11 @@ export default function NewUserForm({onSubmit}) {
                   <tr>
                     <td>
                       <label className='label' htmlFor='email'>Email:</label><input type='text' id='email' name='email' onChange={handleChange}></input>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label className='label' htmlFor='password'>Password:</label><input type='text' id='password' name='password' onChange={handleChange}></input>
                     </td>
                   </tr>
                   <tr>
