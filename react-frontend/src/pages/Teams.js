@@ -41,8 +41,8 @@ export default function Teams() {
   //navigate functions
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
-  const navigateAddTeam = () => navigate('/AddTeam');
-  const navigatePlayers = () => navigate('/Players');
+  const navigateAddTeam = () => navigate('/AddTeam', {state: {userId: userId}});
+  const navigatePlayers = () => navigate('/Players', {state: {userId: userId}});
 
   //html
   let display_teams;

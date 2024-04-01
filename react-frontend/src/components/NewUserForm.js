@@ -4,7 +4,7 @@ export default function NewUserForm({onSubmit}) {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        password: '',
+        //password: '',
     });
 
     //handles submitting the form
@@ -42,11 +42,13 @@ export default function NewUserForm({onSubmit}) {
                       <label className='label' htmlFor='email'>Email:</label><input type='text' id='email' name='email' onChange={handleChange}></input>
                     </td>
                   </tr>
+                  {/*
                   <tr>
                     <td>
                       <label className='label' htmlFor='password'>Password:</label><input type='text' id='password' name='password' onChange={handleChange}></input>
                     </td>
                   </tr>
+                  */}
                   <tr>
                     <td>
                       <input type="submit"></input>

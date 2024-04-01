@@ -1,9 +1,13 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
 import { useState } from 'react';
 import AppHeader from '../components/AppHeader';
 
 export default function Players() {
+  const location = useLocation();
+
+  const userId = location.state.userId;
+
   const [teamData, setTeamData] = useState({
     name: 'default team name',
     players: [],
@@ -11,7 +15,7 @@ export default function Players() {
 
   //navigation
   const navigate = useNavigate();
-  const navigateTeams = () => navigate('/Teams');
+  const navigateTeams = () => navigate('/Teams', {state: {userId: userId}});
   const navigateEditTeam = () => navigate('/EditTeam');
   const navigatePlayerOverview = () => navigate('/PlayerOverview');
   const navigateAddPlayer = () => navigate('/AddPlayer');
