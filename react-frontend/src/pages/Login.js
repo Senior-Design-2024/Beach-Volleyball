@@ -8,10 +8,10 @@ export default function Login() {
   const navigateHome = () => navigate('/');
   const navigateNewUser = () => navigate('/NewUser');
   const navigateLogin = () => navigate('/Login');
-  const navigateTeams = (id) => navigate('/Teams', {state: { userId: id}});
+  const navigateTeams = (userId) => navigate('/Teams', {state: { userId: userId}});
 
   //handles form submission
-  const handleFormSubmit = async (formDataJson) => {
+  const handleLoginSubmit = async (formDataJson) => {
     try {
       //construct params for GET request
       var formData = JSON.parse(formDataJson);
@@ -53,7 +53,7 @@ export default function Login() {
         rightButtonFunctions={[navigateLogin]}/>
 
         <h1>login page</h1>
-        <LoginForm onSubmit={handleFormSubmit}/>
+        <LoginForm onSubmit={handleLoginSubmit}/>
         <p>
           *dev notes*<br/>
           There is no security implemented for this form<br/>

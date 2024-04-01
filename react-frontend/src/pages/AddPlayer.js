@@ -1,11 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 import AddPlayerForm from '../components/AddPlayerForm';
 
 export default function AddPlayer() {
+  const location = useLocation();
+
+  const teamId = location.state.teamId;
   //navigation
   const navigate = useNavigate();
-  const navigatePlayers = () => navigate('/Players');
+  const navigatePlayers = () => navigate('/Players', {state: {teamId: teamId}});
 
   //handles form submission
   const handleFormSubmit = (formDataJson) => {

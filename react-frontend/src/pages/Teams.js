@@ -25,7 +25,7 @@ export default function Teams() {
         const responseJson = await response.json();
 
         //check if responseJson array is not empty and contains the expected data structure
-        if (responseJson && responseJson.length > 0) {
+        if (responseJson) {
           setTeams(responseJson);
         } else {
           console.error('Invalid or empty response data');
@@ -42,7 +42,7 @@ export default function Teams() {
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
   const navigateAddTeam = () => navigate('/AddTeam', {state: {userId: userId}});
-  const navigatePlayers = () => navigate('/Players', {state: {userId: userId}});
+  const navigatePlayers = (teamId) => navigate('/Players', {state: {teamId: teamId}});
 
   //html
   let display_teams;
@@ -52,7 +52,6 @@ export default function Teams() {
     display_teams = (
       <div id='display-teams'>
         <p>Please add a team</p>
-        <BasicButton onClick={navigatePlayers} buttonText="dev button to team's players"></BasicButton>
         <BasicButton buttonText='Add Team' onClick={navigateAddTeam}/>
       </div>
     );
@@ -62,7 +61,7 @@ export default function Teams() {
         {teams.map(( (team) => (
           <div key={team.id} id='button-wrapper'>
             <br/>
-            <BasicButton onClick={navigatePlayers} buttonText={team.name}/>
+            <BasicButton onClick={() => navigatePlayers(team.id)} buttonText={team.name}/>
           </div>
         )))}
         <p>
@@ -77,7 +76,7 @@ export default function Teams() {
         {teams.map(( (team) => (
           <div key={team.id} id='button-wrapper'>
             <br/>
-            <BasicButton onClick={navigatePlayers} buttonText={team.name}/>
+            <BasicButton onClick={() => navigatePlayers(team.id)} buttonText={team.name}/>
           </div>
         )))}
         <br/>
