@@ -11,7 +11,26 @@ export default function AddPlayer() {
   const navigatePlayers = () => navigate('/Players', {state: {teamId: teamId}});
 
   //handles form submission
-  const handleFormSubmit = (formDataJson) => {
+  const handleFormSubmit = async (formDataJson) => {
+    try {
+      const response = await fetch('/addplayer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: formDataJson,
+      });
+
+      if(!response.ok) {
+        throw new Error( `Http error! Status: ${response.status}`);
+      }
+
+      console.log(response);
+
+    } catch (error) {
+      console.error('Error submitting form data:', error.message);
+    }
+
     navigatePlayers();
   };
 
@@ -24,7 +43,7 @@ export default function AddPlayer() {
         rightButtonNames={['Back to players']}
         rightButtonFunctions={[navigatePlayers]}
       />
-      <AddPlayerForm onSubmit={handleFormSubmit}/>
+      <AddPlayerForm onSubmit={handleFormSubmit} teamId={teamId}/>
       <p>
         *dev notes*<br/>
         There is no functionality or security implemented for this form<br/>

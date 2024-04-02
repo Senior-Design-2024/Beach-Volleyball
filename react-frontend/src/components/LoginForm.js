@@ -28,7 +28,7 @@ export default function LoginForm({onSubmit}) {
   return(
     <div id='form-wrapper'>
       {/* form */}
-      <form id='loginForm' onSubmit={handleSubmit} autoComplete='off'>
+      <form id='loginForm' onSubmit={handleSubmit} autoComplete='on'>
         <table>
           <tbody>
             <tr>

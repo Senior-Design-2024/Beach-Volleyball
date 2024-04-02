@@ -28,7 +28,7 @@ export default function Teams() {
         if (responseJson) {
           setTeams(responseJson);
         } else {
-          console.error('Invalid or empty response data');
+          console.error('Invalid response data');
         }
       } catch (error) {
         console.error('Error with getTeams', error);

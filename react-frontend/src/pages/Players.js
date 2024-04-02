@@ -14,7 +14,9 @@ export default function Players() {
     name: 'default_team_name',
   });
 
-  //GETs the players and setTeamData
+  const [players, setPlayers] = useState([]);
+
+  //GETs teamData
   useEffect(() => {
     const getTeam = async () => {
       try{
@@ -41,33 +43,60 @@ export default function Players() {
   }, [teamId]);
 
 
+  //GETs players
+  useEffect(() => {
+    const getPlayers = async () => {
+      try{ 
+        const queryParams = new URLSearchParams({table: 'player'});
+        queryParams.append('team_id', teamId);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        const responseJson = await response.json();
+
+        if(responseJson) {
+          setPlayers(responseJson);
+        } else {
+          console.error('Invalid response data');
+        }
+
+      } catch (error) {
+        console.error('Error with getPlayers', error);
+      } 
+    }
+
+    getPlayers();
+  }, [teamId]);
+
+
   //navigation
   const navigate = useNavigate();
   const navigateTeams = (userId) => navigate('/Teams', {state: {userId: userId}});
   const navigateEditTeam = () => navigate('/EditTeam');
   const navigatePlayerOverview = () => navigate('/PlayerOverview');
-  const navigateAddPlayer = () => navigate('/AddPlayer');
+  const navigateAddPlayer = () => navigate('/AddPlayer', {state: {teamId: teamId}});
   const navigatePairs = () => navigate('/Pairs');
 
   //html
   let display_players;
 
   //displays teams if there is at least one
-  /*
-  if(teamData.players.length === 0) {
+  if(players.length === 0) {
     display_players = (
-      <div id='dev-wrapper'>
+      <div id='display-players'>
         <p>Please add a player</p>
         <BasicButton onClick={navigatePlayerOverview} buttonText='dev button to player overview'></BasicButton>
       </div>
     );
   } else {
     display_players = (
-      <div>
-        {teamData.players.map(( (name) => (
-          <div id='button-wrapper'>
+      <div id='display-players'>
+        {players.map(( (player) => (
+          <div key={player.id} id='button-wrapper'>
             <br/>
-            <BasicButton onClick={navigatePlayerOverview} buttonText={name}/>
+            <BasicButton onClick={navigatePlayerOverview} buttonText={player.name}/>
           </div>
         )))}
         <p>
@@ -77,8 +106,6 @@ export default function Players() {
       </div>
     );
   }
-  */
- display_players = (<></>);
 
   return (
     <div id='page-wrapper' className='page-wrapper'>

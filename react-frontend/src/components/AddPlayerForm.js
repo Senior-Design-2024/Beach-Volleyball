@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-export default function AddPlayerForm({onSubmit}) { 
+export default function AddPlayerForm({onSubmit, teamId}) { 
     const [playerData, setPlayerData] = useState({
       player_name: '',
-      team_id: -1,
+      team_id: teamId,
       description: '',
     });
 

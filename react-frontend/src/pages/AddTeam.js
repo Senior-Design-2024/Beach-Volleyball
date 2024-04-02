@@ -20,8 +20,6 @@ export default function AddTeam() {
       });
   
       if (!response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
   
