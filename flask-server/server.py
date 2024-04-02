@@ -37,6 +37,15 @@ class Player(db.Model):
     description = db.Column(db.String(255), nullable=False)
     team = db.relationship('Team', backref=db.backref('player', lazy=True))
 
+class Pair(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
+    player1 = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    player2 = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    team = db.relationship('Team', backref=db.backref('pairs', lazy=True))
+    player1_rel = db.relationship('Player', foreign_keys=[player1], backref=db.backref('pairs1', lazy=True))
+    player2_rel = db.relationship('Player', foreign_keys=[player2], backref=db.backref('pairs2', lazy=True))
+
 class Match(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
@@ -138,7 +147,7 @@ def match_add():
     team = db.session.get(Team, team_id)
     player1 = db.session.get(Player, player1_id)
     player2 = db.session.get(Player, player2_id)
-    if team:
+    if team and player1 and player2:
     
         match = Match(team=team,
                       player1=player1_id,
@@ -164,6 +173,26 @@ def match_add():
         return jsonify({'message': 'Match added successfully'}), 200
     else:
         return jsonify({'error': 'Team and/or Player not found'}), 404
+
+@app.route('/addpair', methods=['POST'])
+def pair_add():
+    data = request.json
+    team_id = data.get('team_id')
+    player1_id = data.get('player1')
+    player2_id = data.get('player2')
+
+    team = db.session.get(Team, team_id)
+    player1 = db.session.get(Player, player1_id)
+    player2 = db.session.get(Player, player2_id)
+    print(player1.name, flush=True)
+    print(player2.name, flush=True)
+    if team and player1 and player2:
+        pair = Pair(team=team, player1=player1_id, player2=player2_id)
+        db.session.add(pair)
+        db.session.commit()
+        return jsonify({'message': 'Pair added successfully'}), 200
+    else:
+        return jsonify({'error': 'Match or player not found'}), 404
 
 @app.route('/addset', methods=['POST'])
 def set_add():
@@ -253,6 +282,9 @@ def find_db():
 
         case "match_set":
             query = db.session.query(MatchSet)
+        
+        case "pair":
+            query = db.session.query(Pair)
     
     # Apply filters to the query
     for key, value in filters.items():
