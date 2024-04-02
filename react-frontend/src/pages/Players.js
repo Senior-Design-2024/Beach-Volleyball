@@ -75,23 +75,20 @@ export default function Players() {
   const navigate = useNavigate();
   const navigateTeams = (userId) => navigate('/Teams', {state: {userId: userId}});
   const navigateEditTeam = () => navigate('/EditTeam');
-  const navigatePlayerOverview = () => navigate('/PlayerOverview');
+  const navigatePlayerOverview = () => navigate('/PlayerOverview', {state: {teamdId: teamId}});
   const navigateAddPlayer = () => navigate('/AddPlayer', {state: {teamId: teamId}});
   const navigatePairs = () => navigate('/Pairs');
 
   //html
-  let display_players;
+  return (
+    <div id='page-wrapper' className='page-wrapper'>
+      <AppHeader masthead={teamData.name}
+        leftButtonNames={['Pairs', 'Edit team']}
+        leftButtonFunctions={[navigatePairs, navigateEditTeam]}
+        rightButtonNames={['Back to teams']}
+        rightButtonFunctions={[() => navigateTeams(teamData.user_id)]}
+      />
 
-  //displays teams if there is at least one
-  if(players.length === 0) {
-    display_players = (
-      <div id='display-players'>
-        <p>Please add a player</p>
-        <BasicButton onClick={navigatePlayerOverview} buttonText='dev button to player overview'></BasicButton>
-      </div>
-    );
-  } else {
-    display_players = (
       <div id='display-players'>
         {players.map(( (player) => (
           <div key={player.id} id='button-wrapper'>
@@ -99,23 +96,12 @@ export default function Players() {
             <BasicButton onClick={navigatePlayerOverview} buttonText={player.name}/>
           </div>
         )))}
-        <p>
-          *dev notes*<br/>
-          these buttons have no functionality other than moving to the next page
-        </p>
       </div>
-    );
-  }
-
-  return (
-    <div id='page-wrapper' className='page-wrapper'>
-      <AppHeader masthead={teamData.name}
-        leftButtonNames={['Pairs', 'Add player', 'Edit team']}
-        leftButtonFunctions={[navigatePairs, navigateAddPlayer, navigateEditTeam]}
-        rightButtonNames={['Back to teams']}
-        rightButtonFunctions={[() => navigateTeams(teamData.user_id)]}
-      />
-      {display_players}
-    </div>
+      
+      <div>
+        {players.length === 0 && <p><br/>Please add a player</p>}
+      </div>
+      <br/>
+      <BasicButton buttonText='Add Player' onClick={navigateAddPlayer}/>    </div>
   );
 }

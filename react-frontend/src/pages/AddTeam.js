@@ -8,6 +8,9 @@ export default function AddTeam() {
 
   const userId = location.state.userId;
 
+  const navigate = useNavigate();
+  const navigateTeams = () => navigate('/Teams', {state: { userId: userId}});
+
   //takes the JSON from the form and sends it to the server
   const handleFormSubmit = async (formDataJson) => {
     try {
@@ -28,15 +31,13 @@ export default function AddTeam() {
       // Handle the response data if needed
       console.log('Server response:', responseData);
   
-      // ... rest of your logic
+      navigateTeams();
+      
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error submitting form data:', error.message);
     }
   };
-
-  const navigate = useNavigate();
-  const navigateTeams = (id) => navigate('/Teams', {state: { userId: userId}});
 
   //html
   return (
@@ -45,12 +46,8 @@ export default function AddTeam() {
         leftButtonNames={['Teams']} 
         leftButtonFunctions={[navigateTeams]}
       />
+
       <AddTeamForm onSubmit={handleFormSubmit}/>
-      <p>
-        *dev notes*<br/>
-        There is no functionality or security implemented for this form<br/>
-        Clicking submit will progress you
-      </p>
     </div>
   );
 }
