@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function NewMatchForm({onSubmit}) { 
-    const [formData, setFormData] = useState({
-      //THESE ARE DUMMY VARIABLES NOT ACTUALLY IN THE FORM, THIS SHOULD BE CHANGED LATER
-        team_id: 1,
-        player1: 1,
-        player2: 2,
-      ///////////////
+export default function NewMatchForm({onSubmit, teamId, pairId, players}) { 
+    const [matchData, setMatchData] = useState({
+        team_id: teamId,
+        player1_id: 0,
+        player2_id: 0,
+        pair_id: pairId,
+
         opponent1_name: '',
         opponent2_name: '',
         opponent1_number: 0,
@@ -22,11 +22,20 @@ export default function NewMatchForm({onSubmit}) {
         strategy: 'unset',
     });
 
+  // Update matchData when players prop changes
+  useEffect(() => {
+    setMatchData(prevMatchData => ({
+      ...prevMatchData,
+      player1_id: players.length >= 1 ? players[0].id : 0,
+      player2_id: players.length >= 1 ? players[0].id : 0,
+    }));
+  }, [players]);
+
     //handles submitting the form
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const formDataJson = JSON.stringify(formData);
+        const formDataJson = JSON.stringify(matchData);
         
         console.log(formDataJson);
 
@@ -36,7 +45,7 @@ export default function NewMatchForm({onSubmit}) {
     const handleChange = (event) => {
         const { name, value } = event.target;
         // Update the state when form fields change
-        setFormData(prevState => ({
+        setMatchData(prevState => ({
           ...prevState,
           [name]: value,
         }));
@@ -45,7 +54,6 @@ export default function NewMatchForm({onSubmit}) {
     //html
     return(
         <div>
-            {/* form */}
             <form id='newMatchForm' onSubmit={handleSubmit}>
               <table>
                 <tbody>

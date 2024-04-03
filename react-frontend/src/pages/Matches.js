@@ -1,128 +1,100 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import AppHeader from '../components/AppHeader';
 
-//////////////////
 export default function Matches() {
-  //TESTING WORK FOR FLASK BACKEND, THIS WILL BE USELESS LATER//
-  const [addTeamData, setAddTeam] = useState({
-    team_name: "test_team",
-    email: "test@gmail.com",
-  });
+  const location = useLocation();
 
-  const [addPlayer1Data, setAddPlayer1] = useState({
-    player_name: "test_player1",
-    team_id: 1,
-    description: "test description",
-  });
-
-  const [addPlayer2Data, setAddPlayer2] = useState({
-    player_name: "test_player2",
-    team_id: 1,
-    description: "test description",
-  })
-
-  const handleAddTeam = async () => {
-    try {
-      const response = await fetch('/addteam', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(addTeamData),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const responseData = await response.json();
-  
-      // Handle the response data if needed
-      console.log('Server response:', responseData);
-  
-      // ... rest of your logic
-    } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error submitting form data:', error.message);
-    }
-  };
-
-  const handleAddPlayer1 = async () => {
-    try {
-      const response = await fetch('/addplayer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(addPlayer1Data),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const responseData = await response.json();
-  
-      // Handle the response data if needed
-      console.log('Server response:', responseData);
-  
-      // ... rest of your logic
-    } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error submitting form data:', error.message);
-    }
-  };
-
-  const handleAddPlayer2 = async () => {
-    try {
-      const response = await fetch('/addplayer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(addPlayer2Data),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const responseData = await response.json();
-  
-      // Handle the response data if needed
-      console.log('Server response:', responseData);
-  
-      // ... rest of your logic
-    } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error submitting form data:', error.message);
-    }
-  };
-///////////////////////////////////////////////
+  const teamId = location.state.teamId;
+  const pairId = location.state.pairId;
+  const [matches, setMatches] = useState([]);
+  const [player1Name, setPlayer1Name] = useState('');
+  const [player2Name, setPlayer2Name] =useState('');
 
   const navigate = useNavigate();
-  const navigatePairs = () => navigate('/Pairs');
+  const navigatePairs = () => navigate('/Pairs', {state: {teamId: teamId}});
   const navigateEditPair = () => navigate('/EditPair');
-  const navigateMatchStats = () => navigate('/MatchStats');
-  const navigateNewMatch = () => navigate('/NewMatch');
+  const navigateMatchStats = (id) => navigate('/MatchStats', {state: {matchId: id}});
+  const navigateNewMatch = () => navigate('/NewMatch', {state: {teamId: teamId, pairId: pairId}});
 
-  /* need a comment on what this is doing */
+   //GETs matches
+   useEffect(() => {
+    const getMatches = async () => {
+      try{ 
+        const queryParams = new URLSearchParams({table: 'match'});
+        queryParams.append('pair_id', pairId);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        const responseJson = await response.json();
+
+        if(responseJson) {
+          setMatches(responseJson);
+        } else {
+          console.error('Invalid response data');
+        }
+
+      } catch (error) {
+        console.error('Error with getMatches', error);
+      } 
+    }
+
+    getMatches();
+  }, [pairId]); 
+
+  //GETs player names
+  useEffect(() => {
+    const getPlayerNames = async () => {
+      try{ 
+        const queryParams = new URLSearchParams({table: 'player'});
+        queryParams.append('pair_id', pairId);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        const responseJson = await response.json();
+
+        if(responseJson) {
+          console.log(responseJson);
+          setPlayer1Name(responseJson[0].name);
+          setPlayer2Name(responseJson[1].name);
+        } else {
+          console.error('Invalid response data');
+        }
+
+      } catch (error) {
+        console.error('Error with getPlayers', error);
+      } 
+    }
+
+    getPlayerNames();
+  }, [pairId]);
+
+  //html
   return (
-    <div>
-        <p>Matches page</p>
-        <BasicButton onClick={navigatePairs} buttonText='back to pairs'></BasicButton>
-        <br/>
-        <BasicButton onClick={navigateEditPair} buttonText='edit pair'></BasicButton>
-        <br/>
-        <BasicButton onClick={navigateMatchStats} buttonText='match stats'></BasicButton>
+    <div id='page-wrapper' className='page-wrapper'>
+      <AppHeader masthead={player1Name + ' and ' + player2Name + ' matches'} 
+        leftButtonNames={['']}
+        leftButtonFunctions={[]}
+        rightButtonNames={['back to pairs']}
+        rightButtonFunctions={[navigatePairs]}
+      />
+
+      <div id='display-matches'>
+        {matches.map( (match) => (
+          <div key={match.id} id='match-wrapper'>
+            <br/>
+            <BasicButton onClick={() => navigateMatchStats(match.id)} buttonText={match.id}/>
+          </div>
+        ))}
+        </div>
+
         <br/>
         <BasicButton onClick={navigateNewMatch} buttonText='new match'></BasicButton>
-
-        <br/>
-        <button onClick={handleAddTeam}>addteam</button><br/>
-        <button onClick={handleAddPlayer1}>addplayer1</button><br/>
-        <button onClick={handleAddPlayer2}>addplayer2</button><br/>
     </div>
   );
 }

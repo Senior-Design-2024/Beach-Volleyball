@@ -1,83 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-export default function ServeOrderForm({onSubmit}) { 
-    const [formData, setFormData] = useState({
-        set_number: '',
-        serve_first: 0,
-        serve_second: 0,
-        serve_third: 0,
-        serve_fourth: 0,
-    });
+export default function ServeOrderForm({ onSubmit }) {
+  const [formData, setFormData] = useState({
+    set_num: null,
+    serve_order: [0, 0, 0, 0],
+  });
 
-    //handles submitting the form
-    const handleSubmit = (event) => {
-        event.preventDefault();
+  // handles submitting the form
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-        const formDataJson = JSON.stringify(formData);
-        
-        console.log(formDataJson);
+    const formDataJson = JSON.stringify(formData);
 
-        onSubmit(formDataJson);
-    };
+    console.log(formDataJson);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        // Update the state when form fields change
-        setFormData(prevState => ({
-          ...prevState,
-          [name]: value,
-        }));
-      };
+    onSubmit(formDataJson);
+  };
 
-    //html
-    return(
-        <div>
-            {/* form */}
-            <form id='newUserForm' onSubmit={handleSubmit}>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label htmlFor='set_number'>Set #:</label>
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-                      <input type="radio" name="set_number" id="set1" value="set1" onChange={handleChange}/>
-                      <label htmlFor="set1">1</label>
+    // Update the serve_order array based on the input name and value
+    if (name.startsWith('serve')) {
+      const index = parseInt(name.replace('serve_', ''), 10);
+      const newServeOrder = [...formData.serve_order];
+      newServeOrder[index - 1] = parseInt(value, 10);
+      setFormData((prevState) => ({
+        ...prevState,
+        serve_order: newServeOrder,
+      }));
+    } else {
+      // Update set_num as an integer
+      setFormData((prevState) => ({
+        ...prevState,
+        set_num: parseInt(value, 10),
+      }));
+    }
+  };
 
-                      <input type="radio" name="set_number" id="set2" value="set2" onChange={handleChange}/>
-                      <label htmlFor="set2">2</label>
+  // Define options for the radio buttons
+  const setOptions = [1, 2, 3];
 
-                      <input type="radio" name="set_number" id="set3" value="set3" onChange={handleChange}/>
-                      <label htmlFor="set3">3</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type='number' id='serve_first' name='serve_first' onChange={handleChange}></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                    <input type='number' id='serve_second' name='serve_second' onChange={handleChange}></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                    <input type='number' id='serve_third' name='serve_third' onChange={handleChange}></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                    <input type='number' id='serve_fourth' name='serve_fourth' onChange={handleChange}></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="submit"></input>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-          </form>
-        </div>
-    )
+  // HTML
+  return (
+    <div>
+      <form id='newUserForm' onSubmit={handleSubmit}>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label htmlFor='set_num' style={{width: '80px'}}>Set #:</label>
+
+                {/* Map over the options to generate radio buttons */}
+                {setOptions.map((option, index) => (
+                  <React.Fragment key={index}>
+                    <input type="radio" name="set_num" id={`set${option}`} value={option} onChange={handleChange} />
+                    <label htmlFor={`set${option}`}>{option}</label>
+                  </React.Fragment>
+                ))}
+              </td>
+            </tr>
+            {formData.serve_order.map((serve, index) => (
+              <tr key={index}>
+                <td>
+                  <input type='number' id={`serve_${index + 1}`} name={`serve_${index + 1}`} value={serve} onChange={handleChange}></input>
+                </td>
+              </tr>
+            ))}
+            <tr>
+              <td>
+                <input type="submit"></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  )
 }

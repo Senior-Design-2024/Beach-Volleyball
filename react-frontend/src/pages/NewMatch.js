@@ -1,14 +1,46 @@
-import { useNavigate } from 'react-router-dom';
-import { BasicButton } from '../components/basic_components'
+import { useLocation, useNavigate } from 'react-router-dom';
 import NewMatchForm from '../components/NewMatchForm';
 import '../App.css'
+import { useState, useEffect } from 'react';
+import AppHeader from '../components/AppHeader';
 
-//////////////////
 export default function NewMatch() {
-  //navigations to other pages
+  const location = useLocation();
+
+  const teamId = location.state.teamId;
+  const pairId = location.state.pairId;
+  const [players, setPlayers] = useState([]);
+
   const navigate = useNavigate();
-  const navigateMatches = () => navigate('/Matches');
+  const navigateMatches = () => navigate('/Matches', {state: {teamId: teamId, pairId: pairId}});
   const navigateSetOverview = () => navigate('/SetOverview');
+
+  //GETs players
+  useEffect(() => {
+    const getPlayers = async () => {
+      try{ 
+        const queryParams = new URLSearchParams({table: 'player'});
+        queryParams.append('pair_id', pairId);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        const responseJson = await response.json();
+
+        if(responseJson) {
+          setPlayers(responseJson);
+        } else {
+          console.error('Invalid response data');
+        }
+
+      } catch (error) {
+        console.error('Error with getPlayers', error);
+      } 
+    }
+    getPlayers();
+  }, [pairId]);
+
 
   //takes the JSON from the form and sends it to the server
   const handleFormSubmit = async (formDataJson) => {
@@ -29,24 +61,27 @@ export default function NewMatch() {
   
       // Handle the response data if needed
       console.log('Server response:', responseData);
+
+      navigateSetOverview();
+
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error submitting form data:', error.message);
     }
   };
 
-  /* need a comment on what this is doing */
+  //html
   return (
-    <div>
-        <p>New match page</p>
-        <BasicButton onClick={navigateMatches} buttonText='back to matches'></BasicButton>
-        <br/>
-        <BasicButton onClick={navigateSetOverview} buttonText='set overview'></BasicButton>
-        <br/>
-        
-        <div>
-          <NewMatchForm onSubmit={handleFormSubmit} />
-        </div>
+    <div id='page-wrapper' className='page-wrapper'>
+        <AppHeader masthead='New Match'
+          leftButtonNames={['']}
+          leftButtonFunctions={[]}
+          rightButtonNames={['back to matches']}
+          rightButtonFunctions={[navigateMatches]}
+        />
+
+        <NewMatchForm onSubmit={handleFormSubmit} teamId={teamId} pairId={pairId} players={players}/>
     </div>
+
   );
 }

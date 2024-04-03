@@ -9,11 +9,12 @@ export default function Pairs() {
   const teamId = location.state.teamId;
 
   const [pairs, setPairs] = useState([]);
+  const [teamName, setTeamName] = useState([]);
 
   const navigate = useNavigate();
   const navigatePlayers = () => navigate('/Players', {state: {teamId: teamId}});
   const navigateNewPair = () => navigate('/NewPair', {state: {teamId: teamId}});
-  const navigateMatches = () => navigate('/Matches');
+  const navigateMatches = (id) => navigate('/Matches', {state: {teamId: teamId, pairId: id}});
 
    //GETs players
    useEffect(() => {
@@ -42,10 +43,37 @@ export default function Pairs() {
     getPairs();
   }, [teamId]); 
 
+  //GETs team name
+  useEffect(() => {
+    const getTeamName = async () => {
+      try{ 
+        const queryParams = new URLSearchParams({table: 'team'});
+        queryParams.append('team_id', teamId);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        const responseJson = await response.json();
+
+        if(responseJson) {
+          setTeamName(responseJson[0].name);
+        } else {
+          console.error('Invalid response data');
+        }
+
+      } catch (error) {
+        console.error('Error with getTeamName', error);
+      } 
+    }
+
+    getTeamName()
+  }, [teamId]);
+
   //html
   return (
     <div id='page-wrapper' className='page-wrapper'>
-      <AppHeader masthead='Pairs'
+      <AppHeader masthead={teamName + ' pairs'}
         leftButtonNames={['']}
         leftButtonFunctions={[]}
         rightButtonNames={['back to players']}
@@ -56,7 +84,7 @@ export default function Pairs() {
         {pairs.map( (pair) => (
           <div key={pair.id} id='pair-wrapper'>
             <br/>
-            <BasicButton onClick={navigateMatches} buttonText={pair.id}/>
+            <BasicButton onClick={() => navigateMatches(pair.id)} buttonText={pair.id}/>
           </div>
         ))}
         </div>
