@@ -42,6 +42,15 @@ CREATE TABLE `user`(
     `email` VARCHAR(255) NOT NULL,
     `username` VARCHAR(255) NOT NULL
 );
+CREATE TABLE `pair` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `team_id` BIGINT UNSIGNED NOT NULL,
+    `player1` BIGINT UNSIGNED NOT NULL,
+    `player2` BIGINT UNSIGNED NOT NULL,
+    CONSTRAINT `pair_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
+    CONSTRAINT `pair_player1_foreign` FOREIGN KEY (`player1`) REFERENCES `player` (`id`),
+    CONSTRAINT `pair_player2_foreign` FOREIGN KEY (`player2`) REFERENCES `player` (`id`)
+);
 ALTER TABLE
     `user` ADD UNIQUE `user_email_unique`(`email`);
 ALTER TABLE
