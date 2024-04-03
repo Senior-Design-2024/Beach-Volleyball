@@ -49,6 +49,7 @@ class Match(db.Model):
     team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
     player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
     player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    pair_id = db.Column(db.BigInteger, db.ForeignKey('pair.id'), nullable=False)
     opponent1_name = db.Column(db.String(100))
     opponent2_name = db.Column(db.String(100))
     opponent1_number = db.Column(db.Integer)
@@ -65,6 +66,7 @@ class Match(db.Model):
     team = db.relationship('Team', backref=db.backref('match', lazy=True))
     player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('matches1', lazy=True))
     player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('matches2', lazy=True))
+    pair = db.relationship('Pair', foreign_keys=[pair_id], backref=db.backref('match3', lazy=True))
 
 class MatchSet(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
