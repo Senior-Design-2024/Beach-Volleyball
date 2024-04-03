@@ -13,7 +13,7 @@ export default function Pairs() {
   const navigate = useNavigate();
   const navigatePlayers = () => navigate('/Players', {state: {teamId: teamId}});
   const navigateNewPair = () => navigate('/NewPair', {state: {teamId: teamId}});
-  const navigateMatches = () => navigate('/Matches');
+  const navigateMatches = (id) => navigate('/Matches', {state: {teamId: teamId, pairId: id}});
 
    //GETs players
    useEffect(() => {
@@ -56,7 +56,7 @@ export default function Pairs() {
         {pairs.map( (pair) => (
           <div key={pair.id} id='pair-wrapper'>
             <br/>
-            <BasicButton onClick={navigateMatches} buttonText={pair.id}/>
+            <BasicButton onClick={() => navigateMatches(pair.id)} buttonText={pair.id}/>
           </div>
         ))}
         </div>
