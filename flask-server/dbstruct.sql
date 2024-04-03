@@ -58,6 +58,20 @@ CREATE TABLE `match`(
 CREATE TABLE `match_set`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `match_id` BIGINT UNSIGNED NOT NULL,
-    `match_set_data` JSON NOT NULL,
+    `set_num` TINYINT UNSIGNED NOT NULL,
+    `win_state` BOOLEAN,
     CONSTRAINT `match_set_match_id_foreign` FOREIGN KEY(`match_id`) REFERENCES `match`(`id`)
+);
+CREATE TABLE `point`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `match_set_id` BIGINT UNSIGNED NOT NULL,
+    `win` BOOLEAN NOT NULL,
+    CONSTRAINT `point_match_set_id_foreign` FOREIGN KEY (`match_set_id`) REFERENCES `match_set`(`id`)
+);
+CREATE TABLE `event`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `point_id` BIGINT UNSIGNED NOT NULL,
+    `data` INT UNSIGNED NOT NULL,
+    `e_index` TINYINT UNSIGNED NOT NULL,
+    CONSTRAINT `event_point_id_foreign` FOREIGN KEY (`point_id`) REFERENCES `point`(`id`)
 );
