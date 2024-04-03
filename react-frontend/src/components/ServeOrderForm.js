@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ServeOrderForm({ onSubmit }) {
+export default function ServeOrderForm({ onSubmit, onServeOrderChange }) {
   const [formData, setFormData] = useState({
     set_num: null,
     serve_order: [0, 0, 0, 0],
@@ -29,6 +29,8 @@ export default function ServeOrderForm({ onSubmit }) {
         ...prevState,
         serve_order: newServeOrder,
       }));
+
+      onServeOrderChange(newServeOrder);
     } else {
       // Update set_num as an integer
       setFormData((prevState) => ({
