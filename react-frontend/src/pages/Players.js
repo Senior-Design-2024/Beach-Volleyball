@@ -83,11 +83,16 @@ export default function Players() {
   return (
     <div id='page-wrapper' className='page-wrapper'>
       <AppHeader masthead={teamData.name}
-        leftButtonNames={['Pairs', 'Edit team']}
-        leftButtonFunctions={[navigatePairs, navigateEditTeam]}
+        leftButtonNames={['Edit team']}
+        leftButtonFunctions={[navigateEditTeam]}
         rightButtonNames={['Back to teams']}
         rightButtonFunctions={[() => navigateTeams(teamData.user_id)]}
       />
+      
+      <div>
+        {players.length < 2 && <p><br/>Please add a player</p>}
+        {players.length >= 2 && <BasicButton buttonText='Pairs' onClick={navigatePairs}/>}
+      </div>
 
       <div id='display-players'>
         {players.map( (player) => (
@@ -98,10 +103,8 @@ export default function Players() {
         ))}
       </div>
       
-      <div>
-        {players.length === 0 && <p><br/>Please add a player</p>}
-      </div>
       <br/>
-      <BasicButton buttonText='Add Player' onClick={navigateAddPlayer}/>    </div>
+      <BasicButton buttonText='Add Player' onClick={navigateAddPlayer}/>    
+    </div>
   );
 }
