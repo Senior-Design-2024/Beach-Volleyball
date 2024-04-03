@@ -1,19 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import { BasicButton } from '../components/basic_components'
+import { useNavigate, useLocation } from 'react-router-dom';
+import AppHeader from '../components/AppHeader';
 
-//////////////////
 export default function PlayerOverview() {
+  const location = useLocation();
+  const teamId = location.teamId;
+
   const navigate = useNavigate();
-  const navigatePlayers = () => navigate('/Players');
+  const navigatePlayers = () => navigate('/Players', {state: {teamId: teamId}});
   const navigateEditPlayer = () => navigate('/EditPlayer')
 
-  /* need a comment on what this is doing */
+  //html
   return (
-    <div>
-        <p>Player overview page</p>
-        <BasicButton onClick={navigatePlayers} buttonText='back to players'></BasicButton>
-        <br/>
-        <BasicButton onClick={navigateEditPlayer} buttonText='edit player'></BasicButton>
+    <div id='page-wrapper' className='page-wrapper'>
+      <AppHeader masthead={'pwayer name'}
+        leftButtonNames={['Edit player']}
+        leftButtonFunctions={[navigateEditPlayer]}
+        rightButtonNames={['Back to players']}
+        rightButtonFunctions={[navigatePlayers]}
+      />
     </div>
   );
 }

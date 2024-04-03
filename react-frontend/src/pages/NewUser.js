@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 import NewUserForm from '../components/NewUserForm';
 
-//////////////////
 export default function NewUser() {
   const navigate = useNavigate();
   const navigateHome = () => navigate('/');
@@ -30,15 +29,16 @@ export default function NewUser() {
     
         // Handle the response data if needed
         console.log('Server response:', responseData);
-    
-        // ... rest of your logic
+
+        navigateLogin();
+  
       } catch (error) {
         // Handle any errors that occurred during the request
         console.error('Error submitting form data:', error.message);
       }
     };
 
-  /* need a comment on what this is doing */
+  //html
   return (
     <div id='page-wrapper' className='page-wrapper'>
       <AppHeader masthead={'Beach Volleyball Stats App'}
