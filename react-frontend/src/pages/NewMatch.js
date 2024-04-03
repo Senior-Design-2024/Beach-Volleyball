@@ -61,6 +61,9 @@ export default function NewMatch() {
   
       // Handle the response data if needed
       console.log('Server response:', responseData);
+
+      navigateSetOverview();
+
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error submitting form data:', error.message);
