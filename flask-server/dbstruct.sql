@@ -36,6 +36,7 @@ CREATE TABLE `match`(
     `team_id` BIGINT UNSIGNED NOT NULL,
     `player1_id` BIGINT UNSIGNED NOT NULL,
     `player2_id` BIGINT UNSIGNED NOT NULL,
+    `pair_id` BIGINT UNSIGNED NOT NULL,
     `opponent1_name` VARCHAR(100),
     `opponent2_name` VARCHAR(100),
     `opponent1_number` INT UNSIGNED,
@@ -51,7 +52,8 @@ CREATE TABLE `match`(
     `strategy` VARCHAR(100),
     CONSTRAINT `match_player2_foreign` FOREIGN KEY(`player2_id`) REFERENCES `player`(`id`),
     CONSTRAINT `match_player1_foreign` FOREIGN KEY(`player1_id`) REFERENCES `player`(`id`),
-    CONSTRAINT `match_team_id_foreign` FOREIGN KEY(`team_id`) REFERENCES `team`(`id`)
+    CONSTRAINT `match_team_id_foreign` FOREIGN KEY(`team_id`) REFERENCES `team`(`id`),
+    CONSTRAINT `match_pair_id_foreign` FOREIGN KEY(`pair_id`) REFERENCES `pair`(`id`)
 );
 CREATE TABLE `match_set`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -50,6 +50,7 @@ def match_add():
     team_id = data.get('team_id')
     player1_id = data.get('player1_id')
     player2_id = data.get('player2_id')
+    pair_id = data.get('pair_id')
     opponent1_name = data.get('opponent1_name') #Can be empty ''
     opponent2_name = data.get('opponent2_name') #Can be empty ''
     opponent1_number = data.get('opponent1_number') #Can be empty ''
@@ -73,11 +74,13 @@ def match_add():
     team = db.session.get(Team, team_id)
     player1 = db.session.get(Player, player1_id)
     player2 = db.session.get(Player, player2_id)
-    if team and player1 and player2:
+    pair = db.session.get(Pair, pair_id)
+    if team and player1 and player2 and pair:
     
         match = Match(team=team,
                       player1=player1,
                       player2=player2,
+                      pair=pair,
                       opponent1_name=opponent1_name,
                       opponent2_name=opponent2_name,
                       opponent1_number=opponent1_number,
@@ -98,7 +101,7 @@ def match_add():
         
         return jsonify({'message': 'Match added successfully'}), 200
     else:
-        return jsonify({'error': 'Team and/or Player not found'}), 404
+        return jsonify({'error': 'Team and/or Player and/or Pair not found'}), 404
 
 @app.route('/addpair', methods=['POST'])
 def pair_add():
