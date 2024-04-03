@@ -71,8 +71,23 @@ class Match(db.Model):
 class MatchSet(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     match_id = db.Column(db.BigInteger, db.ForeignKey('match.id'), nullable=False)
-    match_set_data = db.Column(db.JSON, nullable=False)
-    match = db.relationship('Match', backref=db.backref('set', lazy=True))
+    set_num = db.Column(db.SmallInteger, nullable=False)
+    win_state = db.Column(db.Boolean, nullable=True)
+    match = db.relationship('Match', backref=db.backref('sets', lazy=True))
+
+class Point(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    match_set_id = db.Column(db.BigInteger, db.ForeignKey('match_set.id'), nullable=False)
+    win = db.Column(db.Boolean, nullable=False)
+    match_set = db.relationship('MatchSet', backref=db.backref('points', lazy=True))
+
+class Event(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    point_id = db.Column(db.BigInteger, db.ForeignKey('point.id'), nullable=False)
+    data = db.Column(db.Integer, nullable=False)
+    e_index = db.Column(db.SmallInteger, nullable=False)
+    point = db.relationship('Point', backref=db.backref('events', lazy=True))
+
 
 import find_path
 import add_path

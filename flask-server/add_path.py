@@ -1,4 +1,4 @@
-from __main__ import app, db, User, Team, Player, Team, Match, MatchSet, Pair
+from __main__ import app, db, User, Team, Player, Team, Match, MatchSet, Point, Event, Pair
 from flask import jsonify, request
 # Routes for adding items to respective tables
 
@@ -125,13 +125,40 @@ def pair_add():
 def set_add():
     data = request.json
     match_id = data.get('match_id')
-    match_set_data = data.get('match_set_data')
+    set_num = data.get('set_num')
+    win_state = data.get('win_state')
 
     match = db.session.get(Match, match_id)
     if match:
-        match_set = MatchSet(match=match, match_set_data=match_set_data)
+        match_set = MatchSet(match=match, set_num=set_num, win_state=win_state)
         db.session.add(match_set)
         db.session.commit()
         return jsonify({'message': 'Match set added successfully'}), 200
     else:
         return jsonify({'error': 'Match not found'}), 404
+
+@app.route('/addpoint', methods=['POST'])
+def point_add():
+    data = request.json
+    set_id = data.get('set_id')
+    event_arr = data.get('data')
+    win = data.get('win')
+
+    set = db.session.get(MatchSet, set_id)
+    if set:
+        point = Point(win=win, set=set)
+        db.session.add(point)
+        db.session.commit()
+
+        point = db.session.get()
+        
+        for index, event_data in enumerate(event_arr):
+            val = Event(point=point, index=index, data=event_data)
+            db.session.add(val)
+        
+        db.session.commit()
+
+        return jsonify({'message': 'Point added successfully'}), 200
+
+    else:
+        return jsonify({'error': 'Set not found'}), 404
