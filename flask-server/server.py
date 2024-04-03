@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-#from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select, column, inspect
 import sys
@@ -40,17 +39,17 @@ class Player(db.Model):
 class Pair(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
-    player1 = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
-    player2 = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
     team = db.relationship('Team', backref=db.backref('pairs', lazy=True))
-    player1_rel = db.relationship('Player', foreign_keys=[player1], backref=db.backref('pairs1', lazy=True))
-    player2_rel = db.relationship('Player', foreign_keys=[player2], backref=db.backref('pairs2', lazy=True))
+    player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('pairs1', lazy=True))
+    player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('pairs2', lazy=True))
 
 class Match(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
-    player1 = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
-    player2 = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
     opponent1_name = db.Column(db.String(100))
     opponent2_name = db.Column(db.String(100))
     opponent1_number = db.Column(db.Integer)
@@ -65,8 +64,8 @@ class Match(db.Model):
     sched_start_time = db.Column(db.Time)
     strategy = db.Column(db.Integer)
     team = db.relationship('Team', backref=db.backref('match', lazy=True))
-    player1_rel = db.relationship('Player', foreign_keys=[player1], backref=db.backref('matches1', lazy=True))
-    player2_rel = db.relationship('Player', foreign_keys=[player2], backref=db.backref('matches2', lazy=True))
+    player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('matches1', lazy=True))
+    player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('matches2', lazy=True))
 
 class MatchSet(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
@@ -122,8 +121,8 @@ def add_player():
 def match_add():
     data = request.json
     team_id = data.get('team_id')
-    player1_id = data.get('player1')
-    player2_id = data.get('player2')
+    player1_id = data.get('player1_id')
+    player2_id = data.get('player2_id')
     opponent1_name = data.get('opponent1_name') #Can be empty ''
     opponent2_name = data.get('opponent2_name') #Can be empty ''
     opponent1_number = data.get('opponent1_number') #Can be empty ''
@@ -150,8 +149,8 @@ def match_add():
     if team and player1 and player2:
     
         match = Match(team=team,
-                      player1=player1_id,
-                      player2=player2_id,
+                      player1=player1,
+                      player2=player2,
                       opponent1_name=opponent1_name,
                       opponent2_name=opponent2_name,
                       opponent1_number=opponent1_number,
@@ -178,21 +177,19 @@ def match_add():
 def pair_add():
     data = request.json
     team_id = data.get('team_id')
-    player1_id = data.get('player1')
-    player2_id = data.get('player2')
+    player1_id = data.get('player1_id')
+    player2_id = data.get('player2_id')
 
     team = db.session.get(Team, team_id)
     player1 = db.session.get(Player, player1_id)
     player2 = db.session.get(Player, player2_id)
-    print(player1.name, flush=True)
-    print(player2.name, flush=True)
     if team and player1 and player2:
-        pair = Pair(team=team, player1=player1_id, player2=player2_id)
+        pair = Pair(team=team, player1=player1, player2=player2, player1_id=player1_id, player2_id=player2_id)
         db.session.add(pair)
         db.session.commit()
         return jsonify({'message': 'Pair added successfully'}), 200
     else:
-        return jsonify({'error': 'Match or player not found'}), 404
+        return jsonify({'error': 'Team or player not found'}), 404
 
 @app.route('/addset', methods=['POST'])
 def set_add():
@@ -208,42 +205,6 @@ def set_add():
         return jsonify({'message': 'Match set added successfully'}), 200
     else:
         return jsonify({'error': 'Match not found'}), 404
-    
-@app.route('/matchquery', methods=['GET'])
-def match_data():
-
-    def generate_random_numbers():
-        random_numbers = [round(random.uniform(1, 3), 2) for _ in range(20)]
-        return random_numbers
-
-    output = {
-        'action' : [
-        "attack swing",
-        "attack roll",
-        "attack poke",
-        "attack bump",
-        "attack set",
-        "option swing",
-        "option roll",
-        "option poke",
-        "option bump",
-        "option set",
-        "dig swing",
-        "dig roll",
-        "dig poke",
-        "dig bump",
-        "dig set",
-        "set platform",
-        "set error",
-        "block overpass",
-        "block term",
-        "block control"],
-
-        'player_1_average' : generate_random_numbers(),
-        'player_2_average' : generate_random_numbers()
-    }
-
-    return jsonify(output)
 
 @app.route('/find', methods=['GET'])
 def find_db():
@@ -298,6 +259,8 @@ def find_db():
     output = [to_dict(result) for result in results]
 
     return jsonify(output), 200
+
+import more_paths
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
