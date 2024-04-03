@@ -77,7 +77,7 @@ export default function Players() {
   const navigateEditTeam = () => navigate('/EditTeam');
   const navigatePlayerOverview = () => navigate('/PlayerOverview', {state: {teamdId: teamId}});
   const navigateAddPlayer = () => navigate('/AddPlayer', {state: {teamId: teamId}});
-  const navigatePairs = () => navigate('/Pairs');
+  const navigatePairs = () => navigate('/Pairs', {state: {teamId: teamId}});
 
   //html
   return (
@@ -90,12 +90,12 @@ export default function Players() {
       />
 
       <div id='display-players'>
-        {players.map(( (player) => (
+        {players.map( (player) => (
           <div key={player.id} id='button-wrapper'>
             <br/>
             <BasicButton onClick={navigatePlayerOverview} buttonText={player.name}/>
           </div>
-        )))}
+        ))}
       </div>
       
       <div>

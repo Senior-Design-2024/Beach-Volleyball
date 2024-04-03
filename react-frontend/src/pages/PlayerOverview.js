@@ -2,8 +2,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 
 export default function PlayerOverview() {
-const location = useLocation();
-const teamId = location.teamId;
+  const location = useLocation();
+  const teamId = location.teamId;
 
   const navigate = useNavigate();
   const navigatePlayers = () => navigate('/Players', {state: {teamId: teamId}});
