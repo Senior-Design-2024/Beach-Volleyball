@@ -74,14 +74,14 @@ export default function NewMatch() {
   //html
   return (
     <div id='page-wrapper' className='page-wrapper'>
-        <AppHeader masthead='New Match'
-          leftButtonNames={['']}
-          leftButtonFunctions={[]}
-          rightButtonNames={['back to matches']}
-          rightButtonFunctions={[navigateMatches]}
-        />
+      <AppHeader masthead='New Match'
+        leftButtonNames={['']}
+        leftButtonFunctions={[]}
+        rightButtonNames={['back to matches']}
+        rightButtonFunctions={[navigateMatches]}
+      />
 
-        <NewMatchForm onSubmit={handleFormSubmit} teamId={teamId} pairId={pairId} players={players}/>
+      <NewMatchForm onSubmit={handleFormSubmit} teamId={teamId} pairId={pairId} players={players}/>
     </div>
 
   );

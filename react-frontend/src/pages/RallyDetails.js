@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
+import RallyDetailsForm from '../components/RallyDetailsForm';
 
 export default function RallyDetails() {
   const location = useLocation();
@@ -13,8 +14,8 @@ export default function RallyDetails() {
   //html
   return (
     <div>
-        <p>Rally details page</p>
-        <BasicButton onClick={navigateRally} buttonText='rally'></BasicButton>
+      <p>Rally details</p>
+      <RallyDetailsForm onSubmit={navigateRally}/>
     </div>
   );
 }

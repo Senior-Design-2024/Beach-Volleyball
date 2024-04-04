@@ -1,22 +1,28 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
 import MatchStatsTable from '../components/MatchStatsTable';
+import AppHeader from '../components/AppHeader';
 
-//////////////////
 export default function MatchStats() {
+  const location = useLocation();
+
+  const teamId = location.state.teamId;
+  const pairId = location.state.pairId;
+  const matchId = location.state.matchId;
+
   const navigate = useNavigate();
-  const navigateMatches = () => navigate('/Matches');
+  const navigateMatches = () => navigate('/Matches', {state: {teamId: teamId, pairId: pairId}});
   const navigateEditMatch = () => navigate('/EditMatch');
 
-  /* need a comment on what this is doing */
+  //html
   return (
-    <div>
-        <p>Match stats page</p>
-        <BasicButton onClick={navigateMatches} buttonText='back to matches'></BasicButton>
-        <br/>
-        <BasicButton onClick={navigateEditMatch} buttonText='edit match'></BasicButton>
-        <br/>
-        <MatchStatsTable />
+    <div id='page-wrapper' className='page-wrapper'>
+      <AppHeader masthead='Match stats'
+        leftButtonNames={['Edit match']}
+        leftButtonFunctions={[navigateEditMatch]}
+        rightButtonNames={['back to matches']}
+        rightButtonFunctions={[navigateMatches]}
+      />
     </div>
   );
 }
