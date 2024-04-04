@@ -92,7 +92,7 @@ def generate_beach_volleyball_game(num_points):
 
         if len(quality) == 0 or quality[-1] == 0:
             player.append(random.randint(1,2))
-            action.append("recieve")
+            action.append("receive")
             type_.append(random.choice(["top", "float", "german", "sidespin", "skyball", "other"]))
             quality.append(random.randint(0,4))
             origin.append(random.randint(1,5))

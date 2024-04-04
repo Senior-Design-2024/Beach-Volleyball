@@ -40,7 +40,7 @@ export default function LoginForm({onSubmit}) {
             <tr>
               <td>
                 <label htmlFor='password' className='label'>Password:</label>
-                <input id='password' type='text' name='password' onChange={handleChange}/>
+                <input id='password' type='password' name='password' onChange={handleChange}/>
               </td>
             </tr>
             <tr>
