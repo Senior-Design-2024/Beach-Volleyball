@@ -5,6 +5,7 @@ import AppHeader from '../components/AppHeader';
 import { useState, useEffect } from 'react';
 
 export default function MatchStats() {
+  console.log('1')
   const location = useLocation();
 
   const teamId = location.state.teamId;
@@ -14,21 +15,22 @@ export default function MatchStats() {
   const navigate = useNavigate();
   const navigateMatches = () => navigate('/Matches', {state: {teamId: teamId, pairId: pairId}});
   const navigateEditMatch = () => navigate('/EditMatch');
-
+  console.log('2')
   //player, action, type, quality, origin, dest
   const [spoof, setSpoof] = useState([[], [] ,[] ,[] ,[] ,[]]);
-
+  console.log('3')
   //GETs spoof
   useEffect(() => {
     const getSpoof = async () => {
+      console.log('4')
       try{ 
         const response = await fetch(`/pullmatch`, {
           method: 'GET',
         });
 
         const responseJson = await response.json();
-
-        if(responseJson) {
+        console.log('5')
+        if(responseJson) {  
           console.log(responseJson);
           setSpoof(responseJson);
           console.log(spoof);

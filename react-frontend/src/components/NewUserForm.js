@@ -29,7 +29,7 @@ export default function NewUserForm({onSubmit}) {
     return(
         <div>
             {/* form */}
-            <form id='newUserForm' onSubmit={handleSubmit}>
+            <form id='newUserForm' onSubmit={handleSubmit} autoComplete='off'>
               <table>
                 <tbody>
                   <tr>
