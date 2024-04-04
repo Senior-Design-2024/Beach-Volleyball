@@ -2,6 +2,12 @@ from __main__ import app, db, User, Team, Player, Team, Match, MatchSet, Point, 
 from flask import jsonify, request
 import random
 
+@app.route('/droptables', methods=['GET'])
+def drop_tables():
+    
+    db.drop_all()
+    return jsonify({'message':'Tables dropped successfully'}), 200
+
 @app.route('/find', methods=['GET'])
 def find_db():
 
