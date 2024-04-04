@@ -5,7 +5,15 @@ import random
 @app.route('/droptables', methods=['GET'])
 def drop_tables():
     
-    db.drop_all()
+    User.query.delete()
+    Team.query.delete()
+    Player.query.delete()
+    Pair.query.delete()
+    Match.query.delete()
+    MatchSet.query.delete()
+    Point.query.delete()
+    Event.query.delete()
+    db.session.commit()
     return jsonify({'message':'Tables dropped successfully'}), 200
 
 @app.route('/find', methods=['GET'])
