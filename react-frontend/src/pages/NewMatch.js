@@ -9,11 +9,12 @@ export default function NewMatch() {
 
   const teamId = location.state.teamId;
   const pairId = location.state.pairId;
+
   const [players, setPlayers] = useState([]);
 
   const navigate = useNavigate();
   const navigateMatches = () => navigate('/Matches', {state: {teamId: teamId, pairId: pairId}});
-  const navigateSetOverview = () => navigate('/SetOverview');
+  const navigateSetOverview = () => navigate('/SetOverview', {state: {teamId: teamId, pairId: pairId}});
 
   //GETs players
   useEffect(() => {
@@ -73,14 +74,14 @@ export default function NewMatch() {
   //html
   return (
     <div id='page-wrapper' className='page-wrapper'>
-        <AppHeader masthead='New Match'
-          leftButtonNames={['']}
-          leftButtonFunctions={[]}
-          rightButtonNames={['back to matches']}
-          rightButtonFunctions={[navigateMatches]}
-        />
+      <AppHeader masthead='New Match'
+        leftButtonNames={['']}
+        leftButtonFunctions={[]}
+        rightButtonNames={['back to matches']}
+        rightButtonFunctions={[navigateMatches]}
+      />
 
-        <NewMatchForm onSubmit={handleFormSubmit} teamId={teamId} pairId={pairId} players={players}/>
+      <NewMatchForm onSubmit={handleFormSubmit} teamId={teamId} pairId={pairId} players={players}/>
     </div>
 
   );

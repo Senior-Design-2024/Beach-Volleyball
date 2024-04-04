@@ -15,7 +15,7 @@ export default function Matches() {
   const navigate = useNavigate();
   const navigatePairs = () => navigate('/Pairs', {state: {teamId: teamId}});
   const navigateEditPair = () => navigate('/EditPair');
-  const navigateMatchStats = (id) => navigate('/MatchStats', {state: {matchId: id}});
+  const navigateMatchStats = (id) => navigate('/MatchStats', {state: {matchId: id, teamId: teamId, pairId: pairId}});
   const navigateNewMatch = () => navigate('/NewMatch', {state: {teamId: teamId, pairId: pairId}});
 
    //GETs matches

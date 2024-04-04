@@ -1,16 +1,21 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
+import RallyDetailsForm from '../components/RallyDetailsForm';
 
-//////////////////
 export default function RallyDetails() {
-  const navigate = useNavigate();
-  const navigateRally = () => navigate('/Rally');
+  const location = useLocation();
 
-  /* need a comment on what this is doing */
+  const teamId = location.state.teamId;
+  const pairId = location.state.pairId;
+
+  const navigate = useNavigate();
+  const navigateRally = () => navigate('/Rally', {state: {teamId: teamId, pairId: pairId}});
+
+  //html
   return (
     <div>
-        <p>Rally details page</p>
-        <BasicButton onClick={navigateRally} buttonText='rally'></BasicButton>
+      <p>Rally details</p>
+      <RallyDetailsForm onSubmit={navigateRally}/>
     </div>
   );
 }

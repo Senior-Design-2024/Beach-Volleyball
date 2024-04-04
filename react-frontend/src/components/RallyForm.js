@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function RallyForm({onSubmit}) { 
-    const [formData, aSetFormData] = useState({
+    const [formData, setFormData] = useState({
       player: '',
       attack: '',
       option: '',
@@ -13,8 +13,6 @@ export default function RallyForm({onSubmit}) {
 
     //handles submitting the form
     const handleSubmit = (event) => {
-        //event.preventDefault();
-
         const formDataJson = JSON.stringify(formData);
         
         console.log(formDataJson);
@@ -25,7 +23,7 @@ export default function RallyForm({onSubmit}) {
     const handleChange = (event) => {
         const { name, value } = event.target;
         // Update the state when form fields Change
-        aSetFormData(prevState => ({
+        setFormData(prevState => ({
           ...prevState,
           [name]: value,
         }));
@@ -35,7 +33,7 @@ export default function RallyForm({onSubmit}) {
     return(
         <div>
             {/* form */}
-            <form id='newUserForm' onSubmit={handleSubmit}>
+            <form id='rallyForm' onSubmit={handleSubmit}>
               <table>
                 <tbody>
                   <tr>

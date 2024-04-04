@@ -1,12 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BasicButton } from '../components/basic_components'
 import ServingForm from '../components/ServingForm';
 
-//////////////////
 export default function Serving() {
+  const location = useLocation();
+
+  const teamId = location.state.teamId;
+  const pairId = location.state.pairId;
+
   const navigate = useNavigate();
-  const navigateSetOverview = () => navigate('/SetOverview');
-  const navigateRally = () => navigate('/Rally');
+  const navigateSetOverview = () => navigate('/SetOverview', {state: {teamId: teamId, pairId: pairId}});
+  const navigateRally = () => navigate('/Rally', {state: {teamId: teamId, pairId: pairId}});
 
   //takes the JSON from the form and sends it to the server
   const handleFormSubmit = async (formDataJson) => {
