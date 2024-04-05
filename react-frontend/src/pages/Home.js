@@ -19,7 +19,7 @@ export default function Home() {
         rightButtonNames={['Login']}
         rightButtonFunctions={[navigateLogin]}/>
 
-      <Clear/>
+      {/*Clear/>*/}
 
       <h1>About us</h1>
       <p>

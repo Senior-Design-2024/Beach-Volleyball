@@ -44,11 +44,13 @@ export default function AddPlayer() {
         rightButtonFunctions={[navigatePlayers]}
       />
       <AddPlayerForm onSubmit={handleFormSubmit} teamId={teamId}/>
+      {/*
       <p>
         *dev notes*<br/>
         There is no functionality or security implemented for this form<br/>
         Clicking submit will progress you
       </p>
+  */}
     </div>
   );
 }

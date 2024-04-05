@@ -54,12 +54,14 @@ export default function Login() {
 
         <h1>login page</h1>
         <LoginForm onSubmit={handleLoginSubmit}/>
+        {/*
         <p>
           *dev notes*<br/>
           There is no security implemented for this form<br/>
           Just enter your email into the username section<br/>
           Clicking submit will progress you to the teams page as if the user successfully logged in
         </p>
+  */}
     </div>
   );
 }
