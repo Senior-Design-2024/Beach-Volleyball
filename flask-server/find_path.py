@@ -2,19 +2,27 @@ from __main__ import app, db, User, Team, Player, Team, Match, MatchSet, Point, 
 from flask import jsonify, request
 import random
 
-@app.route('/droptables', methods=['GET'])
-def drop_tables():
+@app.route('/wipetables', methods=['GET'])
+def wipe_tables():
     
-    User.query.delete()
-    Team.query.delete()
-    Player.query.delete()
-    Pair.query.delete()
-    Match.query.delete()
-    MatchSet.query.delete()
-    Point.query.delete()
-    Event.query.delete()
-    db.session.commit()
-    return jsonify({'message':'Tables dropped successfully'}), 200
+    data = request.args
+    
+    if data.get('\o5dM]\2X`7]&Qhm.$g/') == 'msU12|VV|7^^|w%P+)PD':
+
+        User.query.delete()
+        Team.query.delete()
+        Player.query.delete()
+        Pair.query.delete()
+        Match.query.delete()
+        MatchSet.query.delete()
+        Point.query.delete()
+        Event.query.delete()
+        db.session.commit()
+        return jsonify({'message':'Tables dropped successfully'}), 200
+    
+    else:
+
+        return jsonify({'message':'Ha, lmao you thought'}), 201
 
 @app.route('/find', methods=['GET'])
 def find_db():
@@ -143,8 +151,8 @@ def generate_beach_volleyball_game(num_points):
     
     return player, action, type_, quality, origin, dest
 
-@app.route('/pullmatch', methods=['GET'])
-def match_pull():
+@app.route('/testgame', methods=['GET'])
+def game_test():
     
     player, action, type_, quality, origin, dest = generate_beach_volleyball_game(42)
 
