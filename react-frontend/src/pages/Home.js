@@ -20,7 +20,7 @@ export default function Home() {
         rightButtonFunctions={[navigateLogin]}/>
 
       {/*Clear/>*/}
-
+      {/*change for testing*/}
       <h1>About us</h1>
       <p>
           Beach volleyball stats app is a senior design project being built by Bear Moran and Ryland Seagraves at the request of Buzz Patrick.
