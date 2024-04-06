@@ -1,26 +1,14 @@
-import React from 'react'
 import '../App.css'
-import { useNavigate } from 'react-router-dom';
-import AppHeader from '../components/AppHeader';
-import Clear from '../components/Clear'
 
-export default function Home() {
-  const navigate = useNavigate();
-  const navigateHome = () => navigate('/');
-  const navigateNewUser = () => navigate('/NewUser');
-  const navigateLogin = () => navigate('/Login');
-  
-  //html
+export default function Main() {
   return (
-    <div id='page-wrapper' className='page-wrapper'>
+    <div id='main-page-wrapper' className='page-wrapper'>
       <AppHeader masthead={'Beach Volleyball Stats App'}
-        leftButtonNames={['Home', 'Create Account']}
+        leftButtonNames={['']}
         leftButtonFunctions={[navigateHome, navigateNewUser]}
-        rightButtonNames={['Login']}
+        rightButtonNames={['']}
         rightButtonFunctions={[navigateLogin]}/>
 
-      {/*Clear/>*/}
-      {/*change for testing*/}
       <h1>About us</h1>
       <p>
           Beach volleyball stats app is a senior design project being built by Bear Moran and Ryland Seagraves at the request of Buzz Patrick.
@@ -31,11 +19,7 @@ export default function Home() {
         In the latter case, we have nothing of interest for you, so it is best you move along.
         If you are viewing this page on the internet, a special thanks goes out to Ryland for getting AWS up and running.
         <br/>
-          {/*Feel free to explore. The following image may be helpful for navigating the aqua buttons.*/}
       </p>
-      {/*
-      <img src='../images/bvsa_flowchart.png' alt='bvsa_flowchart'></img>
-  */}
     </div>
   );
 }
