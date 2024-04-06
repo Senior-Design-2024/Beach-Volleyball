@@ -16,8 +16,10 @@ export default function NewUser() {
     }))
   }
 
-  const handleSubmit = () => {
-    console.log('one');
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const variable = postRequest(userInfo, 'adduser');
   }
 
   return(

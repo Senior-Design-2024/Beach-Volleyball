@@ -1,14 +1,13 @@
 //Takes a json of an object and the name of the api call to make
 //Returns an object from the response
-const postRequest = async (json, apiCall) => {
-  /*
+export const postRequest = async (jsonData, apiCall) => {
   try {
     const response = await fetch(`/${apiCall}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json,
+      body: JSON.stringify(jsonData),
     });
 
     if(!response.ok){
@@ -20,11 +19,7 @@ const postRequest = async (json, apiCall) => {
 
     console.log('Server reponse object:', responseObject);
 
-    return(responseObject);
-
   } catch (error) {
     console.error('Error submitting json:', error.message);
   }
-  */
- console.log('testig');
 }
