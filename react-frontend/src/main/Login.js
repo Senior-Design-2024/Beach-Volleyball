@@ -1,32 +1,37 @@
 import React, { useState } from 'react';
+import { getRequest } from '../utils';
 
-export default function Login({onSubmit}) { 
-  const [loginData, setLoginData] = useState({
+export default function Login({onSubmit, navigateUser}) { 
+  const [loginInfo, setLoginInfo] = useState({
       email: '',
   });
 
-  //handles submitting the form
-  const handleSubmit = (event) => {
-      event.preventDefault();
-
-      const formDataJson = JSON.stringify(loginData);
-
-      onSubmit(formDataJson);
-  };
-
   const handleChange = (event) => {
-      const { name, value } = event.target;
-      // Update the state when form fields Change
-      setLoginData(prevState => ({
-        ...prevState,
-        [name]: value,
-      }));
-    };
+    const {name, value} = event.target;
+
+    setLoginInfo(prev => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    getRequest('user', 'email', loginInfo.email).then(
+      (userArray) => {
+        navigateUser(userArray[0].id);
+      }).catch(
+        (error) => {
+          console.error('Error:', error);
+        }
+    );
+    //navigateUser( getRequest('user', 'email', loginInfo.email)[0].id );
+  }
 
   //html
   return(
     <div id='form-wrapper'>
-      {/* form */}
       <form id='loginForm' onSubmit={handleSubmit} autoComplete='on'>
         <table>
           <tbody>

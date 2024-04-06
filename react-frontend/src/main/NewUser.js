@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { postRequest } from '../utils'
 
-export default function NewUser() {
+export default function NewUser({dispLogin}) {
   const [userInfo, setUserInfo] = useState({
     username: '',
     email: '',
@@ -18,8 +18,10 @@ export default function NewUser() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
-    const variable = postRequest(userInfo, 'adduser');
+
+    postRequest(userInfo, 'adduser');
+
+    dispLogin();
   }
 
   return(
