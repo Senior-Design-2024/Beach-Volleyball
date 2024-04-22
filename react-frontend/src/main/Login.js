@@ -31,7 +31,7 @@ export default function Login({onSubmit, navigateUser}) {
 
   //html
   return(
-    <div id='form-wrapper'>
+    <div id='login'>
       <form id='loginForm' onSubmit={handleSubmit} autoComplete='on'>
         <table>
           <tbody>
