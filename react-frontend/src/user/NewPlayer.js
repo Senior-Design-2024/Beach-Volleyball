@@ -3,15 +3,18 @@ import { UserContext } from "./User"
 import { postRequest } from "../utils"
 
 export default function NewPlayer(props) {
-  const {teamData, playerData, setPlayerData} = useContext(UserContext)
+  const {teamData, playerData, setPlayerData, getPlayers} = useContext(UserContext)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
-    postRequest({'team_id': teamData.team_id,
+    await postRequest({'team_id': teamData.team_id,
                  'player_name': playerData.player_name,
                  'description': playerData.description,},
                  'addplayer')
+    await getPlayers()
+
+    props.dispPlayers()
   }
 
   const handleChange = (event) => {

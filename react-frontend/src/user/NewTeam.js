@@ -6,15 +6,15 @@ export default function NewTeam(props) {
   const {user_id, getTeams, teamData, setTeamData} = useContext(UserContext)
 
   //handles submitting the form
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     const formDataJson = JSON.stringify({'user_id': user_id, 'team_id': teamData.team_name})
     console.log(formDataJson)
 
-    postRequest({'user_id': user_id, 'team_name': teamData.team_name}, 'addteam')
-    getTeams();
-
+    await postRequest({'user_id': user_id, 'team_name': teamData.team_name}, 'addteam')
+    await getTeams()
+    
     props.dispTeams()
   };
 

@@ -44,22 +44,22 @@ export default function User() {
     getTeams()
   }, [user_id]);
 
+  //getPlayers
+  const getPlayers = () => {
+    console.log('run getPlayers')
+    findRequest('player', 'team_id', teamData.team_id).then(
+      (players) => {
+        setTeamData(prevState => ({
+          ...prevState,
+          players: players,
+        }));
+      }).catch(
+        (error) => {
+          console.error('Error', error);
+        }
+    );
+  };
   useEffect(() => {
-    const getPlayers = () => {
-      console.log('run getPlayers')
-      findRequest('player', 'team_id', teamData.team_id).then(
-        (players) => {
-          setTeamData(prevState => ({
-            ...prevState,
-            players: players,
-          }));
-        }).catch(
-          (error) => {
-            console.error('Error', error);
-          }
-      );
-    };
-    
     if (teamData.team_id !== -1) {
       getPlayers();
     }
@@ -93,7 +93,7 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, playerData, setPlayerData}}>
+      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, getPlayers, playerData, setPlayerData}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
         {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
         {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer}/>}

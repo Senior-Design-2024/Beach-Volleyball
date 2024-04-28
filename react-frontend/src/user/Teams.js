@@ -12,7 +12,6 @@ export default function Teams(props) {
       team_name: team_name,
     }))
     
-
     props.dispPlayers()
   }
   
