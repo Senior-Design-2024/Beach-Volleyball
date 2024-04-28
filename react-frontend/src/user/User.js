@@ -7,6 +7,7 @@ import NewTeam from './NewTeam';
 import { useLocation } from 'react-router-dom';
 import { findRequest } from '../utils';
 import Players from './Players';
+import NewPlayer from './NewPlayer';
 
 export const UserContext = createContext();
 
@@ -21,9 +22,15 @@ export default function User() {
     team_id: -1,
     players: [],
   })
+  const [playerData, setPlayerData] = useState({
+    player_id: -1,
+    player_name: '',
+    description: '',
+  })
 
   //GETs the teams and setTeams
   const getTeams = () => {
+    console.log('run getTeams')
     findRequest('team', 'user_id', user_id).then(
       (teams) => {
         setTeams(teams)
@@ -39,6 +46,7 @@ export default function User() {
 
   useEffect(() => {
     const getPlayers = () => {
+      console.log('run getPlayers')
       findRequest('player', 'team_id', teamData.team_id).then(
         (players) => {
           setTeamData(prevState => ({
@@ -51,11 +59,11 @@ export default function User() {
           }
       );
     };
-    console.log('slkj')
+    
     if (teamData.team_id !== -1) {
       getPlayers();
     }
-  }, [teamData.team_id]); 
+  }, [teamData.team_id]);
   
 
   //display
@@ -68,6 +76,9 @@ export default function User() {
   }
   const dispPlayers = () => {
     setCurrentView('players')
+  }
+  const dispNewPlayer = () => {
+    setCurrentView('newPlayer')
   }
   
   const navigate = useNavigate()
@@ -82,10 +93,11 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData}}>
+      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, playerData, setPlayerData}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
         {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
-        {currentView === 'players' && <Players/>}
+        {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer}/>}
+        {currentView === 'newPlayer' && <NewPlayer dispPlayers={dispPlayers}/>}
       </UserContext.Provider>
     </div>
   );

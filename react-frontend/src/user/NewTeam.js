@@ -20,17 +20,17 @@ export default function NewTeam(props) {
 
   // Update the state when form fields change
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
       
     setTeamData(prevState => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   return(
     <div id='new-team'>
-      <form id='newTeamForm' onSubmit={handleSubmit}>
+      <form id='new-player-form' onSubmit={handleSubmit}>
         <table>
           <tbody>
             <tr>
