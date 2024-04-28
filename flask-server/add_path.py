@@ -136,12 +136,38 @@ def set_add():
         return jsonify({'message': 'Match set added successfully'}), 200
     else:
         return jsonify({'error': 'Match not found'}), 404
+    
+
+def add_events_db(destination, origin, quality, a_type, action, player, point_id):
+
+    point = db.session.get(Point, point_id)
+
+    for i in player.length:
+        play_sh = player[i]
+        acti_sh = action[i] << 2
+        type_sh = a_type[i] << 5
+        qual_sh = quality[i] << 10
+        orig_sh = origin[i] << 13
+        dest_sh = destination[i] << 17
+        
+        data = play_sh | acti_sh | type_sh | qual_sh | orig_sh | dest_sh
+
+        event = Event(point=point, data=data, e_index=i)
+        db.session.add(event)
+        db.session.commit()
+
+    return True
 
 @app.route('/addpoint', methods=['POST'])
 def point_add():
     data = request.json
     set_id = data.get('set_id')
-    event_arr = data.get('data')
+    destination = data.get('destination')
+    origin = data.get('origin')
+    quality = data.get('quality')
+    a_type = data.get('type')
+    action = data.get('action')
+    player = data.get('player')
     win = data.get('win')
 
     set = db.session.get(MatchSet, set_id)
@@ -149,16 +175,17 @@ def point_add():
         point = Point(win=win, set=set)
         db.session.add(point)
         db.session.commit()
-
-        point = db.session.get()
         
-        for index, event_data in enumerate(event_arr):
-            val = Event(point=point, index=index, data=event_data)
-            db.session.add(val)
-        
-        db.session.commit()
+        if add_events_db(destination, origin, quality, a_type, action, player, point.id):
 
-        return jsonify({'message': 'Point added successfully'}), 200
+            return jsonify({'message': 'Point added successfully'}), 200
+        
+        else:
+
+            db.session.delete(point)
+            db.session.commit()
+
+            return jsonify({'error': 'problem adding events, point has been deleted'})
 
     else:
         return jsonify({'error': 'Set not found'}), 404
