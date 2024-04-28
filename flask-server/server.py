@@ -91,6 +91,8 @@ class Event(db.Model):
 
 import find_path
 import add_path
+import del_path
+import mod_path
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
