@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getRequest } from '../utils';
+import { findRequest } from '../utils';
 
 export default function Login({onSubmit, navigateUser}) { 
   const [loginInfo, setLoginInfo] = useState({
@@ -18,14 +18,14 @@ export default function Login({onSubmit, navigateUser}) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    getRequest('user', 'email', loginInfo.email).then(
+    findRequest('user', 'email', loginInfo.email).then(
       (userArray) => {
         navigateUser(userArray[0].id);
       }).catch(
         (error) => {
           console.error('Error:', error);
         }
-    );
+    )
   }
 
   //html

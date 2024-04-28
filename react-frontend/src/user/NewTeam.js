@@ -3,7 +3,7 @@ import { UserContext } from './User';
 import { postRequest } from '../utils';
 
 export default function NewTeam(props) {
-  const {user_id, teamData, setTeamData} = useContext(UserContext)
+  const {user_id, getTeams, teamData, setTeamData} = useContext(UserContext)
 
   //handles submitting the form
   const handleSubmit = (event) => {
@@ -12,7 +12,10 @@ export default function NewTeam(props) {
     const formDataJson = JSON.stringify({'user_id': user_id, 'team_id': teamData.team_name})
     console.log(formDataJson)
 
-    postRequest({'user_id': user_id, 'email': 'test@gmail.com'}, 'addteam')
+    postRequest({'user_id': user_id, 'team_name': teamData.team_name}, 'addteam')
+    getTeams();
+
+    props.dispTeams()
   };
 
   // Update the state when form fields change

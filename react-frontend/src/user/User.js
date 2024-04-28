@@ -5,6 +5,7 @@ import { useState, useEffect, createContext } from 'react';
 import Teams from './Teams';
 import NewTeam from './NewTeam';
 import { useLocation } from 'react-router-dom';
+import { findRequest } from '../utils';
 
 export const UserContext = createContext();
 
@@ -21,31 +22,18 @@ export default function User() {
   })
 
   //GETs the teams and setTeams
-  useEffect(() => {
-    const getTeams = async () => {
-      try{
-        const queryParams = new URLSearchParams({table: 'team'});
-        queryParams.append('user_id', user_id);
-
-        const response = await fetch(`/find?${queryParams}`, {
-          method: 'GET',
-        });
-
-        //convert response to JSON
-        const responseJson = await response.json();
-
-        //check if responseJson array is not empty and contains the expected data structure
-        if (responseJson) {
-          setTeams(responseJson);
-        } else {
-          console.error('Invalid response data');
+  const getTeams = () => {
+    findRequest('team', 'user_id', user_id).then(
+      (teams) => {
+        setTeams(teams)
+      }).catch(
+        (error) => {
+          console.error('Error:', error)
         }
-      } catch (error) {
-        console.error('Error with getTeams', error);
-      }
-    };
-
-    getTeams();
+    )
+  }
+  useEffect(() => {
+    getTeams()
   }, [user_id]);
 
 
@@ -70,9 +58,9 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams, teamData, setTeamData}}>
+      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam}/>}
-        {currentView === 'newTeam' && <NewTeam/>}
+        {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
       </UserContext.Provider>
     </div>
   );

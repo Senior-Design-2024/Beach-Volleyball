@@ -24,7 +24,7 @@ export const postRequest = async (jsonData, apiCall) => {
 }
 
 //Calls to server /find. t specifies table, property specifies lookup parameter, and match is what property must match
-export const getRequest = async (t, property, match) => {
+export const findRequest = async (t, property, match) => {
   try {
     const queryParams = new URLSearchParams({table: `${t}`});
     queryParams.append(`${property}`, match);
@@ -43,3 +43,5 @@ export const getRequest = async (t, property, match) => {
     console.error('Error getting:', error.message);
   }
 }
+
+
