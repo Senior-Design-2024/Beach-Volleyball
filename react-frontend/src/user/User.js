@@ -13,7 +13,12 @@ export default function User() {
   const location = useLocation()
   const user_id = location.state.user_id
 
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState([])
+  const [teamData, setTeamData] = useState({
+    team_name: '',
+    team_id: '',
+    players: [],
+  })
 
   //GETs the teams and setTeams
   useEffect(() => {
@@ -65,7 +70,7 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams}}>
+      <UserContext.Provider value={{user_id, teams, setTeams, teamData, setTeamData}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam}/>}
         {currentView === 'newTeam' && <NewTeam/>}
       </UserContext.Provider>
