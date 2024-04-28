@@ -19,7 +19,7 @@ def update_entity(entity_type, id):
 
         entity = db.session.get(Team, id)
 
-        user = User.query.filter_by(email=data.get('email')).first()
+        user = db.session.get(User, data.get('user_id'))
 
         if entity and user:
             entity.name = data.get('team_name', entity.name)
@@ -28,6 +28,7 @@ def update_entity(entity_type, id):
     elif entity_type == 'player':
 
         entity = db.session.get(Player, id)
+
         team = db.session.get(Team, data.get('team_id'))
 
         if entity and team:
@@ -40,10 +41,10 @@ def update_entity(entity_type, id):
 
         entity = db.session.get(Match, id)
 
-        team = db.session.get(Team, entity.team_id)
-        player1 = db.session.get(Player, entity.player1_id)
-        player2 = db.session.get(Player, entity.player2_id)
-        pair = db.session.get(Pair, entity. pair_id)
+        team = db.session.get(Team, data.get('team_id'))
+        player1 = db.session.get(Player, data.get('player1_id'))
+        player2 = db.session.get(Player, data.get('player2_id'))
+        pair = db.session.get(Pair, data.get('pair_id'))
 
         if entity and pair and team and player1 and player2:
 
@@ -68,9 +69,9 @@ def update_entity(entity_type, id):
     elif entity_type == 'pair':
         entity = db.session.get(Pair, id)
 
-        player1 = db.session.get(Player, entity.player1_id)
-        player2 = db.session.get(Player, entity.player2_id)
-        team = db.session.get(Team, entity.team_id)
+        player1 = db.session.get(Player, data.get('player1_id'))
+        player2 = db.session.get(Player, data.get('player2_id'))
+        team = db.session.get(Team, data.get('team_id'))
 
         if entity and player1 and player2 and team:
                 entity.player1 = player1
@@ -80,7 +81,7 @@ def update_entity(entity_type, id):
     elif entity_type == 'set':
         entity = db.session.get(MatchSet, id)
 
-        match = db.session.get(Match, match_id)
+        match = db.session.get(Match, data.get('match_id'))
 
         if entity and match:
             entity.match = match

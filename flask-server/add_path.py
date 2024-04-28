@@ -16,9 +16,9 @@ def user_add():
 def team_add():
     data = request.json
     team_name = data.get('team_name')
-    email = data.get('email')
+    user_id = data.get('user_id')
 
-    user = User.query.filter_by(email=email).first()
+    user = db.session.get(User, user_id)
     if user:
         team = Team(user=user, name=team_name)
         db.session.add(team)
