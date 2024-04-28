@@ -2,7 +2,7 @@ from __main__ import app, db, User, Team, Player, Team, Match, MatchSet, Point, 
 from flask import jsonify, request
 
 @app.route('/del/<entity_type>/<int:id>', methods=['DELETE'])
-def update_entity(entity_type, id):
+def delete_entity(entity_type, id):
     entity = None
     if entity_type == 'user':
         entity = User.query.get(id)
