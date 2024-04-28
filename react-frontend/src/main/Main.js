@@ -14,7 +14,9 @@ export default function Main() {
   const dispLogin = () => {setCurrentView('login')}
 
   const navigate = useNavigate();
-  const navigateUser = (user_id) => navigate('/User', {state: {user_id: user_id}})
+  const navigateUser = (user_id) => {
+    navigate('/User', {state: {user_id: user_id}})
+  }
   
   //html
   return (

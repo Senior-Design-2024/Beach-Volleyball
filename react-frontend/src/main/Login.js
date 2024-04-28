@@ -26,7 +26,6 @@ export default function Login({onSubmit, navigateUser}) {
           console.error('Error:', error);
         }
     );
-    //navigateUser( getRequest('user', 'email', loginInfo.email)[0].id );
   }
 
   //html

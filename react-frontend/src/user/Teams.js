@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from './User';
 
-export default function Teams() { 
+export default function Teams(props) { 
+  const {user_id} = useContext(UserContext)
 
-  //html
   return(
     <div id='teams'>
-      <p>teams</p>
+      <button onClick={props.dispNewTeam}>New Team</button>
     </div>
   )
 }

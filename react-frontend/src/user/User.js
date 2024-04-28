@@ -1,17 +1,58 @@
 import '../App.css'
 import AppHeader from '../components/AppHeader';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import Teams from './Teams';
+import NewTeam from './NewTeam';
 import { useLocation } from 'react-router-dom';
 
+export const UserContext = createContext();
+
 export default function User() {
+  //data
   const location = useLocation()
-  const user_id = location.user_id
+  const user_id = location.state.user_id
 
+  const [teams, setTeams] = useState([]);
+
+  //GETs the teams and setTeams
+  useEffect(() => {
+    const getTeams = async () => {
+      try{
+        const queryParams = new URLSearchParams({table: 'team'});
+        queryParams.append('user_id', user_id);
+
+        const response = await fetch(`/find?${queryParams}`, {
+          method: 'GET',
+        });
+
+        //convert response to JSON
+        const responseJson = await response.json();
+
+        //check if responseJson array is not empty and contains the expected data structure
+        if (responseJson) {
+          setTeams(responseJson);
+        } else {
+          console.error('Invalid response data');
+        }
+      } catch (error) {
+        console.error('Error with getTeams', error);
+      }
+    };
+
+    getTeams();
+  }, [user_id]);
+
+
+  //display
   const [currentView, setCurrentView] = useState('teams')
-  const dispTeams = () => {setCurrentView('teams')}
-
+  const dispTeams = () => {
+    setCurrentView('teams')
+  }
+  const dispNewTeam = () => {
+    setCurrentView('newTeam')
+  }
+  
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
 
@@ -22,8 +63,12 @@ export default function User() {
         leftButtonFunctions={[]}
         rightButtonNames={['Logout']}
         rightButtonFunctions={[navigateMain]}/>
-
-      {currentView === 'teams' && <Teams/>}
+      
+      {/*children*/}
+      <UserContext.Provider value={{user_id, teams, setTeams}}>
+        {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam}/>}
+        {currentView === 'newTeam' && <NewTeam/>}
+      </UserContext.Provider>
     </div>
   );
 }

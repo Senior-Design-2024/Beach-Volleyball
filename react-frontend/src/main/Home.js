@@ -1,8 +1,6 @@
 export default function Home() {
   return(
     <div id='home'>
-      <p>Help.</p>
-      {/*
       <h1>About us</h1>
       <p>
           Beach volleyball stats app is a senior design project being built by Bear Moran and Ryland Seagraves at the request of Buzz Patrick.
@@ -14,7 +12,6 @@ export default function Home() {
         If you are viewing this page on the internet, a special thanks goes out to Ryland for getting AWS up and running.
         <br/>
       </p>
-  */}
     </div>
   );
 }
