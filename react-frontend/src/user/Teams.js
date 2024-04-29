@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { UserContext } from './User';
 
 export default function Teams(props) { 
-  const {teams, setTeamData} = useContext(UserContext)
+  const {userData, setTeamData} = useContext(UserContext)
 
   const selectTeam = (team_id, team_name) => {
     console.log('run selectTeam')
@@ -20,7 +20,7 @@ export default function Teams(props) {
       <button onClick={props.dispNewTeam}>New Team</button>
 
       <div id='list-teams'>
-        {teams.map(( (team) => (
+        {userData.teams.map(( (team) => (
           <div key={team.id} id='button-wrapper'>
             <br/>
             <button onClick={() => selectTeam(team.id, team.name)}>{team.name}</button>

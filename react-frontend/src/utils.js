@@ -35,7 +35,7 @@ export const findRequest = async (t, property, search) => {
 
     const responseJson = await response.json();
 
-    console.log('Server response json:', responseJson);
+    console.log(`Server response to find ${t} table:`, responseJson);
 
     return(responseJson)
 
@@ -44,13 +44,15 @@ export const findRequest = async (t, property, search) => {
   }
 }
 
-export const getAndSetArr = (t, property, search, setFunction, arrName) => {
+export const getAndSetArr = async (t, property, search, setFunction, arrName) => {
+  console.log('run getAndSetArr')
   findRequest(t, property, search).then(
     (arr) => {
       setFunction(prevState => ({
         ...prevState,
         [arrName]: arr,
       }))
-    }
-  )
+    }).catch( (error) => {
+      console.error('Error with getAndSetArr', error)
+    })
 }

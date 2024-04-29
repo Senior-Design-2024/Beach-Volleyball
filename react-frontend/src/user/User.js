@@ -5,21 +5,24 @@ import { useState, useEffect, createContext } from 'react';
 import Teams from './Teams';
 import NewTeam from './NewTeam';
 import { useLocation } from 'react-router-dom';
-import { findRequest, getAndSetArr } from '../utils';
+import { findRequest, getAndSetArr, test} from '../utils';
 import Players from './Players';
 import NewPlayer from './NewPlayer';
 import Pairs from './Pairs';
 import NewPair from './NewPair';
-import '../utils';
 
 export const UserContext = createContext();
 
 export default function User() {
   //data
   const location = useLocation()
-  const user_id = location.state.user_id
 
-  const [teams, setTeams] = useState([])
+  const [userData, setUserData] = useState({
+    user_id: null,
+    user_name: '',
+    user_email: '',
+    teams: [],
+  })
   const [teamData, setTeamData] = useState({
     team_name: '',
     team_id: -1,
@@ -37,21 +40,38 @@ export default function User() {
     matches: [],
   })
 
-  //GETs the teams and setTeams
-  const getTeams = () => {
-    console.log('run getTeams')
-    findRequest('team', 'user_id', user_id).then(
-      (teams) => {
-        setTeams(teams)
-      }).catch(
-        (error) => {
-          console.error('Error:', error)
-        }
-    )
-  }
+  // Function to fetch teams from the server and update userData
+  const fetchAndSetTeams = async (user_id) => {
+    try {
+      await getAndSetArr('team', 'user_id', user_id, setUserData, 'teams');
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    }
+  };
+
   useEffect(() => {
-    getTeams()
-  }, [user_id]);
+    // Check if location state has user_id
+    if (location.state && location.state.user_id) {
+      // Update userData with user_id from location state
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        user_id: location.state.user_id,
+      }));
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    // If user_id is available, fetch and set teams
+    if (userData.user_id !== null) {
+      fetchAndSetTeams(userData.user_id);
+    }
+  }, [userData.user_id]);
+
+  useEffect(() => {
+    if(userData.teams.length != 0){
+      dispTeams()
+    }
+  }, [userData.teams])
 
   //getPlayers
   const getPlayers = () => {
@@ -102,7 +122,7 @@ export default function User() {
   
 
   //display
-  const [currentView, setCurrentView] = useState('teams')
+  const [currentView, setCurrentView] = useState('default')
   const dispTeams = () => {
     setCurrentView('teams')
   }
@@ -139,7 +159,7 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, getPlayers, playerData, setPlayerData, pairData, setPairData, getPairs, getAndSetPairs}}>
+      <UserContext.Provider value={{userData, setUserData, teamData, setTeamData, getPlayers, playerData, setPlayerData, pairData, setPairData, getPairs, getAndSetPairs}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
         {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
         {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer} dispPairs={dispPairs}/>}
