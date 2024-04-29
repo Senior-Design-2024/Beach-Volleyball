@@ -8,6 +8,8 @@ import { useLocation } from 'react-router-dom';
 import { findRequest } from '../utils';
 import Players from './Players';
 import NewPlayer from './NewPlayer';
+import Pairs from './Pairs';
+import NewPair from './NewPair';
 
 export const UserContext = createContext();
 
@@ -21,11 +23,16 @@ export default function User() {
     team_name: '',
     team_id: -1,
     players: [],
+    pairs: [],
   })
   const [playerData, setPlayerData] = useState({
     player_id: -1,
     player_name: '',
     description: '',
+  })
+  const [pairData, setPairData] = useState({
+    player1_id: -1,
+    player2_id: -1,
   })
 
   //GETs the teams and setTeams
@@ -64,6 +71,27 @@ export default function User() {
       getPlayers();
     }
   }, [teamData.team_id]);
+
+  //getPairs
+  const getPairs = () => {
+    console.log('run getPairs')
+    findRequest('pair', 'team_id', teamData.team_id).then(
+      (pairs) => {
+        setTeamData(prevState => ({
+          ...prevState,
+          pairs: pairs,
+        }));
+      }).catch(
+        (error) => {
+          console.error('Error', error);
+        }
+    );
+  };
+  useEffect(() => {
+    if (teamData.team_id !== -1) {
+      getPairs();
+    }
+  }, [teamData.team_id]);
   
 
   //display
@@ -80,6 +108,17 @@ export default function User() {
   const dispNewPlayer = () => {
     setCurrentView('newPlayer')
   }
+  const dispPairs = () => {
+    setCurrentView('pairs')
+  }
+  const dispNewPair = () => {
+    setPairData(prevState => ({
+      ...prevState,
+      player1_id: teamData.players[0].id,
+      player2_id: teamData.players[0].id,
+    }))
+    setCurrentView('newPair')
+  }
   
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
@@ -93,11 +132,13 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, getPlayers, playerData, setPlayerData}}>
+      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, getPlayers, playerData, setPlayerData, pairData, setPairData, getPairs}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
         {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
-        {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer}/>}
+        {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer} dispPairs={dispPairs}/>}
         {currentView === 'newPlayer' && <NewPlayer dispPlayers={dispPlayers}/>}
+        {currentView === 'pairs' && <Pairs dispNewPair={dispNewPair}/>}
+        {currentView === 'newPair' && <NewPair dispPairs={dispPairs}/>}
       </UserContext.Provider>
     </div>
   );

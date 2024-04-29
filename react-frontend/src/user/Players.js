@@ -17,6 +17,8 @@ export default function Players(props) {
 
   return(
     <div id='players'>
+      <button onClick={props.dispPairs}>Pairs</button>
+      <br/>
       <button onClick={props.dispNewPlayer}>New Player</button>
 
       <div id='list-players'>
