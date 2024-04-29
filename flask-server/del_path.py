@@ -5,21 +5,21 @@ from flask import jsonify, request
 def delete_entity(entity_type, id):
     entity = None
     if entity_type == 'user':
-        entity = User.query.get(id)
+        entity = db.session.get(User, id)
     elif entity_type == 'team':
-        entity = Team.query.get(id)
+        entity = db.session.get(Team, id)
     elif entity_type == 'player':
-        entity = Player.query.get(id)
+        entity = db.session.get(Player, id)
     elif entity_type == 'pair':
-        entity = Pair.query.get(id)
+        entity = db.session.get(Pair, id)
     elif entity_type == 'match':
-        entity = Match.query.get(id)
+        entity = db.session.get(Match, id)
     elif entity_type == 'match_set':
-        entity = MatchSet.query.get(id)
+        entity = db.session.get(MatchSet, id)
     elif entity_type == 'point':
-        entity = Point.query.get(id)
+        entity = db.session.get(Point, id)
     elif entity_type == 'event':
-        entity = Event.query.get(id)
+        entity = db.session.get(Event, id)
     
     if entity:
         db.session.delete(entity)

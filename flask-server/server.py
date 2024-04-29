@@ -24,32 +24,32 @@ class User(db.Model):
 
 class Team(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    user = db.relationship('User', backref=db.backref('team', lazy=True))
+    user = db.relationship('User', backref=db.backref('team', lazy=True, cascade="all,delete"))
 
 class Player(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
+    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255), nullable=False)
-    team = db.relationship('Team', backref=db.backref('player', lazy=True))
+    team = db.relationship('Team', backref=db.backref('player', lazy=True, cascade="all,delete"))
 
 class Pair(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
-    player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
-    player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
+    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
+    player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id', ondelete='CASCADE'), nullable=False)
+    player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id', ondelete='CASCADE'), nullable=False)
     team = db.relationship('Team', backref=db.backref('pairs', lazy=True))
-    player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('pairs1', lazy=True))
-    player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('pairs2', lazy=True))
+    player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('pairs1', lazy=True, cascade="all,delete"))
+    player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('pairs2', lazy=True, cascade="all,delete"))
 
 class Match(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id'), nullable=False)
-    player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
-    player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id'), nullable=False)
-    pair_id = db.Column(db.BigInteger, db.ForeignKey('pair.id'), nullable=False)
+    team_id = db.Column(db.BigInteger, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
+    player1_id = db.Column(db.BigInteger, db.ForeignKey('player.id', ondelete='CASCADE'), nullable=False)
+    player2_id = db.Column(db.BigInteger, db.ForeignKey('player.id', ondelete='CASCADE'), nullable=False)
+    pair_id = db.Column(db.BigInteger, db.ForeignKey('pair.id', ondelete='CASCADE'), nullable=False)
     opponent1_name = db.Column(db.String(100))
     opponent2_name = db.Column(db.String(100))
     opponent1_number = db.Column(db.Integer)
@@ -64,29 +64,29 @@ class Match(db.Model):
     sched_start_time = db.Column(db.String(100))
     strategy = db.Column(db.Integer)
     team = db.relationship('Team', backref=db.backref('match', lazy=True))
-    player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('matches1', lazy=True))
-    player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('matches2', lazy=True))
-    pair = db.relationship('Pair', foreign_keys=[pair_id], backref=db.backref('match3', lazy=True))
+    player1 = db.relationship('Player', foreign_keys=[player1_id], backref=db.backref('matches1', lazy=True, cascade="all,delete"))
+    player2 = db.relationship('Player', foreign_keys=[player2_id], backref=db.backref('matches2', lazy=True, cascade="all,delete"))
+    pair = db.relationship('Pair', foreign_keys=[pair_id], backref=db.backref('match3', lazy=True, cascade="all,delete"))
 
 class MatchSet(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    match_id = db.Column(db.BigInteger, db.ForeignKey('match.id'), nullable=False)
+    match_id = db.Column(db.BigInteger, db.ForeignKey('match.id', ondelete='CASCADE'), nullable=False)
     set_num = db.Column(db.SmallInteger, nullable=False)
     win_state = db.Column(db.Boolean, nullable=True)
-    match = db.relationship('Match', backref=db.backref('sets', lazy=True))
+    match = db.relationship('Match', backref=db.backref('sets', lazy=True, cascade="all,delete"))
 
 class Point(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    match_set_id = db.Column(db.BigInteger, db.ForeignKey('match_set.id'), nullable=False)
+    match_set_id = db.Column(db.BigInteger, db.ForeignKey('match_set.id', ondelete='CASCADE'), nullable=False)
     win = db.Column(db.Boolean, nullable=False)
-    match_set = db.relationship('MatchSet', backref=db.backref('points', lazy=True))
+    match_set = db.relationship('MatchSet', backref=db.backref('points', lazy=True, cascade="all,delete"))
 
 class Event(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
-    point_id = db.Column(db.BigInteger, db.ForeignKey('point.id'), nullable=False)
+    point_id = db.Column(db.BigInteger, db.ForeignKey('point.id', ondelete='CASCADE'), nullable=False)
     data = db.Column(db.Integer, nullable=False)
     e_index = db.Column(db.SmallInteger, nullable=False)
-    point = db.relationship('Point', backref=db.backref('events', lazy=True))
+    point = db.relationship('Point', backref=db.backref('events', lazy=True, cascade="all,delete"))
 
 
 import find_path
