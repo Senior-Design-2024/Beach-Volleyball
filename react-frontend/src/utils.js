@@ -23,11 +23,11 @@ export const postRequest = async (jsonData, apiCall) => {
   }
 }
 
-//Calls to server /find. t specifies table, property specifies lookup parameter, and match is what property must match
-export const findRequest = async (t, property, match) => {
+//Calls to server /find. t specifies table, property specifies lookup parameter, and search is what property must match
+export const findRequest = async (t, property, search) => {
   try {
     const queryParams = new URLSearchParams({table: `${t}`});
-    queryParams.append(`${property}`, match);
+    queryParams.append(`${property}`, search);
     
     const response = await fetch(`/find?${queryParams}`, {
       method: 'GET',
@@ -44,4 +44,13 @@ export const findRequest = async (t, property, match) => {
   }
 }
 
-
+export const getAndSetArr = (t, property, search, setFunction, arrName) => {
+  findRequest(t, property, search).then(
+    (arr) => {
+      setFunction(prevState => ({
+        ...prevState,
+        [arrName]: arr,
+      }))
+    }
+  )
+}

@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { UserContext } from "./User"
 
 export default function Players(props) {
-  const {teamData, playerData, setPlayerData} = useContext(UserContext)
+  const {teamData, setPlayerData} = useContext(UserContext)
 
   const selectPlayer = (player_id, player_name) => {
     console.log(player_id, player_name)

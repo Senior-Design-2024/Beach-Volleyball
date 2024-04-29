@@ -3,7 +3,7 @@ import { UserContext } from "./User"
 import { postRequest } from "../utils"
 
 export default function NewPair(props) {
-  const {pairData, setPairData, teamData, getPairs} = useContext(UserContext)
+  const {pairData, setPairData, teamData, getPairs, getAndSetPairs} = useContext(UserContext)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -12,7 +12,8 @@ export default function NewPair(props) {
                       'player1_id': pairData.player1_id,
                       'player2_id': pairData.player2_id,},
                       'addpair')
-    await getPairs()
+    //await getPairs()
+    await getAndSetPairs()
 
     props.dispPairs()
   }

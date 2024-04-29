@@ -5,11 +5,12 @@ import { useState, useEffect, createContext } from 'react';
 import Teams from './Teams';
 import NewTeam from './NewTeam';
 import { useLocation } from 'react-router-dom';
-import { findRequest } from '../utils';
+import { findRequest, getAndSetArr } from '../utils';
 import Players from './Players';
 import NewPlayer from './NewPlayer';
 import Pairs from './Pairs';
 import NewPair from './NewPair';
+import '../utils';
 
 export const UserContext = createContext();
 
@@ -33,6 +34,7 @@ export default function User() {
   const [pairData, setPairData] = useState({
     player1_id: -1,
     player2_id: -1,
+    matches: [],
   })
 
   //GETs the teams and setTeams
@@ -73,6 +75,7 @@ export default function User() {
   }, [teamData.team_id]);
 
   //getPairs
+
   const getPairs = () => {
     console.log('run getPairs')
     findRequest('pair', 'team_id', teamData.team_id).then(
@@ -87,11 +90,15 @@ export default function User() {
         }
     );
   };
+
+  const getAndSetPairs = () => getAndSetArr('pair', 'team_id', teamData.team_id, setTeamData, 'pairs')
   useEffect(() => {
     if (teamData.team_id !== -1) {
       getPairs();
     }
   }, [teamData.team_id]);
+
+  
   
 
   //display
@@ -132,7 +139,7 @@ export default function User() {
         rightButtonFunctions={[navigateMain]}/>
       
       {/*children*/}
-      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, getPlayers, playerData, setPlayerData, pairData, setPairData, getPairs}}>
+      <UserContext.Provider value={{user_id, teams, setTeams, getTeams, teamData, setTeamData, getPlayers, playerData, setPlayerData, pairData, setPairData, getPairs, getAndSetPairs}}>
         {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
         {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
         {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer} dispPairs={dispPairs}/>}
