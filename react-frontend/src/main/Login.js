@@ -20,7 +20,7 @@ export default function Login({onSubmit, navigateUser}) {
 
     findRequest('user', 'email', loginInfo.email).then(
       (userArray) => {
-        navigateUser(userArray[0].id);
+        navigateUser(userArray[0]);
       }).catch(
         (error) => {
           console.error('Error:', error);

@@ -44,6 +44,13 @@ export const findRequest = async (t, property, search) => {
   }
 }
 
+export const getAndSetObj = async (t, property, search, setFunction) => {
+  console.log('run getAndSetObj')
+  findRequest(t, property, search).then( (obj) => {
+    setFunction(obj)
+  })
+}
+
 export const getAndSetArr = async (t, property, search, setFunction) => {
   console.log('run getAndSetArr')
   findRequest(t, property, search).then(
