@@ -3,12 +3,15 @@ import AppHeader from '../components/AppHeader';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, createContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { findRequest, getAndSetArr, getAndSetObj} from '../utils';
+import { getAndSetArr } from '../utils';
 import Teams from './Teams';
 import Players from './Players';
 import PlayerOverview from './PlayerOverview';
 import Pairs from './Pairs';
 import PairOverview from './PairOverview';
+import NewTeam from './NewTeam';
+import NewPlayer from './NewPlayer'
+import NewPair from './NewPair';
 
 export const UserContext = createContext();
 
@@ -63,13 +66,6 @@ export default function User() {
   //any time we modify teams and its an array, lets disp teams
   useEffect( () => {
     if(teams.length !== 0){
-      /*
-      setHeader(prevState => ({
-        ...prevState,
-        masthead: 'Welcome ' + userData.username + '!'
-      }))
-      setCurrentView('teams')
-      */
      dispTeams(userData.username)
     }
   }, [teams]) 
@@ -91,9 +87,20 @@ export default function User() {
 
   const dispTeams = (username) => {
     setHeader(prevState => ({
+      ...prevState,
       masthead: 'Welcome ' + username + '!',
     }))
     setCurrentView('teams')
+  }
+
+  const dispNewTeam = (backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      masthead: 'new team',
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('newTeam')
   }
 
   const dispPlayers = (team_name, backlink) => {
@@ -106,6 +113,16 @@ export default function User() {
     setCurrentView('players')
   }
 
+  const dispNewPlayer = (backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      masthead: 'new player',
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('newPlayer')
+  }
+
   const dispPlayerOverview = (player_name, backlink) => {
     setHeader(prevState => ({
       masthead: player_name,
@@ -115,13 +132,24 @@ export default function User() {
     setCurrentView('playerOverview')
   }
 
-  const dispPairs = (backlink) => {
+  const dispPairs = (team_name, backlink) => {
     setHeader(prevState => ({
       ...prevState,
+      masthead: team_name,
       lbns: ['Back'],
       lbfs: [backlink],
     }))
     setCurrentView('pairs')
+  }
+
+  const dispNewPair = (backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      masthead: 'new pair',
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('newPair')
   }
 
   const dispPairOverview = (pair_id, backlink) => {
@@ -146,10 +174,13 @@ export default function User() {
       <UserContext.Provider value={{userData, setUserData, teamData, setTeamData, playerData, setPlayerData, pairData, setPairData,
                                   teams, setTeams, players, setPlayers, pairs, setPairs, matches, setMatches,
                                   setCurrentView, header, setHeader}}>
-        {currentView === 'teams' && <Teams dispTeams={dispTeams} dispPlayers={dispPlayers}/>}
-        {currentView === 'players' && <Players dispPlayers={dispPlayers} dispPlayerOverview={dispPlayerOverview} dispPairs={dispPairs}/>}
+        {currentView === 'teams' && <Teams dispTeams={dispTeams} dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
+        {currentView === 'newTeam' && <NewTeam/>}
+        {currentView === 'players' && <Players dispPlayers={dispPlayers} dispNewPlayer={dispNewPlayer} dispPlayerOverview={dispPlayerOverview} dispPairs={dispPairs}/>}
+        {currentView === 'newPlayer' && <NewPlayer/>}
         {currentView === 'playerOverview' && <PlayerOverview/>}
-        {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispPairOverview={dispPairOverview}/>}
+        {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispNewPair={dispNewPair} dispPairOverview={dispPairOverview}/>}
+        {currentView === 'newPair' && <NewPair/>}
         {currentView === 'pairOverview' && <PairOverview/>}
       </UserContext.Provider>
     </div>

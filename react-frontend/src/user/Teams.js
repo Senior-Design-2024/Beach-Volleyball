@@ -4,17 +4,23 @@ import { getAndSetArr } from '../utils';
 
 export default function Teams(props) { 
   const {userData, teams, setTeamData, setPlayers, setPairs, header, setHeader, setCurrentView} = useContext(UserContext)
-  
+  const backlink = () => props.dispTeams(userData.username)
+
   const selectTeam = (team) => {
     setTeamData(team)
     getAndSetArr('player', 'team_id', team.id, setPlayers)
     getAndSetArr('pair', 'team_id', team.id, setPairs)
 
-    props.dispPlayers(team.name, () => props.dispTeams(userData.username))
+    props.dispPlayers(team.name, backlink)
+  }
+
+  const handleNewTeam = () => {
+    props.dispNewTeam(backlink)
   }
 
   return(
     <div id='teams'>
+      <button onClick={handleNewTeam}>New Team</button>
       <div id='list-teams'>
         {teams.length ?
           teams.map(( (team) => (
