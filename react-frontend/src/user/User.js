@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, createContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { findRequest, getAndSetArr, getAndSetObj} from '../utils';
+import Teams from './Teams';
+import Players from './Players';
+import PlayerOverview from './PlayerOverview';
+import Pairs from './Pairs';
 
 export const UserContext = createContext();
 
@@ -11,95 +15,127 @@ export default function User() {
   //data
   const location = useLocation()
 
-  const [user, setUser] = useState({
+  const [userData, setUserData] = useState({
     id: null,
     username: null,
     email: null,
-    teams: null,
   })
-  const [team, setTeam] = useState({
-    team_name: null,
+  const [teams, setTeams] = useState([])
+
+  const [teamData, setTeamData] = useState({
+    id: null,
+    user_id: null,
+    name: null,
+  })
+  const [players, setPlayers] = useState([])
+  const [pairs, setPairs] = useState([])
+
+  //these need to be updated
+  const [playerData, setPlayerData] = useState({
+    id: null,
     team_id: null,
-    players: null,
-    pairs: null,
-  })
-  const [player, setPlayer] = useState({
-    player_id: null,
-    player_name: null,
+    name: null,
     description: null,
-    matches: null,
   })
-  const [pair, setPair] = useState({
+  const [pairData, setPairData] = useState({
+    id: null,
+    team_id: null,
     player1_id: null,
     player2_id: null,
-    matches: null,
   })
+  const [matches, setMatches] = useState([])
 
   // Initialize the user
   //set user when we get it from location
   useEffect( () => {
-    setUser(location.state.user)
+    setUserData(location.state.user)
   }, [location.state.user])
 
-  //now that user.id has updated, fetch the teams
+  //now that userData.id has updated, fetch the teams
   useEffect( () => {
-    if(user.id){
-      getAndSetArr('team', 'user_id', user.id, setUser)
-    }
-  }, [user.id])
+    if(userData.id){
+      getAndSetArr('team', 'user_id', userData.id, setTeams)
 
-  //any time we modify teams and its an array, lets dispTeams
+    }
+  }, [userData])
+
+  //any time we modify teams and its an array, lets disp teams
   useEffect( () => {
-    if(Array.isArray(user.teams)){
+    if(teams.length !== 0){
+      /*
+      setHeader(prevState => ({
+        ...prevState,
+        masthead: 'Welcome ' + userData.username + '!'
+      }))
       setCurrentView('teams')
+      */
+     dispTeams(userData.username)
     }
-  }, [user.teams])
+  }, [teams]) 
 
-  const [currentView, setCurrentView] = useState('')
-
-  /*
-  //get teams
-  const getAndSetTeams = async (user_id) => {
-    await getAndSetArr('team', 'user_id', user_id, setUserData);
-  };
-
-  useEffect(() => {
-    if (location.state && location.state.user_id) {
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        user_id: location.state.user_id,
-      }));
-    }
-  }, [location.state]);
-
-  useEffect(() => {
-    if (userData.user_id !== null) {
-      getAndSetTeams(userData.user_id);
-    }
-  }, [userData.user_id]);
-
-  */
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
 
+  // App navigation
+  const [currentView, setCurrentView] = useState('')
+
+  //state for rendering header
+  const [header, setHeader] = useState({
+    masthead: 'Welcome!',
+    lbns: [],
+    lbfs: [],
+    rbns: ['logout'],
+    rbfs: [navigateMain],
+  })
+
+  const dispTeams = (username) => {
+    setHeader(prevState => ({
+      masthead: 'Welcome ' + username + '!',
+    }))
+    setCurrentView('teams')
+  }
+
+  const dispPlayers = (team_name, backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      masthead: team_name,
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('players')
+  }
+
+  const dispPlayerOverview = (player_name, backlink) => {
+    setHeader(prevState => ({
+      masthead: player_name,
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('playerOverview')
+  }
+
+  /*
+  const dispPairs = () => {
+    setCurrentView('pairs')
+  }
+  */
+
   return (
     <div id='user-page-wrapper' className="page-wrapper">
-      <AppHeader masthead={'Welcome'}
-        leftButtonNames={[]}
-        leftButtonFunctions={[]}
-        rightButtonNames={['Logout']}
-        rightButtonFunctions={[navigateMain]}/>
+      <AppHeader masthead={header.masthead}
+        leftButtonNames={header.lbns}
+        leftButtonFunctions={header.lbfs}
+        rightButtonNames={header.rbns}
+        rightButtonFunctions={header.rbfs}/>
       
       {/*children*/}
-      <UserContext.Provider value={{}}>
-        {/*}
-        {currentView === 'teams' && <Teams dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
-        {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
-        {currentView === 'players' && <Players dispNewPlayer={dispNewPlayer} dispPairs={dispPairs}/>}
-        {currentView === 'newPlayer' && <NewPlayer dispPlayers={dispPlayers}/>}
-        {currentView === 'pairs' && <Pairs dispNewPair={dispNewPair}/>}
-        {currentView === 'newPair' && <NewPair dispPairs={dispPairs}/>}
-      */}
+      <UserContext.Provider value={{userData, setUserData, teamData, setTeamData, playerData, setPlayerData, pairData, setPairData,
+                                  teams, setTeams, players, setPlayers, pairs, setPairs, matches, setMatches,
+                                  setCurrentView, header, setHeader}}>
+        {currentView === 'teams' && <Teams dispTeams={dispTeams} dispPlayers={dispPlayers}/>}
+        {currentView === 'players' && <Players dispPlayers={dispPlayers} dispPlayerOverview={dispPlayerOverview}/>}
+        {currentView === 'playerOverview' && <PlayerOverview/>}
+        {currentView === 'pairs' && <Pairs/>}
       </UserContext.Provider>
     </div>
   );

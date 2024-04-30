@@ -55,10 +55,7 @@ export const getAndSetArr = async (t, property, search, setFunction) => {
   console.log('run getAndSetArr')
   findRequest(t, property, search).then(
     (arr) => {
-      setFunction(prevState => ({
-        ...prevState,
-        [t+'s']: arr,
-      }))
+      setFunction(arr)
     }).catch( (error) => {
       console.error('Error with getAndSetArr', error)
     })
