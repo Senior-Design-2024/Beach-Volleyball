@@ -142,7 +142,18 @@ export default function User() {
     setCurrentView('pairs')
   }
 
-  const dispNewPair = (backlink) => {
+  const dispNewPair = (players, backlink) => {
+    if(players.length > 1){
+      setPairData(prevState => ({
+        ...prevState,
+        player1_id: players[0].id,
+        player2_id: players[0].id,
+      }))
+    }
+    else{
+      console.error('not enough players')
+    }
+
     setHeader(prevState => ({
       ...prevState,
       masthead: 'new pair',
@@ -175,12 +186,12 @@ export default function User() {
                                   teams, setTeams, players, setPlayers, pairs, setPairs, matches, setMatches,
                                   setCurrentView, header, setHeader}}>
         {currentView === 'teams' && <Teams dispTeams={dispTeams} dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
-        {currentView === 'newTeam' && <NewTeam/>}
+        {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
         {currentView === 'players' && <Players dispPlayers={dispPlayers} dispNewPlayer={dispNewPlayer} dispPlayerOverview={dispPlayerOverview} dispPairs={dispPairs}/>}
-        {currentView === 'newPlayer' && <NewPlayer/>}
+        {currentView === 'newPlayer' && <NewPlayer dispPlayers={dispPlayers}/>}
         {currentView === 'playerOverview' && <PlayerOverview/>}
         {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispNewPair={dispNewPair} dispPairOverview={dispPairOverview}/>}
-        {currentView === 'newPair' && <NewPair/>}
+        {currentView === 'newPair' && <NewPair dispPairs={dispPairs}/>}
         {currentView === 'pairOverview' && <PairOverview/>}
       </UserContext.Provider>
     </div>

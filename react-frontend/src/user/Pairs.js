@@ -2,11 +2,11 @@ import { useContext } from "react"
 import { UserContext } from "./User"
 
 export default function Pairs(props){
-  const {pairs, teamData, setPairData, setMatches, header, setHeader, setCurrentView} = useContext(UserContext)
+  const {teamData, players, pairs, header} = useContext(UserContext)
   const backlink = () => props.dispPairs(teamData.name, header.lbfs[0])
 
   const handleNewPair = () => {
-    props.dispNewPair(backlink)
+    props.dispNewPair(players, backlink)
   }
 
   const selectPair = (pair) => {
