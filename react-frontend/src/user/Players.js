@@ -12,9 +12,13 @@ export default function Players(props){
     props.dispPlayerOverview(player.name, () => props.dispPlayers(teamData.name, header.lbfs[0])) 
   }
 
+  const handlePairs = () => {
+    props.dispPairs(() => props.dispPlayers(teamData.name, header.lbfs[0]))
+  }
+
   return(
     <div id='players'>
-      <button onClick={() => setCurrentView('pairs')}>pairs</button>
+      <button onClick={handlePairs}>pairs</button>
       <div id='list-players'>
         {players.length ?
           players.map(( (player) => (

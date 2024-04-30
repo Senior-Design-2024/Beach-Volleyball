@@ -114,11 +114,14 @@ export default function User() {
     setCurrentView('playerOverview')
   }
 
-  /*
-  const dispPairs = () => {
+  const dispPairs = (backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
     setCurrentView('pairs')
   }
-  */
 
   return (
     <div id='user-page-wrapper' className="page-wrapper">
@@ -133,7 +136,7 @@ export default function User() {
                                   teams, setTeams, players, setPlayers, pairs, setPairs, matches, setMatches,
                                   setCurrentView, header, setHeader}}>
         {currentView === 'teams' && <Teams dispTeams={dispTeams} dispPlayers={dispPlayers}/>}
-        {currentView === 'players' && <Players dispPlayers={dispPlayers} dispPlayerOverview={dispPlayerOverview}/>}
+        {currentView === 'players' && <Players dispPlayers={dispPlayers} dispPlayerOverview={dispPlayerOverview} dispPairs={dispPairs}/>}
         {currentView === 'playerOverview' && <PlayerOverview/>}
         {currentView === 'pairs' && <Pairs/>}
       </UserContext.Provider>
