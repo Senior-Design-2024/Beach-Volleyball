@@ -8,6 +8,7 @@ import Teams from './Teams';
 import Players from './Players';
 import PlayerOverview from './PlayerOverview';
 import Pairs from './Pairs';
+import PairOverview from './PairOverview';
 
 export const UserContext = createContext();
 
@@ -123,6 +124,16 @@ export default function User() {
     setCurrentView('pairs')
   }
 
+  const dispPairOverview = (pair_id, backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      masthead: pair_id,
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('pairOverview')
+  }
+
   return (
     <div id='user-page-wrapper' className="page-wrapper">
       <AppHeader masthead={header.masthead}
@@ -138,7 +149,8 @@ export default function User() {
         {currentView === 'teams' && <Teams dispTeams={dispTeams} dispPlayers={dispPlayers}/>}
         {currentView === 'players' && <Players dispPlayers={dispPlayers} dispPlayerOverview={dispPlayerOverview} dispPairs={dispPairs}/>}
         {currentView === 'playerOverview' && <PlayerOverview/>}
-        {currentView === 'pairs' && <Pairs/>}
+        {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispPairOverview={dispPairOverview}/>}
+        {currentView === 'pairOverview' && <PairOverview/>}
       </UserContext.Provider>
     </div>
   );

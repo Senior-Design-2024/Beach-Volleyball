@@ -2,20 +2,11 @@ import { useContext } from "react"
 import { UserContext } from "./User"
 import { getAndSetArr } from "../utils"
 
-export default function Pairs(){
-  const {pairs, setPairData, setMatches, setHeader, setCurrentView} = useContext(UserContext)
+export default function Pairs(props){
+  const {pairs, setPairData, setMatches, header, setHeader, setCurrentView} = useContext(UserContext)
 
   const selectPair = (pair) => {
-    console.log('not implemented')
-    /*
-    setPairData(pair)
-    getAndSetArr('match', 'pair_id', pair.id, setMatches)
-    setHeader(prevState => ({
-      ...prevState,
-      masthead: pair.name,
-    }))
-
-    setCurrentView('pairOverview')*/
+    props.dispPairOverview(pair.id, () => props.dispPairs(header.lbfs[0]))
   }
 
   return(
