@@ -14,7 +14,8 @@ export default function NewMatch(props) {
       ...prevState,
       id: match_id,
     }))
-    props.navigateMatch(userData, matchData)
+
+    props.navigateMatch(userData, {...matchData, id: match_id})
   };
 
   const handleChange = (event) => {

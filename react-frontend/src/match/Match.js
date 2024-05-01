@@ -62,8 +62,9 @@ export default function Match() {
   useEffect( () => {
     if(matchData.id){
       console.log('t', matchData.id)
+      setCurrentView('group')
     }
-  })
+  }, [matchData.id])
 
   const testSet = (match_id) => {
     postRequest(
