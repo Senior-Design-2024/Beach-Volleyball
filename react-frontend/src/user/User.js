@@ -17,9 +17,6 @@ import NewMatch from './NewMatch';
 export const UserContext = createContext();
 
 export default function User() {
-  //data
-  const location = useLocation()
-
   const [userData, setUserData] = useState({
     id: null,
     username: null,
@@ -71,6 +68,7 @@ export default function User() {
     strategy: null,
 });
 
+  const location = useLocation()
   // Initialize the user
   //set user when we get it from location
   useEffect( () => {
@@ -81,7 +79,6 @@ export default function User() {
   useEffect( () => {
     if(userData.id){
       getAndSetArr('team', 'user_id', userData.id, setTeams)
-
     }
   }, [userData])
 
@@ -90,12 +87,12 @@ export default function User() {
     if(teams.length !== 0){
      dispTeams(userData.username)
     }
-  }, [teams]) 
+  }, [teams, userData.username]) 
 
   // App navigation
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
-  const navigateMatch = () => navigate('Match')
+  const navigateMatch = (id) => navigate('/Match', {state: {match_id: id}})
 
   const [currentView, setCurrentView] = useState('')
 

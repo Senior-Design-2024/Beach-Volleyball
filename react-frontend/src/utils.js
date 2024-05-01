@@ -18,6 +18,7 @@ export const postRequest = async (jsonData, apiCall) => {
 
     console.log('Server reponse json:', responseJson);
 
+    return(responseJson.id)
   } catch (error) {
     console.error('Error posting json:', error.message);
   }
