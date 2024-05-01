@@ -5,7 +5,7 @@ def add_events_db(destination, origin, quality, a_type, action, player, point_id
 
     point = db.session.get(Point, point_id)
 
-    for i in player.length:
+    for i in range(len(player)):
         play_sh = player[i]
         acti_sh = action[i] << 2
         type_sh = a_type[i] << 5
@@ -24,7 +24,7 @@ def add_events_db(destination, origin, quality, a_type, action, player, point_id
 @app.route('/addpoint', methods=['POST'])
 def point_add():
     data = request.json
-    set_id = data.get('set_id')
+    match_set_id = data.get('match_set_id')
     destination = data.get('destination')
     origin = data.get('origin')
     quality = data.get('quality')
@@ -33,9 +33,9 @@ def point_add():
     player = data.get('player')
     win = data.get('win')
 
-    set = db.session.get(MatchSet, set_id)
+    match_set = db.session.get(MatchSet, match_set_id)
     if set:
-        point = Point(win=win, set=set)
+        point = Point(win=win, match_set=match_set)
         db.session.add(point)
         db.session.commit()
         
