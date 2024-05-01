@@ -10,7 +10,8 @@ def user_add():
     user = User(username=username, email=email)
     db.session.add(user)
     db.session.commit()
-    return jsonify({'message': 'User added successfully'}), 200
+    return jsonify({'message': 'User added successfully',
+                    'id':user.id}), 200
 
 @app.route('/addteam', methods=['POST'])
 def team_add():
@@ -25,7 +26,8 @@ def team_add():
         db.session.commit()
         return jsonify({'message': 'Team added successfully'}), 200
     else:
-        return jsonify({'error': 'User not found'}), 404
+        return jsonify({'error': 'User not found',
+                        'id': team.id}), 404
 
 @app.route('/addplayer', methods=['POST'])
 def add_player():
@@ -41,7 +43,8 @@ def add_player():
         db.session.commit()
         return jsonify({'message': 'Player added successfully'}), 200
     else:
-        return jsonify({'error': 'Team not found'}), 404
+        return jsonify({'error': 'Team not found',
+                        'id': player.id}), 404
 
 
 @app.route('/addmatch', methods=['POST'])
@@ -120,7 +123,8 @@ def pair_add():
         db.session.commit()
         return jsonify({'message': 'Pair added successfully'}), 200
     else:
-        return jsonify({'error': 'Team or player not found'}), 404
+        return jsonify({'error': 'Team or player not found',
+                        'id': pair.id}), 404
 
 @app.route('/addset', methods=['POST'])
 def set_add():
@@ -136,7 +140,8 @@ def set_add():
         db.session.commit()
         return jsonify({'message': 'Match set added successfully'}), 200
     else:
-        return jsonify({'error': 'Match not found'}), 404
+        return jsonify({'error': 'Match not found',
+                        'id': match_set.id}), 404
     
 
 def add_events_db(destination, origin, quality, a_type, action, player, point_id):
@@ -186,7 +191,7 @@ def point_add():
             db.session.delete(point)
             db.session.commit()
 
-            return jsonify({'error': 'problem adding events, point has been deleted'})
+            return jsonify({'error': 'problem adding events, point has been deleted'}), 500
 
     else:
         return jsonify({'error': 'Set not found'}), 404
