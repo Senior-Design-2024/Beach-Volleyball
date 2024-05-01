@@ -91,7 +91,7 @@ class Event(db.Model):
 
 import find_path
 import add_path
-import add_point
+import point_data
 import del_path
 import mod_path
 

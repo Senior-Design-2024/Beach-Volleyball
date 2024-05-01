@@ -39,12 +39,6 @@ def find_db():
 
         case "match_set":
             query = db.session.query(MatchSet)
-
-        case "point":
-            query = db.session.query(Point)
-        
-        case "event":
-            query = db.session.query(Event)
         
         case "pair":
             query = db.session.query(Pair)
