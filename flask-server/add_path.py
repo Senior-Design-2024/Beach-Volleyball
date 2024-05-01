@@ -99,7 +99,8 @@ def match_add():
         db.session.add(match)
         db.session.commit()
         
-        return jsonify({'message': 'Match added successfully'}), 200
+        return jsonify({'message': 'Match added successfully',
+                        'id': match.id}), 200
     else:
         return jsonify({'error': 'Team and/or Player and/or Pair not found'}), 404
 

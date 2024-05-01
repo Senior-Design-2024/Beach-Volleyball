@@ -50,8 +50,8 @@ CREATE TABLE `match`(
     `match_date` VARCHAR(100),
     `sched_start_time` VARCHAR(100),
     `strategy` VARCHAR(100),
-    CONSTRAINT `match_player2_foreign` FOREIGN KEY(`player2_id`) REFERENCES `player`(`id`),
-    CONSTRAINT `match_player1_foreign` FOREIGN KEY(`player1_id`) REFERENCES `player`(`id`),
+    CONSTRAINT `match_player2_foreign` FOREIGN KEY(`player2_id`) REFERENCES `player`(`id`) ON DELETE CASCADE,
+    CONSTRAINT `match_player1_foreign` FOREIGN KEY(`player1_id`) REFERENCES `player`(`id`) ON DELETE CASCADE,
     CONSTRAINT `match_team_id_foreign` FOREIGN KEY(`team_id`) REFERENCES `team`(`id`) ON DELETE CASCADE,
     CONSTRAINT `match_pair_id_foreign` FOREIGN KEY(`pair_id`) REFERENCES `pair`(`id`) ON DELETE CASCADE
 );
