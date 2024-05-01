@@ -43,7 +43,7 @@ export default function Match() {
     strategy: null,
   });
 
-  const [serveOrder, setServeOrder] = useState([])
+  const [serveOrder, setServeOrder] = useState([0, 0, 0, 0])
 
   const [groupData, setGroupData] = useState({
     id: null,
@@ -131,7 +131,7 @@ export default function Match() {
       <MatchContext.Provider value={{player1Data, setPlayer1Data, player2Data, setPlayer2Data, matchData, setMatchData,
                                     serveOrder, setServeOrder}}>
 
-        {currentView === 'group' && <Group/>}
+        {currentView === 'group' && <Group dispServing={dispServing} dispReceiving={dispReceiving}/>}
         {currentView === 'serving' && <Serving/>}
         {currentView === 'receiving' && <Receiving/>}
         {currentView === 'rally' && <Rally/>}
