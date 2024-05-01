@@ -2,196 +2,80 @@ from __main__ import app, db, User, Team, Player, Team, Match, MatchSet, Point, 
 from flask import jsonify, request
 # Routes for adding items to respective tables
 
-@app.route('/adduser', methods=['POST'])
-def user_add():
+@app.route('/add/<entity_type>', methods=['POST'])
+def add_entity(entity_type):
     data = request.json
-    username = data.get('username')
-    email = data.get('email')
-    user = User(username=username, email=email)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({'message': 'User added successfully',
-                    'id':user.id}), 200
+    entity = None
 
-@app.route('/addteam', methods=['POST'])
-def team_add():
-    data = request.json
-    team_name = data.get('team_name')
-    user_id = data.get('user_id')
+    match entity_type:
+        case "user":
+            entity = User(username=data.get('username'),
+                          email=data.get('email'))
+        
+        case "team":
+            user = db.session.get(User, data.get('user_id'))
 
-    user = db.session.get(User, user_id)
-    if user:
-        team = Team(user=user, name=team_name)
-        db.session.add(team)
-        db.session.commit()
-        return jsonify({'message': 'Team added successfully'}), 200
-    else:
-        return jsonify({'error': 'User not found',
-                        'id': team.id}), 404
+            if user:
+                entity = Team(user=user,
+                              name=data.get('team_name'))
+        
+        case "player":
+            team = db.session.get(Team, data.get('team_id'))
 
-@app.route('/addplayer', methods=['POST'])
-def add_player():
-    data = request.json
-    player_name = data.get('player_name')
-    team_id = data.get('team_id')  # Assuming you get team_id from the request data
-    description = data.get('description')
+            if team:
+                entity = Player(team=team,
+                                name=data.get('player_name'),
+                                description=data.get('description'))
+        
+        case "match":
+            team = db.session.get(Team, data.get('team_id'))
+            player1 = db.session.get(Player, data.get('player1_id'))
+            player2 = db.session.get(Player, data.get('player2_id'))
+            pair = db.session.get(Pair, data.get('pair_id'))
 
-    team = db.session.get(Team, team_id)
-    if team:
-        player = Player(name=player_name, team_id=team_id, description=description)
-        db.session.add(player)
-        db.session.commit()
-        return jsonify({'message': 'Player added successfully'}), 200
-    else:
-        return jsonify({'error': 'Team not found',
-                        'id': player.id}), 404
+            if team and player1 and player2 and pair:
+                entity = Match(team=team,
+                               player1=player1,
+                               player2=player2,
+                               pair=pair,
+                               opponent1_name=data.get('opponent1_name'),
+                               opponent2_name=data.get('opponent2_name'),
+                               opponent1_number=data.get('opponent1_number'),
+                               opponent2_number=data.get('opponent2_number'),
+                               venue=data.get('venue'),
+                               tournament=data.get('tournament'),
+                               court_number=data.get('court_number'),
+                               flight_number=data.get('flight_number'),
+                               conference=data.get('conference'),
+                               location=data.get('location'),
+                               match_date=data.get('match_date'),
+                               sched_start_time=data.get('sched_start_time'),
+                               strategy=data.get('strategy'))
 
+        case "match_set":
+            match = db.session.get(Match, data.get('match_id'))
 
-@app.route('/addmatch', methods=['POST'])
-def match_add():
-    data = request.json
-    team_id = data.get('team_id')
-    player1_id = data.get('player1_id')
-    player2_id = data.get('player2_id')
-    pair_id = data.get('pair_id')
-    opponent1_name = data.get('opponent1_name') #Can be empty ''
-    opponent2_name = data.get('opponent2_name') #Can be empty ''
-    opponent1_number = data.get('opponent1_number') #Can be empty ''
-    opponent2_number = data.get('opponent2_number') #Can be empty ''
-    venue = data.get('venue') #Can be empty ''
-    tournament = data.get('tournament') #Can be empty ''
-    court_number = data.get('court_number') #Can be empty ''
-    flight_number = data.get('flight_number') #Can be empty ''
-    conference = data.get('conference') #Can be 0, 1, or 2
-    location = data.get('location') #Can be 0, 1, 2, or 3
-    match_date = data.get('match_date') #Must be date format, can be NULL for undated
-    sched_start_time = data.get('sched_start_time') #Must be time format, can be NULL for no time
-    strategy = data.get('strategy') #Can be 0, 1, 2, or 3
+            if match:
+                entity = MatchSet(match=match,
+                                  set_num=data.get('set_num'),
+                                  win_state=data.get('win_state'))
+        
+        case "pair":
+            team = db.session.get(Team, data.get('team_id'))
+            player1 = db.session.get(Player, data.get('player1_id'))
+            player2 = db.session.get(Player, data.get('player2_id'))
 
-    if match_date == '':
-        match_date = None
+            if team and player1 and player2:
+                entity = Pair(team=team,
+                              player1=player1,
+                              player2=player2) 
     
-    if sched_start_time == '':
-        sched_start_time = None
+    if entity:
 
-    team = db.session.get(Team, team_id)
-    player1 = db.session.get(Player, player1_id)
-    player2 = db.session.get(Player, player2_id)
-    pair = db.session.get(Pair, pair_id)
-    if team and player1 and player2 and pair:
-    
-        match = Match(team=team,
-                      player1=player1,
-                      player2=player2,
-                      pair=pair,
-                      opponent1_name=opponent1_name,
-                      opponent2_name=opponent2_name,
-                      opponent1_number=opponent1_number,
-                      opponent2_number=opponent2_number,
-                      venue=venue,
-                      tournament=tournament,
-                      court_number=court_number,
-                      flight_number=flight_number,
-                      conference=conference,
-                      location=location,
-                      match_date=match_date,
-                      sched_start_time=sched_start_time,
-                      strategy=strategy)
-        
-
-        db.session.add(match)
+        db.session.add(entity)
         db.session.commit()
-        
-        return jsonify({'message': 'Match added successfully',
-                        'id': match.id}), 200
+
+        return jsonify({'message': f'{entity_type.capitalize()} added successfully',
+                        'id': entity.id}), 200
     else:
-        return jsonify({'error': 'Team and/or Player and/or Pair not found'}), 404
-
-@app.route('/addpair', methods=['POST'])
-def pair_add():
-    data = request.json
-    team_id = data.get('team_id')
-    player1_id = data.get('player1_id')
-    player2_id = data.get('player2_id')
-
-    team = db.session.get(Team, team_id)
-    player1 = db.session.get(Player, player1_id)
-    player2 = db.session.get(Player, player2_id)
-    if team and player1 and player2:
-        pair = Pair(team=team, player1=player1, player2=player2)
-        db.session.add(pair)
-        db.session.commit()
-        return jsonify({'message': 'Pair added successfully'}), 200
-    else:
-        return jsonify({'error': 'Team or player not found',
-                        'id': pair.id}), 404
-
-@app.route('/addset', methods=['POST'])
-def set_add():
-    data = request.json
-    match_id = data.get('match_id')
-    set_num = data.get('set_num')
-    win_state = data.get('win_state')
-
-    match = db.session.get(Match, match_id)
-    if match:
-        match_set = MatchSet(match=match, set_num=set_num, win_state=win_state)
-        db.session.add(match_set)
-        db.session.commit()
-        return jsonify({'message': 'Match set added successfully'}), 200
-    else:
-        return jsonify({'error': 'Match not found',
-                        'id': match_set.id}), 404
-    
-
-def add_events_db(destination, origin, quality, a_type, action, player, point_id):
-
-    point = db.session.get(Point, point_id)
-
-    for i in player.length:
-        play_sh = player[i]
-        acti_sh = action[i] << 2
-        type_sh = a_type[i] << 5
-        qual_sh = quality[i] << 10
-        orig_sh = origin[i] << 13
-        dest_sh = destination[i] << 17
-        
-        data = play_sh | acti_sh | type_sh | qual_sh | orig_sh | dest_sh
-
-        event = Event(point=point, data=data, e_index=i)
-        db.session.add(event)
-        db.session.commit()
-
-    return True
-
-@app.route('/addpoint', methods=['POST'])
-def point_add():
-    data = request.json
-    set_id = data.get('set_id')
-    destination = data.get('destination')
-    origin = data.get('origin')
-    quality = data.get('quality')
-    a_type = data.get('type')
-    action = data.get('action')
-    player = data.get('player')
-    win = data.get('win')
-
-    set = db.session.get(MatchSet, set_id)
-    if set:
-        point = Point(win=win, set=set)
-        db.session.add(point)
-        db.session.commit()
-        
-        if add_events_db(destination, origin, quality, a_type, action, player, point.id):
-
-            return jsonify({'message': 'Point added successfully'}), 200
-        
-        else:
-
-            db.session.delete(point)
-            db.session.commit()
-
-            return jsonify({'error': 'problem adding events, point has been deleted'}), 500
-
-    else:
-        return jsonify({'error': 'Set not found'}), 404
+        return jsonify({'error':f'{entity_type.capitalize()} or {entity_type.capitalize()} parents not found'}), 404
