@@ -12,6 +12,7 @@ import PairOverview from './PairOverview';
 import NewTeam from './NewTeam';
 import NewPlayer from './NewPlayer'
 import NewPair from './NewPair';
+import NewMatch from './NewMatch';
 
 export const UserContext = createContext();
 
@@ -34,7 +35,6 @@ export default function User() {
   const [players, setPlayers] = useState([])
   const [pairs, setPairs] = useState([])
 
-  //these need to be updated
   const [playerData, setPlayerData] = useState({
     id: null,
     team_id: null,
@@ -48,6 +48,28 @@ export default function User() {
     player2_id: null,
   })
   const [matches, setMatches] = useState([])
+
+  const [matchData, setMatchData] = useState({
+    id: null,
+    team_id: null,
+    player1_id: null,
+    player2_id: null,
+    pair_id: null,
+
+    opponent1_name: null,
+    opponent2_name: null,
+    opponent1_number: null,
+    opponent2_number: null,
+    venue: null,
+    tournament: null,
+    court_number: null,
+    flight_number: null,
+    conference: null,
+    location: null,
+    match_date: null,
+    sched_start_time: null,
+    strategy: null,
+});
 
   // Initialize the user
   //set user when we get it from location
@@ -70,10 +92,11 @@ export default function User() {
     }
   }, [teams]) 
 
+  // App navigation
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
+  const navigateMatch = () => navigate('Match')
 
-  // App navigation
   const [currentView, setCurrentView] = useState('')
 
   //state for rendering header
@@ -173,6 +196,27 @@ export default function User() {
     setCurrentView('pairOverview')
   }
 
+  const dispNewMatch = (pair_id, backlink) => {
+    setHeader(prevState => ({
+      ...prevState,
+      masthead: `create match for ${pair_id}`,
+      lbns: ['Back'],
+      lbfs: [backlink],
+    }))
+    setCurrentView('newMatch')
+  }
+
+
+  useEffect( () => {
+    setMatchData(prevState => ({
+      ...prevState,
+      team_id: teamData.id,
+      pair_id: pairData.id,
+      player1_id: pairData.player1_id,
+      player2_id: pairData.player2_id,
+    }))
+  }, [pairData.id])
+
   return (
     <div id='user-page-wrapper' className="page-wrapper">
       <AppHeader masthead={header.masthead}
@@ -182,7 +226,7 @@ export default function User() {
         rightButtonFunctions={header.rbfs}/>
       
       {/*children*/}
-      <UserContext.Provider value={{userData, setUserData, teamData, setTeamData, playerData, setPlayerData, pairData, setPairData,
+      <UserContext.Provider value={{userData, setUserData, teamData, setTeamData, playerData, setPlayerData, pairData, setPairData, matchData, setMatchData,
                                   teams, setTeams, players, setPlayers, pairs, setPairs, matches, setMatches,
                                   setCurrentView, header, setHeader}}>
         {currentView === 'teams' && <Teams dispTeams={dispTeams} dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
@@ -192,7 +236,8 @@ export default function User() {
         {currentView === 'playerOverview' && <PlayerOverview/>}
         {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispNewPair={dispNewPair} dispPairOverview={dispPairOverview}/>}
         {currentView === 'newPair' && <NewPair dispPairs={dispPairs}/>}
-        {currentView === 'pairOverview' && <PairOverview/>}
+        {currentView === 'pairOverview' && <PairOverview dispPairOverview={dispPairOverview} dispNewMatch={dispNewMatch}/>}
+        {currentView === 'newMatch' && <NewMatch/>}
       </UserContext.Provider>
     </div>
   );

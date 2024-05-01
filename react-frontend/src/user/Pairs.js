@@ -1,8 +1,9 @@
 import { useContext } from "react"
 import { UserContext } from "./User"
+import { getAndSetArr } from "../utils"
 
 export default function Pairs(props){
-  const {teamData, players, pairs, header} = useContext(UserContext)
+  const {teamData, players, pairs, setPairData, setMatches, header} = useContext(UserContext)
   const backlink = () => props.dispPairs(teamData.name, header.lbfs[0])
 
   const handleNewPair = () => {
@@ -10,6 +11,9 @@ export default function Pairs(props){
   }
 
   const selectPair = (pair) => {
+    setPairData(pair)
+    getAndSetArr('match', 'pair_id', pair.id, setMatches)
+
     props.dispPairOverview(pair.id, backlink)
   }
 
