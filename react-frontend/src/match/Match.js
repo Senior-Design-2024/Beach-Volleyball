@@ -1,12 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import '../App.css'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { postRequest } from '../utils';
+import { findRequest, postRequest } from '../utils';
+import Group from './Group';
+import Serving from './Serving';
+import Receiving from './Receiving';
+import Rally from './Rally';
+import RallyDetails from './RallyDetails';
+import MatchHeader from '../components/MatchHeader';
+
+export const MatchContext = createContext();
 
 export default function Match() {
   const location = useLocation()
 
   const [userData, setUserData] = useState({})
+
+  const [teamName, setTeamName] = useState('')
+
+  const [player1Data, setPlayer1Data] = useState({})
+  const [player2Data, setPlayer2Data] = useState({})
 
   const [matchData, setMatchData] = useState({
     id: null,
@@ -29,6 +42,8 @@ export default function Match() {
     sched_start_time: null,
     strategy: null,
   });
+
+  const [serveOrder, setServeOrder] = useState([])
 
   const [groupData, setGroupData] = useState({
     id: null,
@@ -53,41 +68,33 @@ export default function Match() {
 
   useEffect( () => {
     if(location.state.match && location.state.user){
-      console.log('location updated with info')
       setUserData(location.state.user)
       setMatchData(location.state.match)
+      setTeamName(location.state.team_name)
     }
   }, [location.state])
 
   useEffect( () => {
     if(matchData.id){
-      console.log('t', matchData.id)
-      setCurrentView('group')
+      findRequest('player', 'player_id', matchData.player1_id).then(
+        (playerArray) => {
+          setPlayer1Data(playerArray[0])
+        })
+      findRequest('player', 'player_id', matchData.player2_id).then(
+        (playerArray) => {
+          setPlayer2Data(playerArray[0])
+        }
+      )
+
+      setMasthead(teamName)
     }
-  }, [matchData.id])
+  }, [matchData])
 
-  const testSet = (match_id) => {
-    postRequest(
-      {match_id: match_id,  //need for adding
-      set_num: 1,   //need for adding
-      win_state: null, //need for adding, but can be null
-      },
-      'add/match_set')
-  }
-
-  const testPoint = (match_set_id) => {
-    postRequest({
-      match_set_id: match_set_id,
-      destination: [1, 1, 1],
-      origin: [1, 1, 1],
-      quality: [1, 1, 1],
-      a_type: [1, 1, 1],
-      action: [1, 1, 1],
-      player: [1, 1, 1],
-      win: false,
-    },
-    'addpoint')
-  }
+  useEffect( () => {
+    if(player1Data) {
+      dispGroup()
+    }
+  }, [player1Data])
 
   const navigate = useNavigate()
   const navigateUser = (user) => navigate('/User', {state: {user: user}})
@@ -96,13 +103,40 @@ export default function Match() {
 
   const dispGroup = () => setCurrentView('group')
 
+  const dispServing = () => setCurrentView('serving')
+
+  const dispReceiving = () => setCurrentView('receiving')
+
+  const dispRally = () => setCurrentView('rally')
+  
+  const dispRallyDetails = () => setCurrentView('rallyDetails')
+
+  const [masthead, setMasthead] = useState('Default')
+
   return (
     <div id='match-page-wrapper' className="page-wrapper">
-      <button onClick={() => navigateUser(userData)}>CANCEL MATCH</button>
-      <br/>
-      <button onClick={() => testSet(1)}>add test set</button>
-      <br/>
-      <button onClick={() => testPoint(1)}>add test point</button>
+      <MatchHeader masthead={masthead}
+        leftText={[
+          `Team: ${teamName}`,
+          `Player 1: ${player1Data.name}`,  
+          `Player 2: ${player2Data.name}`,  
+          `Set: not implemented yet`,
+          `Venue: ${matchData.venue}`,
+          `Flight: ${matchData.flight_number}`,
+        ]}
+        rightButtonNames={['CANCEL MATCH']}
+        rightButtonFunctions={[() => navigateUser(userData)]}
+      />
+
+      <MatchContext.Provider value={{player1Data, setPlayer1Data, player2Data, setPlayer2Data, matchData, setMatchData,
+                                    serveOrder, setServeOrder}}>
+
+        {currentView === 'group' && <Group/>}
+        {currentView === 'serving' && <Serving/>}
+        {currentView === 'receiving' && <Receiving/>}
+        {currentView === 'rally' && <Rally/>}
+        {currentView === 'rallyDetails' && <RallyDetails/>}
+      </MatchContext.Provider>
     </div>
   );
 }

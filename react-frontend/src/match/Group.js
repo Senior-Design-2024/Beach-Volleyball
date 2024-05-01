@@ -1,7 +1,13 @@
 export default function Group() {
+  const handleSubmit = () => {
+    console.log('submit not implemented')
+  }
+  
   return(
     <div id="group">
-      group
+      <form id='newUserForm' onSubmit={handleSubmit}>
+
+      </form>
     </div>
   )
 }

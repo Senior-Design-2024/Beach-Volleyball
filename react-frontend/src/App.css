@@ -41,6 +41,7 @@ body {
   height: 100%;
   width: 50%;
   float: left;
+  color: white;
 }
 
 .nav-right {
@@ -48,6 +49,7 @@ body {
   width: 50%;
   float: right;
   text-align: right;
+  color: white;
 }
 
 .nav-button {

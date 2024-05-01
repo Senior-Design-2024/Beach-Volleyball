@@ -92,7 +92,7 @@ export default function User() {
   // App navigation
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
-  const navigateMatch = (user, match) => navigate('/Match', {state: {user: user, match: match}})
+  const navigateMatch = (user, match, team_name) => navigate('/Match', {state: {user:user, match:match, team_name:team_name}})
 
   const [currentView, setCurrentView] = useState('')
 
@@ -226,6 +226,7 @@ export default function User() {
       <UserContext.Provider value={{userData, setUserData, teamData, setTeamData, playerData, setPlayerData, pairData, setPairData, matchData, setMatchData,
                                   teams, setTeams, players, setPlayers, pairs, setPairs, matches, setMatches,
                                   setCurrentView, header, setHeader}}>
+        
         {currentView === 'teams' && <Teams dispTeams={dispTeams} dispNewTeam={dispNewTeam} dispPlayers={dispPlayers}/>}
         {currentView === 'newTeam' && <NewTeam dispTeams={dispTeams}/>}
         {currentView === 'players' && <Players dispPlayers={dispPlayers} dispNewPlayer={dispNewPlayer} dispPlayerOverview={dispPlayerOverview} dispPairs={dispPairs}/>}
