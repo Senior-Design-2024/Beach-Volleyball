@@ -237,7 +237,7 @@ export default function User() {
         {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispNewPair={dispNewPair} dispPairOverview={dispPairOverview}/>}
         {currentView === 'newPair' && <NewPair dispPairs={dispPairs}/>}
         {currentView === 'pairOverview' && <PairOverview dispPairOverview={dispPairOverview} dispNewMatch={dispNewMatch}/>}
-        {currentView === 'newMatch' && <NewMatch/>}
+        {currentView === 'newMatch' && <NewMatch navigateMatch={navigateMatch}/>}
       </UserContext.Provider>
     </div>
   );

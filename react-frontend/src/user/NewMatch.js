@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './User';
-import { postRequest } from '../utils';
+import { findRequest, postRequest } from '../utils';
 
 export default function NewMatch(props) { 
   const {teamData, matchData, setMatchData} = useContext(UserContext)
@@ -12,7 +12,7 @@ export default function NewMatch(props) {
     console.log('this', {...cleanedMatch, team_id:teamData.id})
     await postRequest({...cleanedMatch, team_id:teamData.id}, 'addmatch')
 
-
+    await findRequest('match', 'pair_id', matchData.pair_id)
   };
 
   const handleChange = (event) => {
