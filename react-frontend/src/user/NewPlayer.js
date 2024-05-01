@@ -11,7 +11,7 @@ export default function NewPlayer(props) {
     await postRequest({'team_id': teamData.id,
                  'player_name': playerData.name,
                  'description': playerData.description,},
-                 'addplayer')
+                 'add/player')
     await getAndSetArr('player', 'team_id', teamData.id, setPlayers)
 
     props.dispPlayers(teamData.name, header.lbfs[0])

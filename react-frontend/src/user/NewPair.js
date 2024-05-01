@@ -11,7 +11,7 @@ export default function NewPair(props) {
     await postRequest({'team_id': teamData.id,
                       'player1_id': pairData.player1_id,
                       'player2_id': pairData.player2_id,},
-                      'addpair')
+                      'add/pair')
     await getAndSetArr('pair', 'team_id', teamData.id, setPairs)
 
     props.dispPairs(teamData.name, header.lbfs[0])

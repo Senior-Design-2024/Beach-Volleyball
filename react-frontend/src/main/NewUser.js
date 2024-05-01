@@ -19,7 +19,7 @@ export default function NewUser({dispLogin}) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    postRequest(userInfo, 'adduser');
+    postRequest(userInfo, 'add/user');
 
     dispLogin();
   }

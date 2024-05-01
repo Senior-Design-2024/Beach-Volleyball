@@ -9,7 +9,7 @@ export default function NewTeam(props) {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    await postRequest({'user_id': userData.id, 'team_name': teamData.name}, 'addteam')
+    await postRequest({'user_id': userData.id, 'team_name': teamData.name}, 'add/team')
     await getAndSetArr('team', 'user_id', userData.id, setTeams)
     
     props.dispTeams(userData.username)
