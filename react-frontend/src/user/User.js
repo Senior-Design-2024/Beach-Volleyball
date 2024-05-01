@@ -92,7 +92,7 @@ export default function User() {
   // App navigation
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
-  const navigateMatch = (id) => navigate('/Match', {state: {match_id: id}})
+  const navigateMatch = (user, match) => navigate('/Match', {state: {user: user, match: match}})
 
   const [currentView, setCurrentView] = useState('')
 

@@ -3,15 +3,18 @@ import { UserContext } from './User';
 import { postRequest } from '../utils';
 
 export default function NewMatch(props) { 
-  const {teamData, matchData, setMatchData} = useContext(UserContext)
+  const {userData, teamData, matchData, setMatchData} = useContext(UserContext)
 
   //handles submitting the form
   const handleSubmit = async (event) => {
     event.preventDefault();
     const {id, ...cleanedMatch} = matchData
     const match_id = await postRequest({...cleanedMatch, team_id:teamData.id}, 'add/match')
-    
-    props.navigateMatch(match_id)
+    await setMatchData(prevState => ({
+      ...prevState,
+      id: match_id,
+    }))
+    props.navigateMatch(userData, matchData)
   };
 
   const handleChange = (event) => {

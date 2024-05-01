@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import '../App.css'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { postRequest } from '../utils';
 
 export default function Match() {
   const location = useLocation()
+
+  const [userData, setUserData] = useState({})
 
   const [matchData, setMatchData] = useState({
     id: null,
@@ -49,19 +52,56 @@ export default function Match() {
   })
 
   useEffect( () => {
-    console.log(location.state.match_id)
-
-    if(location.state.match_id){
-      setMatchData(prevState => ({
-        ...prevState,
-        id: location.state.match_id
-      }))
+    if(location.state.match && location.state.user){
+      console.log('location updated with info')
+      setUserData(location.state.user)
+      setMatchData(location.state.match)
     }
   }, [location.state])
 
+  useEffect( () => {
+    if(matchData.id){
+      console.log('t', matchData.id)
+    }
+  })
+
+  const testSet = (match_id) => {
+    postRequest(
+      {match_id: match_id,  //need for adding
+      set_num: 1,   //need for adding
+      win_state: null, //need for adding, but can be null
+      },
+      'add/match_set')
+  }
+
+  const testPoint = (match_set_id) => {
+    postRequest({
+      match_set_id: match_set_id,
+      destination: [1, 1, 1],
+      origin: [1, 1, 1],
+      quality: [1, 1, 1],
+      a_type: [1, 1, 1],
+      action: [1, 1, 1],
+      player: [1, 1, 1],
+      win: false,
+    },
+    'addpoint')
+  }
+
+  const navigate = useNavigate()
+  const navigateUser = (user) => navigate('/User', {state: {user: user}})
+
+  const [currentView, setCurrentView] = useState('')
+
+  const dispGroup = () => setCurrentView('group')
+
   return (
     <div id='match-page-wrapper' className="page-wrapper">
-
+      <button onClick={() => navigateUser(userData)}>CANCEL MATCH</button>
+      <br/>
+      <button onClick={() => testSet(1)}>add test set</button>
+      <br/>
+      <button onClick={() => testPoint(1)}>add test point</button>
     </div>
   );
 }
