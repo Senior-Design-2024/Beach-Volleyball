@@ -53,3 +53,45 @@ def point_add():
 
     else:
         return jsonify({'error': 'Set not found'}), 404
+
+def event_array(point):
+
+    events = db.session.query(Event).filter(Event.point_id == point.id).order_by(Event.e_index.asc()).all()
+
+    destination = []
+    origin = []
+    quality = []
+    a_type = []
+    action = []
+    player = []
+
+    for event in events:
+        data = event.data
+
+        player.append(data & 0b11)
+        action.append((data >> 2) & 0b111)
+        a_type.append((data >> 5) & 0b11111)
+        quality.append((data >> 10) & 0b1111)
+        origin.append((data >> 13) & 0b111)
+        destination.append((data >> 17) & 0b1111)
+
+    return destination, origin, quality, a_type, action, player
+
+@app.route('/findpoint/<point_id>', methods=['GET'])
+def point_find(point_id):
+    point = db.session.get(Point, point_id)
+
+    if point:
+        destination, origin, quality, a_type, action, player = event_array(point)
+
+        return jsonify({'match_set_id': point.id,
+                        'destination': destination,
+                        'origin': origin,
+                        'quality': quality,
+                        'type': a_type,
+                        'action': action,
+                        'player': player,
+                        'win': point.win}), 200
+
+    else:
+        return jsonify({'error':'Could not find point'}), 404
