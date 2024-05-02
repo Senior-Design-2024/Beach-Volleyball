@@ -12,7 +12,7 @@ conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbcreds.dbuser, dbcreds.dbpass, 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'key'
 app.config['SQLALCHEMY_DATABASE_URI'] = conn
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable tracking modifications for better performance
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Define SQLAlchemy models
@@ -79,6 +79,7 @@ class Point(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     match_set_id = db.Column(db.BigInteger, db.ForeignKey('match_set.id', ondelete='CASCADE'), nullable=False)
     win = db.Column(db.Boolean, nullable=False)
+    e_index = db.Column(db.SmallInteger, nullable=False)
     match_set = db.relationship('MatchSet', backref=db.backref('points', lazy=True, cascade="all,delete"))
 
 class Event(db.Model):
