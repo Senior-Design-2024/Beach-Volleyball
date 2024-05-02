@@ -14,12 +14,8 @@ export const MatchContext = createContext();
 export default function Match() {
   const location = useLocation()
 
-  const [userData, setUserData] = useState({})
-
-  const [teamName, setTeamName] = useState('')
-
-  const [player1Data, setPlayer1Data] = useState({})
-  const [player2Data, setPlayer2Data] = useState({})
+  const [userData, setUserData] = useState(null)
+  const [teamData, setTeamData] = useState(null)
 
   const [matchData, setMatchData] = useState({
     id: null,
@@ -43,8 +39,12 @@ export default function Match() {
     strategy: null,
   });
 
+  const [player1Data, setPlayer1Data] = useState(null)
+  const [player2Data, setPlayer2Data] = useState(null)
+
   const [serveOrder, setServeOrder] = useState([0, 0, 0, 0])
 
+  /*
   const [groupData, setGroupData] = useState({
     id: null,
     match_id: null,  //need for adding
@@ -65,9 +65,57 @@ export default function Match() {
     data: null, //DATA REFERS TO THE BIT-SHIFTED REPRESENTATION OF THE ACTION
     e_index: null,
   })
+  */
 
   useEffect( () => {
+    if(location.state){
+      setUserData(location.state.user)
+      setTeamData(location.state.team)
+      setMatchData(location.state.match)
+    }
+  }, [location.state])
+
+  useEffect( () => {
+    const initializePlayers = async () => {
+      await findRequest('player', 'player_id', teamData.player1_id).then(
+        (playerArr) => {
+          setPlayer1Data(playerArr[0])
+        }
+      )
+      await findRequest('player', 'player_id', teamData.player2_id).then(
+        (playerArr) => {
+          setPlayer2Data(playerArr[0])
+        }
+      )
+      console.log('initialized players')
+    }
+
+    if(userData){
+      initializePlayers()
+    }
+  }, [userData])
+
+  useEffect( () => {
+    if(player1Data && player2Data){
+      setHeader({
+        masthead: `${teamData.name}`,
+        leftText: [`Team: ${teamData.name}`,
+          `Player 1: ${player1Data.name}`,  
+          `Player 2: ${player2Data.name}`,  
+          `Set: not implemented yet`,
+          `Venue: ${matchData.venue}`,
+          `Flight: ${matchData.flight_number}`,],
+        rightButtonNames: ['CANCEL MATCH'],
+        rightButtonFunctions: [() => navigateUser(userData)],
+      })
+      dispGroup()
+    }
+  }, [player1Data, player2Data])
+
+  /*
+  useEffect( () => {
     if(location.state.match && location.state.user){
+      console.log('loaction match', location.state.match)
       setUserData(location.state.user)
       setMatchData(location.state.match)
       setTeamName(location.state.team_name)
@@ -75,26 +123,35 @@ export default function Match() {
   }, [location.state])
 
   useEffect( () => {
-    if(matchData.id){
-      findRequest('player', 'player_id', matchData.player1_id).then(
-        (playerArray) => {
-          setPlayer1Data(playerArray[0])
-        })
-      findRequest('player', 'player_id', matchData.player2_id).then(
-        (playerArray) => {
-          setPlayer2Data(playerArray[0])
-        }
-      )
-
-      setMasthead(teamName)
-    }
+    const initializePlayers = async () => {
+      if(matchData.id){
+        console.log('initialize players', matchData.id)
+        const player1Array = await findRequest('player', 'player_id', matchData.player1_id)
+        setPlayer1Data(player1Array[0])
+        const player2Array = await findRequest('player', 'player_id', matchData.player2_id)
+        setPlayer2Data(player2Array[0])
+      }
+  }
+    initializePlayers()
   }, [matchData])
 
   useEffect( () => {
-    if(player1Data) {
+    if(player1Data.id !== null){
+      setHeader({
+        masthead: `${teamName}`,
+        leftText: [`Team: ${teamName}`,
+          `Player 1: ${player1Data.name}`,  
+          `Player 2: ${player2Data.name}`,  
+          `Set: not implemented yet`,
+          `Venue: ${matchData.venue}`,
+          `Flight: ${matchData.flight_number}`,],
+        rightButtonNames: ['CANCEL MATCH'],
+        rightButtonFunctions: [() => navigateUser(userData)],
+      })
       dispGroup()
     }
   }, [player1Data])
+*/
 
   const navigate = useNavigate()
   const navigateUser = (user) => navigate('/User', {state: {user: user}})
@@ -111,21 +168,19 @@ export default function Match() {
   
   const dispRallyDetails = () => setCurrentView('rallyDetails')
 
-  const [masthead, setMasthead] = useState('Default')
+  const [header, setHeader] = useState({
+    masthead: 'default',
+    leftText: [''],
+    rightButtonNames: [''],
+    rightButtonFunctions: [],
+  })
 
   return (
     <div id='match-page-wrapper' className="page-wrapper">
-      <MatchHeader masthead={masthead}
-        leftText={[
-          `Team: ${teamName}`,
-          `Player 1: ${player1Data.name}`,  
-          `Player 2: ${player2Data.name}`,  
-          `Set: not implemented yet`,
-          `Venue: ${matchData.venue}`,
-          `Flight: ${matchData.flight_number}`,
-        ]}
-        rightButtonNames={['CANCEL MATCH']}
-        rightButtonFunctions={[() => navigateUser(userData)]}
+      <MatchHeader masthead={header.masthead}
+        leftText={header.leftText}
+        rightButtonNames={header.rightButtonNames}
+        rightButtonFunctions={header.rightButtonFunctions}
       />
 
       <MatchContext.Provider value={{player1Data, setPlayer1Data, player2Data, setPlayer2Data, matchData, setMatchData,

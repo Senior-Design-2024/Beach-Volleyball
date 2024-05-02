@@ -39,14 +39,14 @@ body {
 
 .nav-left {
   height: 100%;
-  width: 50%;
+  width: 75%;
   float: left;
   color: white;
 }
 
 .nav-right {
   height: 100%;
-  width: 50%;
+  width: 25%;
   float: right;
   text-align: right;
   color: white;

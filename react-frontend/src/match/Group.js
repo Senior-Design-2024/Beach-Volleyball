@@ -1,33 +1,35 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MatchContext } from "./Match";
 
 export default function Group(props) {
-  const {serveOrder, setServeOrder, matchData, player1Data, player2Data} = useContext(MatchContext)
+  const { serveOrder, setServeOrder, matchData, player1Data, player2Data } = useContext(MatchContext);
 
-  const handleSelectChange = (index, value) => {
-    const newServeOrder = [...serveOrder];
+  const handleSelectChange = async (index, value) => {
+    const newServeOrder = [...serveOrder]; // Create a new array to avoid mutating the state directly
     newServeOrder[index] = parseInt(value);
-    setServeOrder(newServeOrder);
+    await setServeOrder(newServeOrder); // Update the state with the new array
   };
 
-  const handleSubmit = () => {
-    console.log('Serve Order:', serveOrder);
+  const handleSubmit = (event) => {
+    event.preventDefault()
 
-    if(serveOrder[0] === 1 || serveOrder[0] === 2){
-      props.dispServing()
+    if (serveOrder.every(order => order !== 0)) {
+      console.log('Serve Order:', serveOrder);
+
+      if (serveOrder[0] === 1 || serveOrder[0] === 2) {
+        //props.dispServing();
+        console.log('serving')
+      } else {
+        //props.dispReceiving();
+        console.log('receivin')
+      }
+
+      setServeOrder([0, 0, 0, 0]); // Reset serveOrder after submission
     }
     else{
-      props.dispReceiving()
+      console.log('not all options are selected')
     }
-    
-    //setServeOrder([0, 0, 0, 0])
-  };
-
-  useEffect( () => {
-    if(serveOrder[0] !== 0 && serveOrder[1] !== 0 && serveOrder[2] !== 0 && serveOrder[3] !== 0){
-      handleSubmit()
-    }
-  }, [serveOrder])
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -35,16 +37,17 @@ export default function Group(props) {
         <div key={index}>
           <label>
             Serve {index + 1}:
-            <select value={value || null} onChange={(e) => handleSelectChange(index, e.target.value)}>
-              <option value="">Select an option</option>
+            <select value={value || '0'} onChange={(e) => handleSelectChange(index, e.target.value)}>
+              <option value='0'>Select an option</option>
               <option value='1'>{player1Data.name}</option>
               <option value='2'>{player2Data.name}</option>
-              <option value="3">{matchData.opponent1_name}</option>
-              <option value="4">{matchData.opponent2_name}</option>
+              <option value='3'>{matchData.opponent1_name}</option>
+              <option value='4'>{matchData.opponent2_name}</option>
             </select>
           </label>
         </div>
       ))}
+      <button type="submit">Submit</button>
     </form>
   );
 }

@@ -15,7 +15,7 @@ export default function NewMatch(props) {
       id: match_id,
     }))
 
-    props.navigateMatch(userData, {...matchData, id: match_id}, teamData.name)
+    props.navigateMatch(userData, teamData, {...matchData, id: match_id})
   };
 
   const handleChange = (event) => {
