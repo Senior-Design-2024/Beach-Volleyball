@@ -84,15 +84,17 @@ export default function User() {
 
   //any time we modify teams and its an array, lets disp teams
   useEffect( () => {
-    if(teams.length !== 0){
+    if(userData.username){
      dispTeams(userData.username)
     }
-  }, [teams, userData.username]) 
+  }, [userData.username, teams]) 
 
   // App navigation
   const navigate = useNavigate()
   const navigateMain = () => navigate('/')
-  const navigateMatch = (user, team, match,) => navigate('/Match', {state: {user:user, team:team, match:match}})
+  const navigateMatch = (user, team, match,) => {
+    navigate('/Match', {state: {user:user, team:team, match:match}})
+  }
 
   const [currentView, setCurrentView] = useState('')
 

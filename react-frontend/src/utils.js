@@ -36,7 +36,7 @@ export const findRequest = async (t, property, search) => {
 
     const responseJson = await response.json();
 
-    console.log(`Server response to find ${t} table:`, responseJson);
+    console.log(`Server response to find ${t} table by ${property} = ${search}:`, responseJson);
 
     return(responseJson)
 

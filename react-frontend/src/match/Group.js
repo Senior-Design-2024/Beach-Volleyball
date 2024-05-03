@@ -1,36 +1,55 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MatchContext } from "./Match";
 
 export default function Group(props) {
-  const { serveOrder, setServeOrder, matchData, player1Data, player2Data } = useContext(MatchContext);
+  const { serveOrder, setServeOrder, matchData, player1Data, player2Data, groupData } = useContext(MatchContext);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
+
+  //function
   const handleSelectChange = async (index, value) => {
-    const newServeOrder = [...serveOrder]; // Create a new array to avoid mutating the state directly
-    newServeOrder[index] = parseInt(value);
-    await setServeOrder(newServeOrder); // Update the state with the new array
+    if (selectedOptions.includes(value)) {
+      alert('You have already selected this option.')
+    }
+    else{
+      const newSelectedOptions = [...selectedOptions];
+      newSelectedOptions[index] = value;
+      setSelectedOptions(newSelectedOptions);
+
+      const newServeOrder = [...serveOrder];
+      newServeOrder[index] = parseInt(value);
+      await setServeOrder(newServeOrder);
+    }
   };
 
+  //function
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (serveOrder.every(order => order !== 0)) {
-      console.log('Serve Order:', serveOrder);
+    if (serveOrder.every(order => order !== 0)) { //make sure everything is selected
+      if ( (serveOrder[0]<=2 && serveOrder[2]<=2) || (serveOrder[0]>=3 && serveOrder[2]>=3) ){ //make sure serve orders alternate
+        console.log('Serve Order:', serveOrder);
 
-      if (serveOrder[0] === 1 || serveOrder[0] === 2) {
-        //props.dispServing();
-        console.log('serving')
-      } else {
-        //props.dispReceiving();
-        console.log('receivin')
+        //go to serving or receiving based on our position
+        if (serveOrder[0] <= 2) {
+          props.dispServing();
+          console.log('serving')
+        } else {
+          props.dispReceiving();
+        }
+
+        setServeOrder([0, 0, 0, 0]); // Reset serveOrder after submission
       }
-
-      setServeOrder([0, 0, 0, 0]); // Reset serveOrder after submission
+      else{
+        alert('serve orders must alternate')
+      }
     }
     else{
-      console.log('not all options are selected')
+      alert('not all options are selected')
     }
   }
 
+  //html
   return (
     <form onSubmit={handleSubmit}>
       {serveOrder.map((value, index) => (

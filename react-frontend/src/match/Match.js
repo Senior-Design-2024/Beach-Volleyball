@@ -44,14 +44,15 @@ export default function Match() {
 
   const [serveOrder, setServeOrder] = useState([0, 0, 0, 0])
 
-  /*
+
   const [groupData, setGroupData] = useState({
     id: null,
     match_id: null,  //need for adding
-    set_num: null,   //need for adding
+    set_num: 0,   //need for adding
     win_state: null, //need for adding, but can be null
   })
 
+  /*
   const [pointData, setPointData] = useState({
     id: null,
     match_set_id: null, //THIS IS FOR GROUP_ID, DIFFERENT BACKEND NAMING CONVENTION
@@ -77,12 +78,12 @@ export default function Match() {
 
   useEffect( () => {
     const initializePlayers = async () => {
-      await findRequest('player', 'player_id', teamData.player1_id).then(
+      await findRequest('player', 'id', matchData.player1_id).then(
         (playerArr) => {
           setPlayer1Data(playerArr[0])
         }
       )
-      await findRequest('player', 'player_id', teamData.player2_id).then(
+      await findRequest('player', 'id', matchData.player2_id).then(
         (playerArr) => {
           setPlayer2Data(playerArr[0])
         }
@@ -90,10 +91,27 @@ export default function Match() {
       console.log('initialized players')
     }
 
-    if(userData){
+    if(userData && teamData && matchData){
       initializePlayers()
     }
   }, [userData])
+
+  //function
+  const postGroup = async (match_id, set_num) => {
+    const newGroup = {
+      match_id: match_id,
+      set_num: set_num,
+      win_state: null
+    }
+
+    const id = await postRequest(newGroup, 'add/match_set')
+
+    setGroupData({
+      ...newGroup,
+      id: id,
+    })
+  }
+
 
   useEffect( () => {
     if(player1Data && player2Data){
@@ -108,57 +126,26 @@ export default function Match() {
         rightButtonNames: ['CANCEL MATCH'],
         rightButtonFunctions: [() => navigateUser(userData)],
       })
-      dispGroup()
+      console.log(player1Data, player2Data)
+      postGroup(matchData.id, 1)
     }
   }, [player1Data, player2Data])
 
-  /*
   useEffect( () => {
-    if(location.state.match && location.state.user){
-      console.log('loaction match', location.state.match)
-      setUserData(location.state.user)
-      setMatchData(location.state.match)
-      setTeamName(location.state.team_name)
-    }
-  }, [location.state])
-
-  useEffect( () => {
-    const initializePlayers = async () => {
-      if(matchData.id){
-        console.log('initialize players', matchData.id)
-        const player1Array = await findRequest('player', 'player_id', matchData.player1_id)
-        setPlayer1Data(player1Array[0])
-        const player2Array = await findRequest('player', 'player_id', matchData.player2_id)
-        setPlayer2Data(player2Array[0])
-      }
-  }
-    initializePlayers()
-  }, [matchData])
-
-  useEffect( () => {
-    if(player1Data.id !== null){
-      setHeader({
-        masthead: `${teamName}`,
-        leftText: [`Team: ${teamName}`,
-          `Player 1: ${player1Data.name}`,  
-          `Player 2: ${player2Data.name}`,  
-          `Set: not implemented yet`,
-          `Venue: ${matchData.venue}`,
-          `Flight: ${matchData.flight_number}`,],
-        rightButtonNames: ['CANCEL MATCH'],
-        rightButtonFunctions: [() => navigateUser(userData)],
-      })
+    if(groupData.id) {
+      console.log('groupdata', groupData)
       dispGroup()
     }
-  }, [player1Data])
-*/
+  }, [groupData.id])
 
   const navigate = useNavigate()
   const navigateUser = (user) => navigate('/User', {state: {user: user}})
 
   const [currentView, setCurrentView] = useState('')
 
-  const dispGroup = () => setCurrentView('group')
+  const dispGroup = () => {
+    setCurrentView('group')
+  }
 
   const dispServing = () => setCurrentView('serving')
 
@@ -175,6 +162,7 @@ export default function Match() {
     rightButtonFunctions: [],
   })
 
+  //html
   return (
     <div id='match-page-wrapper' className="page-wrapper">
       <MatchHeader masthead={header.masthead}
