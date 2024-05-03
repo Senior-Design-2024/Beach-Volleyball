@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react"
 import { MatchContext } from "./Match"
 
-export default function ServeReceive() {
-  const {matchState, currentView, setCurrentView, serveOrder, pointData, setPointData, addEvent, handlePointEnds, dispRally} = useContext(MatchContext)
+export default function ServeReceive(props) {
+  const {matchState, currentView, setCurrentView, serveOrder, pointData, setPointData, addEvent, handlePointEnds} = useContext(MatchContext)
   const player_in_order = serveOrder[matchState.e_index % 4]
   const [formData, setFormData] = useState({
     destination: -1,
@@ -60,8 +60,8 @@ export default function ServeReceive() {
             handlePointEnds(0)
       }
     }
-    else {
-      dispRally()
+    else if(pointData.quality.length !== 0) {
+      props.dispRally()
     }
   }, [pointData.quality])
   

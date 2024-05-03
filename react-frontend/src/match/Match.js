@@ -250,7 +250,9 @@ export default function Match() {
 
   const dispRally = () => setCurrentView('rally')
   
-  const dispRallyDetails = () => setCurrentView('rallyDetails')
+  const dispRallyDetails = () => {
+    setCurrentView('rallyDetails')
+  }
 
   const [header, setHeader] = useState({
     masthead: 'default',
@@ -273,9 +275,9 @@ export default function Match() {
                                     pointData, setPointData, addEvent}}>
 
         {currentView === 'group' && <Group dispServing={dispServing} dispReceiving={dispReceiving}/>}
-        {(currentView === 'serving' || currentView === 'receiving') && <ServeReceive/>}
-        {currentView === 'rally' && <Rally/>}
-        {currentView === 'rallyDetails' && <RallyDetails/>}
+        {(currentView === 'serving' || currentView === 'receiving') && <ServeReceive dispRally={dispRally}/>}
+        {(currentView === 'rally' || currentView === 'rallyDetails') && <Rally dispRally={dispRally} dispRallyDetails={dispRallyDetails}/>}
+        {/*{currentView === 'rallyDetails' && <RallyDetails dispRally={dispRally} dispRallyDetails={dispRallyDetails}/>}*/}
       </MatchContext.Provider>
     </div>
   );

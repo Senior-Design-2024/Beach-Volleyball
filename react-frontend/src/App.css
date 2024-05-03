@@ -12,7 +12,9 @@ html{
 body {
   height: 100%;
   width: 100%;
-  background-color: #cb8d8c;
+  color: white;
+  background-color: #033d01;
+  /*background-color: #cb8d8c;*/
 }
 
 .page-wrapper {
@@ -22,7 +24,7 @@ body {
 
 
 .header {
-  height: 8%;
+  height: 12%;
 }
 
 .masthead {
@@ -68,7 +70,7 @@ body {
 
 
 
-.button {
+button {
   background-color: aqua;
   border: none;
   color: black;
@@ -76,7 +78,7 @@ body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 24px;
 }
 
 .label {
@@ -91,3 +93,35 @@ input[type="text"] {
 input[type="text"]:focus {
   width: 250px;
 }
+
+
+
+
+
+
+
+form {
+  font-size: 16px;
+}
+
+
+form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  width: 100px;
+}
+
+form input {
+  height: 100%;
+  width: 50px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 50px;
+  width: 100vh
+}
+
+
+
+
