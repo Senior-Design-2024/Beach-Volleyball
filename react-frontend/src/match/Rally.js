@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { MatchContext } from "./Match";
 
 export default function Rally(props) {
-  const {serveOrder, matchState, player1Data, player2Data, currentView, setCurrentView} = useContext(MatchContext)
+  const {pointData, addEvent, serveOrder, matchState, player1Data, player2Data, currentView, setCurrentView, handlePointEnds} = useContext(MatchContext)
 
   const player_in_order = serveOrder[matchState.e_index % 4]
   const [formData, setFormData] = useState({
@@ -25,6 +25,7 @@ export default function Rally(props) {
     return true
   }
 
+
   const handleChangePlayer = (event) => {
     const { name, value } = event.target;
 
@@ -42,6 +43,9 @@ export default function Rally(props) {
       [name]: parseInt(value, 10), 
       action: 8,
       player: 3, //could also make this 4, we don't care which opponent
+      quality: 0,
+      origin: 0,
+      destination: 0, 
     }));
   }
 
@@ -110,12 +114,41 @@ export default function Rally(props) {
   useEffect( () => {
     const {destination, origin, quality, ...remainder} = formData
     if(areNoneEqualTo(formData, -1)){
-      console.log('rally end not implemented')
+      console.log(2, formData)
+      addEvent(formData)
     }
     else if(areNoneEqualTo(remainder, -1)){
+      console.log(1)
       props.dispRallyDetails()
     }
   }, [formData])
+
+  useEffect( () => {
+    console.log('pointData change', pointData)
+    const last_index = pointData.quality.length - 1
+    if(pointData.quality[last_index] === 0 || pointData.quality[last_index] === 4){
+      if( (pointData.quality[last_index] === 0 && pointData.player[last_index] >= 2) ||
+          (pointData.quality[last_index] === 4 && pointData.player[last_index] <= 2) ){
+        
+            handlePointEnds(1)
+      }
+      else{
+            handlePointEnds(0)
+      }
+    }
+    else if(pointData.quality.length !== 0) {
+      setFormData({
+        destination: -1,
+        origin: -1,
+        quality: -1,
+        type: -1,
+        action: -1,
+        player: -1,
+      })
+      props.dispRally()
+    }
+  }, [pointData.quality])
+  
 
 
 
@@ -126,6 +159,10 @@ export default function Rally(props) {
 
   return(
     <div id='rally'>
+      <div id='scores'>
+        <p>Us {matchState.us_score}</p>
+        <p>Them {matchState.them_score}</p>
+      </div>
 
       {currentView === 'rally' &&
         <form id='rallyForm' onSubmit={handleSubmit}>
@@ -146,19 +183,19 @@ export default function Rally(props) {
                 <td>
                   <label htmlFor='type'>Attack:</label> 
 
-                  <input type="radio" name="type" id="aSwing" value="swing" onChange={handleChangeAttack}/>
+                  <input type="radio" name="type" id="aSwing" value="7" onChange={handleChangeAttack}/>
                   <label htmlFor="aSwing">SWING</label>
 
-                  <input type="radio" name="type" id="aRoll" value="roll" onChange={handleChangeAttack}/>
+                  <input type="radio" name="type" id="aRoll" value="8" onChange={handleChangeAttack}/>
                   <label htmlFor="aRoll">ROLL</label>
 
-                  <input type="radio" name="type" id="aPoke" value="poke" onChange={handleChangeAttack}/>
+                  <input type="radio" name="type" id="aPoke" value="9" onChange={handleChangeAttack}/>
                   <label htmlFor="aPoke">POKE</label>
 
-                  <input type="radio" name="type" id="aBump" value="bump" onChange={handleChangeAttack}/>
+                  <input type="radio" name="type" id="aBump" value="10" onChange={handleChangeAttack}/>
                   <label htmlFor="aBump">BUMP</label>
 
-                  <input type="radio" name="type" id="aSet" value="set" onChange={handleChangeAttack}/>
+                  <input type="radio" name="type" id="aSet" value="11" onChange={handleChangeAttack}/>
                   <label htmlFor="aSet">SET</label>
                 </td>
               </tr>
@@ -166,19 +203,19 @@ export default function Rally(props) {
                 <td>
                   <label htmlFor='type'>Option:</label> 
 
-                  <input type="radio" name="type" id="oSwing" value="swing" onChange={handleChangeOption}/>
+                  <input type="radio" name="type" id="oSwing" value="7" onChange={handleChangeOption}/>
                   <label htmlFor="oSwing">SWING</label>
 
-                  <input type="radio" name="type" id="oRoll" value="roll" onChange={handleChangeOption}/>
+                  <input type="radio" name="type" id="oRoll" value="8" onChange={handleChangeOption}/>
                   <label htmlFor="oRoll">ROLL</label>
 
-                  <input type="radio" name="type" id="oPoke" value="poke" onChange={handleChangeOption}/>
+                  <input type="radio" name="type" id="oPoke" value="9" onChange={handleChangeOption}/>
                   <label htmlFor="oPoke">POKE</label>
 
-                  <input type="radio" name="type" id="oBump" value="bump" onChange={handleChangeOption}/>
+                  <input type="radio" name="type" id="oBump" value="10" onChange={handleChangeOption}/>
                   <label htmlFor="oBump">BUMP</label>
 
-                  <input type="radio" name="type" id="oSet" value="set" onChange={handleChangeOption}/>
+                  <input type="radio" name="type" id="oSet" value="11" onChange={handleChangeOption}/>
                   <label htmlFor="oSet">SET</label>
                 </td>
               </tr>
@@ -186,19 +223,19 @@ export default function Rally(props) {
                 <td>
                   <label htmlFor='type'>Set:</label> 
 
-                  <input type="radio" name="type" id="platform" value="platform" onChange={handleChangeSet}/>
+                  <input type="radio" name="type" id="platform" value="12" onChange={handleChangeSet}/>
                   <label htmlFor="platform">PLATFORM</label>
 
-                  <input type="radio" name="type" id="error" value="error" onChange={handleChangeSet}/>
+                  <input type="radio" name="type" id="error" value="13" onChange={handleChangeSet}/>
                   <label htmlFor="error">ERROR</label>
 
-                  <input type="radio" name="type" id="-" value="-" onChange={handleChangeSet}/>
+                  <input type="radio" name="type" id="-" value="14" onChange={handleChangeSet}/>
                   <label htmlFor="-">-</label>
 
-                  <input type="radio" name="type" id="0" value="0" onChange={handleChangeSet}/>
+                  <input type="radio" name="type" id="0" value="15" onChange={handleChangeSet}/>
                   <label htmlFor="0">0</label>
 
-                  <input type="radio" name="type" id="+" value="+" onChange={handleChangeSet}/>
+                  <input type="radio" name="type" id="+" value="16" onChange={handleChangeSet}/>
                   <label htmlFor="+">+</label>
                 </td>
               </tr>
@@ -206,19 +243,19 @@ export default function Rally(props) {
                 <td>
                   <label htmlFor='type'>Dig:</label> 
 
-                  <input type="radio" name="type" id="dSwing" value="swing" onChange={handleChangeDig}/>
+                  <input type="radio" name="type" id="dSwing" value="7" onChange={handleChangeDig}/>
                   <label htmlFor="dSwing">SWING</label>
 
-                  <input type="radio" name="type" id="dRoll" value="roll" onChange={handleChangeDig}/>
+                  <input type="radio" name="type" id="dRoll" value="8" onChange={handleChangeDig}/>
                   <label htmlFor="dRoll">ROLL</label>
 
-                  <input type="radio" name="type" id="dPoke" value="poke" onChange={handleChangeDig}/>
+                  <input type="radio" name="type" id="dPoke" value="9" onChange={handleChangeDig}/>
                   <label htmlFor="dPoke">POKE</label>
 
-                  <input type="radio" name="type" id="dBump" value="bump" onChange={handleChangeDig}/>
+                  <input type="radio" name="type" id="dBump" value="10" onChange={handleChangeDig}/>
                   <label htmlFor="dBump">BUMP</label>
 
-                  <input type="radio" name="type" id="dSet" value="set" onChange={handleChangeDig}/>
+                  <input type="radio" name="type" id="dSet" value="11" onChange={handleChangeDig}/>
                   <label htmlFor="dSet">SET</label>
                 </td>
               </tr>
@@ -226,30 +263,25 @@ export default function Rally(props) {
                 <td>
                   <label htmlFor='type'>Block:</label>
 
-                  <input type="radio" name="type" id="overpass" value="overpass" onChange={handleChangeBlock}/>
-                  <label htmlFor="overpass">Overpass</label>
+                  <input type="radio" name="type" id="overpass" value="17" onChange={handleChangeBlock}/>
+                  <label htmlFor="overpass">OVERPASS</label>
 
-                  <input type="radio" name="type" id="term" value="term" onChange={handleChangeBlock}/>
-                  <label htmlFor="term">Term</label>
+                  <input type="radio" name="type" id="term" value="18" onChange={handleChangeBlock}/>
+                  <label htmlFor="term">TERM</label>
 
-                  <input type="radio" name="type" id="control" value="control" onChange={handleChangeBlock}/>
-                  <label htmlFor="control">Control</label>
+                  <input type="radio" name="type" id="control" value="19" onChange={handleChangeBlock}/>
+                  <label htmlFor="control">CONTROL</label>
                 </td>
               </tr>
               <tr>
                 <td>
                   <label htmlFor='type'>Them:</label>
 
-                  <input type="radio" name="type" id="ATTACK Error" value="typeError" onChange={handleChangeThem}/>
-                  <label htmlFor="typeError">type ERROR</label>
+                  <input type="radio" name="type" id="ATTACK Error" value="20" onChange={handleChangeThem}/>
+                  <label htmlFor="ATTACK Error">type ERROR</label>
 
-                  <input type="radio" name="type" id="fault" value="fault" onChange={handleChangeThem}/>
+                  <input type="radio" name="type" id="fault" value="21" onChange={handleChangeThem}/>
                   <label htmlFor="fault">FAULT</label>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="submit"></input>
                 </td>
               </tr>
             </tbody>
@@ -384,11 +416,6 @@ export default function Rally(props) {
               </td>
             </tr>
 
-              <tr>
-                <td>
-                  <input type="submit"></input>
-                </td>
-              </tr>
             </tbody>
           </table>
         </form>

@@ -34,9 +34,22 @@ export default function ServeReceive(props) {
   };
 
 
+  /*
+  useEffect( () => {
+    if(areNoneEqualTo(formData, -1)){
+      console.log('point before adding', pointData)
+      addEvent(formData)
+
+      //useEffect will watch for changes on pointData
+    }
+  }, [formData])
+  */
+
+
   //handle submit
   const handleSubmit = (event) => {
     event.preventDefault()
+
 
     if(areNoneEqualTo(formData, -1)){
       console.log('point before adding', pointData)
@@ -67,14 +80,10 @@ export default function ServeReceive(props) {
   
   return(
     <div id='serve-receive'>
-      <p>
-        Us: {matchState.us_score}  
-      </p>
-      <p>
-        Them: {matchState.them_score}
-      </p>
-
-
+      <div id='scores'>
+        <p>Us {matchState.us_score}</p>
+        <p>Them {matchState.them_score}</p>
+      </div>
 
       <form id='newUserForm' onSubmit={handleSubmit}>
         <table>

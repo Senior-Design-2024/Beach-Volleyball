@@ -22,9 +22,11 @@ export default function Match() {
 
   const [matchState, setMatchState] = useState({
     e_index: null,
-    us_score: null,
-    them_score: null,
+    us_score: 0,
+    them_score: 0,
   })
+
+  const [lastWin, setLastWin] = useState(0)
 
   const [matchData, setMatchData] = useState({
     id: null,
@@ -57,7 +59,7 @@ export default function Match() {
   const [groupData, setGroupData] = useState({
     id: null,
     match_id: null,  //need for adding
-    set_num: 0,   //need for adding
+    set_num: 1,   //need for adding
     win_state: null, //need for adding, but can be null
   })
 
@@ -119,7 +121,9 @@ export default function Match() {
     if(player1Data && player2Data){
       setHeader({
         masthead: `${teamData.name}`,
-        leftText: [`Team: ${teamData.name}`,
+        leftText: [
+          `Scores`,
+          `Team: ${teamData.name}`,
           `Player 1: ${player1Data.name}`,  
           `Player 2: ${player2Data.name}`,  
           `Set: ${groupData.set_num}`,
@@ -173,12 +177,40 @@ export default function Match() {
 
 
   const handleMatchEnds = (win) => {
-    console.log('match end not implemented', win)
+    //mod the set so that it shows we won
+    const {id, ...remainder} = groupData
+    postRequest({...remainder, win: win ? 1 : 0}, `update/set/${groupData.id}`)
+    
+    //update set num
+    setGroupData(prevData => ({
+      ...prevData,
+      win: win ? 1 : 0,
+      set_num: groupData.set_num + 1,
+    }))
+    
+    //useeffect does logic just below
   }
 
+  useEffect( () => {
+    //logic for if the game ends
+    if(groupData.set_num >= 3){
+      if(groupData.win === lastWin){
+        navigateStats(userData, matchData.id)
+      }
+    }
 
+    setLastWin(groupData.win)
+  }, [groupData.set_num])
+
+  const [formSubmitted, setFormSubmitted] = useState(false)
   //handlePointEnds
   const handlePointEnds = (win) => {
+    //send off the point
+    postRequest({...pointData, win: win ? 1 : 0}, 'addpoint')
+
+    //reset the point
+
+
     //match state, set_num win state for match => call function for if match ends
     const newMatchState = {
       e_index: matchState.e_index + 1,
@@ -186,32 +218,28 @@ export default function Match() {
       them_score: win ? matchState.them_score : matchState.them_score+1
     }
     console.log('handlepointends', pointData)
+    console.log(newMatchState)
 
     setMatchState(newMatchState) //update match state
-    setGroupData(prevData => ({  //update set_num
-      ...prevData,
-      set_num: groupData.set_num + 1,
-    }))
-
 
     //see if the match ends
     if(Math.abs(newMatchState.us_score - newMatchState.them_score) >= 2){
       if(groupData.set_num <= 2){
-        if(newMatchState.us_score >= 21){
+        if(newMatchState.us_score >= 3){
           handleMatchEnds(1)
           return;
         }
-        else if(newMatchState.them_score >= 21){
+        else if(newMatchState.them_score >= 3){
           handleMatchEnds(0)
           return;
         }
       } 
       else {
-        if(newMatchState.us_score >= 15){
+        if(newMatchState.us_score >= 2){
           handleMatchEnds(1)
           return;
         }
-        else if(newMatchState.them_score >= 15){
+        else if(newMatchState.them_score >= 2){
           handleMatchEnds(0)
           return;
         }
@@ -219,13 +247,20 @@ export default function Match() {
     }
 
     //do if the match did not end
-    console.log('if match doesnot end not implemented')
+    if(currentView === 'serving'){
+      dispReceiving()
+    }
+    else{
+      dispServing()
+    }
   }
+
 
   /////////////////////////////////
   /////////////////////////////////
   const navigate = useNavigate()
   const navigateUser = (user) => navigate('/User', {state: {user: user}})
+  const navigateStats = (user, match_id) => navigate('/MatchStats', {state: {user: user, match_id: match_id}})
 
   const [currentView, setCurrentView] = useState('')
 
@@ -237,14 +272,31 @@ export default function Match() {
     setPointData(prevData => ({
       ...prevData,
       match_set_id: groupData.id,
-      e_index: matchState.e_index
+      e_index: matchState.e_index,
+      destination: [],
+      origin: [],
+      quality: [],
+      type: [],
+      action: [],
+      player: [],
+      win: null,
     }))
-    //point.newPoint(groupData.id, matchState.e_index)
     setCurrentView('serving')
   }
 
   const dispReceiving = () => {
-    //point.newPoint(groupData.id, matchState.e_index)
+    setPointData(prevData => ({
+      ...prevData,
+      match_set_id: groupData.id,
+      e_index: matchState.e_index,
+      destination: [],
+      origin: [],
+      quality: [],
+      type: [],
+      action: [],
+      player: [],
+      win: null,
+    }))
     setCurrentView('receiving')
   }
 
@@ -275,9 +327,9 @@ export default function Match() {
                                     pointData, setPointData, addEvent}}>
 
         {currentView === 'group' && <Group dispServing={dispServing} dispReceiving={dispReceiving}/>}
-        {(currentView === 'serving' || currentView === 'receiving') && <ServeReceive dispRally={dispRally}/>}
+        {currentView === 'serving' && <ServeReceive dispRally={dispRally}/>}
+        {currentView === 'receiving' && <Receiving dispRally={dispRally}/>}
         {(currentView === 'rally' || currentView === 'rallyDetails') && <Rally dispRally={dispRally} dispRallyDetails={dispRallyDetails}/>}
-        {/*{currentView === 'rallyDetails' && <RallyDetails dispRally={dispRally} dispRallyDetails={dispRallyDetails}/>}*/}
       </MatchContext.Provider>
     </div>
   );
