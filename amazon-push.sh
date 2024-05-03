@@ -6,7 +6,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 target_ip=$1
-key_path="./sdgn.pem"
+key_path="./sdgn-final.pem"
 source_dirs="./flask-server ./react-frontend ./docker-compose.yml"
 destination_dir="/home/ec2-user/downloads"
 
