@@ -87,3 +87,22 @@ export const putRequest = async (jsonData, apiCall) => {
     console.error('Error posting json:', error.message);
   }
 }
+
+
+//Calls to server /find. t specifies table, property specifies lookup parameter, and search is what property must match
+export const getStats = async (match_id) => {
+  try {
+    const response = await fetch(`/matchstats/${match_id}`, {
+      method: 'GET',
+    });
+
+    const responseJson = await response.json();
+
+    console.log(`get match stats:`, responseJson);
+
+    return(responseJson)
+
+  } catch (error) {
+    console.error('Error getting:', error.message);
+  }
+}

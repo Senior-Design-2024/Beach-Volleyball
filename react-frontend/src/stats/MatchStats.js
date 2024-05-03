@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { findRequest } from "../utils"
+import { findRequest, getStats } from "../utils"
 
 export default function() {
   const location = useLocation()
@@ -12,7 +12,7 @@ export default function() {
     const initializeInfo = async () => {
       setUserData(location.state.user)
 
-      const serverStats = await findRequest('match', 'id', location.state.match_id)
+      const serverStats = await getStats(location.state.match_id)
       setStats(serverStats)
     }
     
@@ -28,7 +28,7 @@ export default function() {
 
   return(
     <div id='match-stats'>
-
+      
     </div>
   )
 }
