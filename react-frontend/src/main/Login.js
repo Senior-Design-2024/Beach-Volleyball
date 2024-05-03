@@ -32,12 +32,18 @@ export default function Login({onSubmit, navigateUser}) {
   return(
     <div id='login'>
       <form id='loginForm' onSubmit={handleSubmit} autoComplete='on'>
-        <table>
+        <table className='login-table'>
           <tbody>
             <tr>
               <td>
                 <label htmlFor='email' className='label'>Email:</label> 
                 <input id='email' type='text' name='email' onChange={handleChange}/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor='password' className='label'>Password:</label>
+                <input id='password' type='password' name='password'></input>
               </td>
             </tr>
             <tr>

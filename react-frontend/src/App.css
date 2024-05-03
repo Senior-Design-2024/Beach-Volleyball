@@ -7,6 +7,7 @@
 
 html{
   height: 100vh;
+  font-size: 20px;
 }
 
 body {
@@ -82,16 +83,18 @@ button {
 }
 
 .label {
+  height: 30px;
   width: 150px;
   display: inline-block;
+  font-weight: bold;
 }
 
 .inputText
 input[type="text"] {
-  width: 100px;
+  width: 200px;
 }
 input[type="text"]:focus {
-  width: 250px;
+  width: 300px;
 }
 
 
@@ -123,5 +126,11 @@ table {
 }
 
 
+.login-table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
 
-
+label {
+  width: 100px;
+}

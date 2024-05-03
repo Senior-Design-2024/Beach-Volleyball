@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { UserContext } from "./User"
 
 export default function PairOverview(props) {
-  const {pairData, matches, header} = useContext(UserContext)
+  const {userData, pairData, matches, header} = useContext(UserContext)
   const backlink = () => props.dispPairOverview(pairData.id, header.lbfs[0])
 
   const handleNewMatch = () => {
@@ -10,7 +10,7 @@ export default function PairOverview(props) {
   }
 
   const selectMatch = (match) => {
-    console.log('not implemented')
+    props.navigateStats(userData, match.id)
   }
 
   return(

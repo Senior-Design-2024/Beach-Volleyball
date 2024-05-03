@@ -1,5 +1,5 @@
 export default function PlayerOverview() {
   return(
-    <p>probably make this overlap with pair overview??</p>
+    <p>Player stats coming soon!</p>
   )
 }

@@ -54,14 +54,16 @@ export default function Group(props) {
         <div key={index}>
           <label>
             Serve {index + 1}:
-            <select value={value || '0'} onChange={(e) => handleSelectChange(index, e.target.value)}>
+          </label>
+          <select value={value || '0'} onChange={(e) => handleSelectChange(index, e.target.value)}>
               <option value='0'>Select an option</option>
               <option value='1'>{player1Data.name}</option>
               <option value='2'>{player2Data.name}</option>
               <option value='3'>{matchData.opponent1_name}</option>
               <option value='4'>{matchData.opponent2_name}</option>
             </select>
-          </label>
+          <br/>
+          <br/>
         </div>
       ))}
       <button type="submit">Submit</button>

@@ -95,6 +95,9 @@ export default function User() {
   const navigateMatch = (user, team, match,) => {
     navigate('/Match', {state: {user:user, team:team, match:match}})
   }
+  const navigateStats = (user, match_id) => {
+    navigate('/MatchStats', {state: {user:user, match_id:match_id}})
+  }
 
   const [currentView, setCurrentView] = useState('')
 
@@ -236,7 +239,7 @@ export default function User() {
         {currentView === 'playerOverview' && <PlayerOverview/>}
         {currentView === 'pairs' && <Pairs dispPairs={dispPairs} dispNewPair={dispNewPair} dispPairOverview={dispPairOverview}/>}
         {currentView === 'newPair' && <NewPair dispPairs={dispPairs}/>}
-        {currentView === 'pairOverview' && <PairOverview dispPairOverview={dispPairOverview} dispNewMatch={dispNewMatch}/>}
+        {currentView === 'pairOverview' && <PairOverview dispPairOverview={dispPairOverview} dispNewMatch={dispNewMatch} navigateStats={navigateStats}/>}
         {currentView === 'newMatch' && <NewMatch navigateMatch={navigateMatch}/>}
       </UserContext.Provider>
     </div>
