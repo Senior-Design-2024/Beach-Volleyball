@@ -65,6 +65,7 @@ CREATE TABLE `match_set`(
 CREATE TABLE `point`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `match_set_id` BIGINT UNSIGNED NOT NULL,
+    `e_index` TINYINT UNSIGNED NOT NULL,
     `win` BOOLEAN NOT NULL,
     CONSTRAINT `point_match_set_id_foreign` FOREIGN KEY (`match_set_id`) REFERENCES `match_set`(`id`) ON DELETE CASCADE
 );
