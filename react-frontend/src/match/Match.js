@@ -61,6 +61,31 @@ export default function Match() {
     win_state: null, //need for adding, but can be null
   })
 
+  const [pointData, setPointData] = useState({
+    match_set_id: null,
+    e_index: null,
+    destination: [],
+    origin: [],
+    quality: [],
+    type: [],
+    action: [],
+    player: [],
+    win: null,
+  })
+
+  const addEvent = (obj) => {
+    setPointData(prevData => ({
+      ...prevData,
+      destination: [...prevData.destination, obj.destination],
+      origin: [...prevData.origin, obj.origin],
+      quality: [...prevData.quality, obj.quality],
+      type: [...prevData.type, obj.type],
+      action: [...prevData.action, obj.action],
+      player: [...prevData.player, obj.player],
+    }))
+  }
+  
+
 
   useEffect( () => {
     if(location.state){
@@ -97,7 +122,7 @@ export default function Match() {
         leftText: [`Team: ${teamData.name}`,
           `Player 1: ${player1Data.name}`,  
           `Player 2: ${player2Data.name}`,  
-          `Set: not implemented yet`,
+          `Set: ${groupData.set_num}`,
           `Venue: ${matchData.venue}`,
           `Flight: ${matchData.flight_number}`,],
         rightButtonNames: ['CANCEL MATCH'],
@@ -131,12 +156,70 @@ export default function Match() {
         us_score: 0,
         them_score: 0,
       })
+      setPointData({
+        match_set_id: null,
+        e_index: null,
+        destination: [],
+        origin: [],
+        quality: [],
+        type: [],
+        action: [],
+        player: [],
+        win: null,
+      })
       dispGroup()
     }
   }, [groupData.id])
 
-  const handlePointEnds = () => {
-    console.log('not implemented', point)
+
+  const handleMatchEnds = (win) => {
+    console.log('match end not implemented', win)
+  }
+
+
+  //handlePointEnds
+  const handlePointEnds = (win) => {
+    //match state, set_num win state for match => call function for if match ends
+    const newMatchState = {
+      e_index: matchState.e_index + 1,
+      us_score: win ? matchState.us_score+1 : matchState.us_score,
+      them_score: win ? matchState.them_score : matchState.them_score+1
+    }
+    console.log('handlepointends', pointData)
+
+    setMatchState(newMatchState) //update match state
+    setGroupData(prevData => ({  //update set_num
+      ...prevData,
+      set_num: groupData.set_num + 1,
+    }))
+
+
+    //see if the match ends
+    if(Math.abs(newMatchState.us_score - newMatchState.them_score) >= 2){
+      if(groupData.set_num <= 2){
+        if(newMatchState.us_score >= 21){
+          handleMatchEnds(1)
+          return;
+        }
+        else if(newMatchState.them_score >= 21){
+          handleMatchEnds(0)
+          return;
+        }
+      } 
+      else {
+        if(newMatchState.us_score >= 15){
+          handleMatchEnds(1)
+          return;
+        }
+        else if(newMatchState.them_score >= 15){
+          handleMatchEnds(0)
+          return;
+        }
+      }
+    }
+
+    //do if the match did not end
+    console.log('if match doesnot end not implemented')
   }
 
   /////////////////////////////////
@@ -150,13 +233,18 @@ export default function Match() {
     setCurrentView('group')
   }
 
-  const dispServing = () => {
-    point.newPoint(groupData.id, matchState.e_index)
+  const dispServing = async () => {
+    setPointData(prevData => ({
+      ...prevData,
+      match_set_id: groupData.id,
+      e_index: matchState.e_index
+    }))
+    //point.newPoint(groupData.id, matchState.e_index)
     setCurrentView('serving')
   }
 
   const dispReceiving = () => {
-    point.newPoint(groupData.id, matchState.e_index)
+    //point.newPoint(groupData.id, matchState.e_index)
     setCurrentView('receiving')
   }
 
@@ -181,11 +269,11 @@ export default function Match() {
       />
 
       <MatchContext.Provider value={{player1Data, setPlayer1Data, player2Data, setPlayer2Data, matchData, setMatchData,
-                                    serveOrder, setServeOrder, matchState, setMatchState, handlePointEnds, }}>
+                                    serveOrder, setServeOrder, matchState, setMatchState, handlePointEnds, currentView, setCurrentView,
+                                    pointData, setPointData, addEvent}}>
 
         {currentView === 'group' && <Group dispServing={dispServing} dispReceiving={dispReceiving}/>}
-        {(currentView === 'serving' || currentView === 'receiving') && <ServeReceive point={point}/>}
-        {/*{currentView === 'receiving' && <Receiving/>}*/}
+        {(currentView === 'serving' || currentView === 'receiving') && <ServeReceive/>}
         {currentView === 'rally' && <Rally/>}
         {currentView === 'rallyDetails' && <RallyDetails/>}
       </MatchContext.Provider>

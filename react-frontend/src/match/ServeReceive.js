@@ -1,8 +1,8 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { MatchContext } from "./Match"
 
-export default function ServeReceive(props) {
-  const {matchState, currentView, setCurrentView, serveOrder} = useContext(MatchContext)
+export default function ServeReceive() {
+  const {matchState, currentView, setCurrentView, serveOrder, pointData, setPointData, addEvent, handlePointEnds, dispRally} = useContext(MatchContext)
   const player_in_order = serveOrder[matchState.e_index % 4]
   const [formData, setFormData] = useState({
     destination: -1,
@@ -39,26 +39,31 @@ export default function ServeReceive(props) {
     event.preventDefault()
 
     if(areNoneEqualTo(formData, -1)){
-      props.point.addEventObj(formData)
+      console.log('point before adding', pointData)
+      addEvent(formData)
 
-      if(formData.quality === 0 || formData.quality === 4){
-        if( (formData.quality === 0 && player_in_order >= 2) ||
-            (formData.quality === 4 && player_in_order <= 2) ){
-          
-              console.log('we won')
-        }
-        else{
-              console.log('we lost')
-        }
-      }
-      else {
-        console.log('move on to rally')
-      }
+      //useEffect will watch for changes on pointData
     }
     else{
       alert('select all options')
     }
   }
+
+  useEffect( () => {
+    if(formData.quality === 0 || formData.quality === 4){
+      if( (formData.quality === 0 && player_in_order >= 2) ||
+          (formData.quality === 4 && player_in_order <= 2) ){
+        
+            handlePointEnds(1)
+      }
+      else{
+            handlePointEnds(0)
+      }
+    }
+    else {
+      dispRally()
+    }
+  }, [pointData.quality])
   
   return(
     <div id='serve-receive'>

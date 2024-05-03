@@ -11,7 +11,7 @@ export class Point {
     this.win =  null
   }
 
-  newPoint(group_id, e_index) {
+  newPoint (group_id, e_index) {
     this.match_set_id = group_id
     this.e_index = e_index
     this.destination =  []
@@ -47,5 +47,14 @@ export class Point {
 
     console.log('event added to point')
     console.log('point updated to:', this)
+  }
+
+  setWin(win) {
+    if(win){
+      this.win = 1
+    }
+    else {
+      this.win = 0
+    }
   }
 }
