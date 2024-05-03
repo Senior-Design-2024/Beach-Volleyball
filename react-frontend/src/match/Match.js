@@ -9,6 +9,7 @@ import Rally from './Rally';
 import RallyDetails from './RallyDetails';
 import MatchHeader from '../components/MatchHeader';
 import { Point } from './Point';
+import { putRequest } from '../utils';
 
 export const MatchContext = createContext();
 
@@ -26,7 +27,7 @@ export default function Match() {
     them_score: 0,
   })
 
-  const [lastWin, setLastWin] = useState(0)
+  const [lastWin, setLastWin] = useState([])
 
   const [matchData, setMatchData] = useState({
     id: null,
@@ -153,7 +154,20 @@ export default function Match() {
     })
   }
 
+
   useEffect( () => {
+    console.log('pls', groupData, lastWin)
+    //logic for if the game ends
+    if(groupData.set_num == 3){
+      if(lastWin[0] && lastWin[1]){
+          navigateStats(userData, matchData.id)
+      }
+    }
+    else if(groupData.set_num == 4){
+      navigateStats(userData, matchData.id)
+    }
+
+    console.log('running')
     if(groupData.id) {
       setMatchState({
         e_index: 0,
@@ -176,31 +190,68 @@ export default function Match() {
   }, [groupData.id])
 
 
-  const handleMatchEnds = (win) => {
+  const handleMatchEnds = async (win) => {
     //mod the set so that it shows we won
     const {id, ...remainder} = groupData
-    postRequest({...remainder, win: win ? 1 : 0}, `update/set/${groupData.id}`)
-    
-    //update set num
-    setGroupData(prevData => ({
-      ...prevData,
-      win: win ? 1 : 0,
+
+    putRequest({...remainder, win_state: win ? 1 : 0}, `update/set/${groupData.id}`)
+  
+
+
+    const new_id = await postRequest({win_state: null, set_num: groupData.set_num+1, match_id:matchData.id}, 'add/match_set')
+
+    const newData = {
+      win_state: null,
       set_num: groupData.set_num + 1,
-    }))
+      id: new_id,
+      match_id: matchData.id
+    }
+
+    //update set num
+    setGroupData(newData)
+    setLastWin([lastWin, win])
     
     //useeffect does logic just below
   }
 
+/*
   useEffect( () => {
     //logic for if the game ends
     if(groupData.set_num >= 3){
-      if(groupData.win === lastWin){
-        navigateStats(userData, matchData.id)
+      for(const i = 0; i < lastWin.length; i++){
+        if(lastWin[i] === groupData.win){
+          navigateStats(userData, matchData.id)
+          return;
+        }
       }
     }
 
-    setLastWin(groupData.win)
+    setMatchState({
+      e_index: 0,
+      us_score: 0,
+      them_score: 0,
+    })
+    setPointData({
+      match_set_id: null,
+      e_index: 0,
+      destination: [],
+      origin: [],
+      quality: [],
+      type: [],
+      action: [],
+      player: [],
+      win: null,
+    })
+
+    //setMatchState()
+    dispGroup()
+
+
+
+    setLastWin([lastWin, groupData.win_state])
   }, [groupData.set_num])
+*/
+ 
 
   const [formSubmitted, setFormSubmitted] = useState(false)
   //handlePointEnds
@@ -225,11 +276,11 @@ export default function Match() {
     //see if the match ends
     if(Math.abs(newMatchState.us_score - newMatchState.them_score) >= 2){
       if(groupData.set_num <= 2){
-        if(newMatchState.us_score >= 3){
+        if(newMatchState.us_score >= 2){
           handleMatchEnds(1)
           return;
         }
-        else if(newMatchState.them_score >= 3){
+        else if(newMatchState.them_score >= 2){
           handleMatchEnds(0)
           return;
         }

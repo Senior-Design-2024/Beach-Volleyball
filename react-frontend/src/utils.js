@@ -61,3 +61,29 @@ export const getAndSetArr = async (t, property, search, setFunction) => {
       console.error('Error with getAndSetArr', error)
     })
 }
+
+
+export const putRequest = async (jsonData, apiCall) => {
+  try {
+    const response = await fetch(`/${apiCall}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jsonData),
+    });
+
+    if(!response.ok){
+      console.log(response);
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseJson = await response.json();
+
+    console.log('Server reponse json:', responseJson);
+
+    return(responseJson.id)
+  } catch (error) {
+    console.error('Error posting json:', error.message);
+  }
+}
