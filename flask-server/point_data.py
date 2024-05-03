@@ -32,10 +32,11 @@ def point_add():
     action = data.get('action')
     player = data.get('player')
     win = data.get('win')
+    e_index = data.get('e_index')
 
     match_set = db.session.get(MatchSet, match_set_id)
     if set:
-        point = Point(win=win, match_set=match_set)
+        point = Point(win=win, match_set=match_set, e_index=e_index)
         db.session.add(point)
         db.session.commit()
         
@@ -71,8 +72,8 @@ def event_array(point):
         player.append(data & 0b11)
         action.append((data >> 2) & 0b111)
         a_type.append((data >> 5) & 0b11111)
-        quality.append((data >> 10) & 0b1111)
-        origin.append((data >> 13) & 0b111)
+        quality.append((data >> 10) & 0b111)
+        origin.append((data >> 13) & 0b1111)
         destination.append((data >> 17) & 0b1111)
 
     return destination, origin, quality, a_type, action, player
@@ -91,7 +92,8 @@ def point_find(point_id):
                         'type': a_type,
                         'action': action,
                         'player': player,
-                        'win': point.win}), 200
+                        'win': point.win,
+                        'e_index': point.e_index}), 200
 
     else:
         return jsonify({'error':'Could not find point'}), 404

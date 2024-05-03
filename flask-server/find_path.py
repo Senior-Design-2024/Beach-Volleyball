@@ -7,12 +7,9 @@ def find_db():
 
     def to_dict(instance):
         
-        #Convert the SQLAlchemy object to a dictionary.
-        
         return {c.name: getattr(instance, c.name) for c in instance.__table__.columns}
 
     data = request.args
-
     table_name = data.get('table')
 
     # Create filter data

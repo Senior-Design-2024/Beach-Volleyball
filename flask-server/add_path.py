@@ -78,4 +78,4 @@ def add_entity(entity_type):
         return jsonify({'message': f'{entity_type.capitalize()} added successfully',
                         'id': entity.id}), 200
     else:
-        return jsonify({'error':f'{entity_type.capitalize()} or {entity_type.capitalize()} parents not found'}), 404
+        return jsonify({'error':f'{entity_type.capitalize()} parents not found'}), 404
