@@ -3,19 +3,28 @@ import '../App.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { findRequest, postRequest } from '../utils';
 import Group from './Group';
-import Serving from './Serving';
+import ServeReceive from './ServeReceive';
 import Receiving from './Receiving';
 import Rally from './Rally';
 import RallyDetails from './RallyDetails';
 import MatchHeader from '../components/MatchHeader';
+import { Point } from './Point';
 
 export const MatchContext = createContext();
 
 export default function Match() {
   const location = useLocation()
 
+  const point = new Point()
+
   const [userData, setUserData] = useState(null)
   const [teamData, setTeamData] = useState(null)
+
+  const [matchState, setMatchState] = useState({
+    e_index: null,
+    us_score: null,
+    them_score: null,
+  })
 
   const [matchData, setMatchData] = useState({
     id: null,
@@ -52,21 +61,6 @@ export default function Match() {
     win_state: null, //need for adding, but can be null
   })
 
-  /*
-  const [pointData, setPointData] = useState({
-    id: null,
-    match_set_id: null, //THIS IS FOR GROUP_ID, DIFFERENT BACKEND NAMING CONVENTION
-    win: null,
-  })
-
-  //THESE SHOULDN'T BE NECESSARY OR BASICALLY, I WILL BE USING ARRAYS TO REPRESENT THEM
-  const [eventData, setEventData] = useState({
-    id: null,
-    point_id: null,
-    data: null, //DATA REFERS TO THE BIT-SHIFTED REPRESENTATION OF THE ACTION
-    e_index: null,
-  })
-  */
 
   useEffect( () => {
     if(location.state){
@@ -96,23 +90,6 @@ export default function Match() {
     }
   }, [userData])
 
-  //function
-  const postGroup = async (match_id, set_num) => {
-    const newGroup = {
-      match_id: match_id,
-      set_num: set_num,
-      win_state: null
-    }
-
-    const id = await postRequest(newGroup, 'add/match_set')
-
-    setGroupData({
-      ...newGroup,
-      id: id,
-    })
-  }
-
-
   useEffect( () => {
     if(player1Data && player2Data){
       setHeader({
@@ -131,13 +108,39 @@ export default function Match() {
     }
   }, [player1Data, player2Data])
 
+  //function
+  const postGroup = async (match_id, set_num) => {
+    const newGroup = {
+      match_id: match_id,
+      set_num: set_num,
+      win_state: null
+    }
+
+    const id = await postRequest(newGroup, 'add/match_set')
+
+    setGroupData({
+      ...newGroup,
+      id: id,
+    })
+  }
+
   useEffect( () => {
     if(groupData.id) {
-      console.log('groupdata', groupData)
+      setMatchState({
+        e_index: 0,
+        us_score: 0,
+        them_score: 0,
+      })
       dispGroup()
     }
   }, [groupData.id])
 
+  const handlePointEnds = () => {
+    console.log('not implemented', point)
+  }
+
+  /////////////////////////////////
+  /////////////////////////////////
   const navigate = useNavigate()
   const navigateUser = (user) => navigate('/User', {state: {user: user}})
 
@@ -147,9 +150,15 @@ export default function Match() {
     setCurrentView('group')
   }
 
-  const dispServing = () => setCurrentView('serving')
+  const dispServing = () => {
+    point.newPoint(groupData.id, matchState.e_index)
+    setCurrentView('serving')
+  }
 
-  const dispReceiving = () => setCurrentView('receiving')
+  const dispReceiving = () => {
+    point.newPoint(groupData.id, matchState.e_index)
+    setCurrentView('receiving')
+  }
 
   const dispRally = () => setCurrentView('rally')
   
@@ -172,11 +181,11 @@ export default function Match() {
       />
 
       <MatchContext.Provider value={{player1Data, setPlayer1Data, player2Data, setPlayer2Data, matchData, setMatchData,
-                                    serveOrder, setServeOrder}}>
+                                    serveOrder, setServeOrder, matchState, setMatchState, handlePointEnds, }}>
 
         {currentView === 'group' && <Group dispServing={dispServing} dispReceiving={dispReceiving}/>}
-        {currentView === 'serving' && <Serving/>}
-        {currentView === 'receiving' && <Receiving/>}
+        {(currentView === 'serving' || currentView === 'receiving') && <ServeReceive point={point}/>}
+        {/*{currentView === 'receiving' && <Receiving/>}*/}
         {currentView === 'rally' && <Rally/>}
         {currentView === 'rallyDetails' && <RallyDetails/>}
       </MatchContext.Provider>

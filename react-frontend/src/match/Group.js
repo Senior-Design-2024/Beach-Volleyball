@@ -23,6 +23,7 @@ export default function Group(props) {
   };
 
   //function
+  ////////SERVE ORDER MAY NOT BE UP TO DATE BY SUBMISSION OR IMMEDIATELY AFTER SUMISSION
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -33,12 +34,9 @@ export default function Group(props) {
         //go to serving or receiving based on our position
         if (serveOrder[0] <= 2) {
           props.dispServing();
-          console.log('serving')
         } else {
           props.dispReceiving();
         }
-
-        setServeOrder([0, 0, 0, 0]); // Reset serveOrder after submission
       }
       else{
         alert('serve orders must alternate')
